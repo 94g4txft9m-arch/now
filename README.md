@@ -1,8 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# STRINGS — web (Next.js)
+
+Statický export pre Vercel a GitHub Pages. **Vždy spúšťajte príkazy z koreňa tohto repozitára** (priečinok obsahujúci `app/` a `package.json`). Nepoužívajte prázdny podpriečinok `strings-web` — Next.js potrebuje `app/` priamo tu.
+
+- Lokálne: [http://localhost:3000](http://localhost:3000) po `npm run dev`
+- GitHub Pages (po nasadení): `https://<owner>.github.io/<repo>/` — napr. `https://94g4txft9m-arch.github.io/now/`
 
 ## Getting Started
 
-First, run the development server:
+First, run the development server from the **repository root**:
 
 ```bash
 npm run dev

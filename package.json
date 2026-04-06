@@ -2,6 +2,7 @@
   "name": "now",
   "version": "0.1.0",
   "private": true,
+  "description": "STRINGS — statická prezentácia (Next.js)",
   "repository": {
     "type": "git",
     "url": "https://github.com/94g4txft9m-arch/now.git"
