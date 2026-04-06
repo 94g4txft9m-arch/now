@@ -1,0 +1,8 @@
+{
+  "name": "strings-static",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve -l 3330 .",
+    "start": "npx --yes serve -l 3330 ."
+  }
+}

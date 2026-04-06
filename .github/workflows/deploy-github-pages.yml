@@ -1,8 +1,10 @@
-name: Deploy GitHub Pages
+# Verejná adresa po zapnutí Pages (Settings → Pages → GitHub Actions):
+# https://<owner>.github.io/<repository>/
+name: Deploy GitHub Pages (STRINGS static)
 
 on:
   push:
-    branches: [main]
+    branches: [main, master, cjs-runner]
   workflow_dispatch:
 
 permissions:
@@ -19,20 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-      - run: npm ci
-      - name: Build static export
-        run: npm run build
-        env:
-          # Project site: https://<owner>.github.io/<repo>/ — odvodené od repa (premenovanie repa netreba ručne prepisovať)
-          BASE_PATH: "/${{ github.event.repository.name }}"
-          NEXT_PUBLIC_SITE_URL: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: out
+          path: strings-static
 
   deploy:
     needs: build
