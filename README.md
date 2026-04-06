@@ -1,6 +1,8 @@
 # STRINGS — web (Next.js)
 
-Statický export pre Vercel a GitHub Pages. **Vždy spúšťajte príkazy z koreňa tohto repozitára** (priečinok obsahujúci `app/` a `package.json`). Nepoužívajte prázdny podpriečinok `strings-web` — Next.js potrebuje `app/` priamo tu.
+Statický export pre Vercel a GitHub Pages. **Koreň projektu** je priečinok s `app/` a `package.json`). Ak otvoríte omylom `strings-web/`, použite `npm run dev` aj tam — skripty sa presmerujú do koreňa.
+
+**Pred prvým spustením:** v koreňovom priečinku spustite `npm install`.
 
 - Lokálne: [http://localhost:3000](http://localhost:3000) po `npm run dev`
 - GitHub Pages (po nasadení): `https://<owner>.github.io/<repo>/` — napr. `https://94g4txft9m-arch.github.io/now/`
