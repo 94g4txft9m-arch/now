@@ -3,11 +3,11 @@
   "private": true,
   "description": "Presmeruje npm skripty do koreňa repozitára (kde je app/). Ak ste tu omylom: npm run dev spustí Next v nadriadenom priečinku.",
   "scripts": {
-    "dev": "npm --prefix .. run dev",
-    "dev:pages": "npm --prefix .. run dev:pages",
-    "build": "npm --prefix .. run build",
-    "build:pages": "npm --prefix .. run build:pages",
-    "start": "npm --prefix .. run start",
-    "lint": "npm --prefix .. run lint"
+    "dev": "node run-in-root.cjs run dev",
+    "dev:pages": "node run-in-root.cjs run dev:pages",
+    "build": "node run-in-root.cjs run build",
+    "build:pages": "node run-in-root.cjs run build:pages",
+    "start": "node run-in-root.cjs run start",
+    "lint": "node run-in-root.cjs run lint"
   }
 }
