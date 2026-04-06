@@ -27,9 +27,9 @@ jobs:
       - name: Build static export
         run: npm run build
         env:
-          # Must match the repository name for project sites: https://<user>.github.io/<repo>/
-          BASE_PATH: /now
-          NEXT_PUBLIC_SITE_URL: https://94g4txft9m-arch.github.io/now
+          # Project site: https://<owner>.github.io/<repo>/ — odvodené od repa (premenovanie repa netreba ručne prepisovať)
+          BASE_PATH: "/${{ github.event.repository.name }}"
+          NEXT_PUBLIC_SITE_URL: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

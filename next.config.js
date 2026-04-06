@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
-// GitHub Pages project site: set BASE_PATH=/repo-name at build (e.g. /now). Leave unset for localhost and Vercel root.
+// BASE_PATH: GitHub Pages project sites need /repo-name. Omitted for `npm run dev` and Vercel (koreň domény).
+// Lokálne ako na github.io: `npm run dev:pages` → otvorte http://localhost:3000/<repo>/
 const basePath = process.env.BASE_PATH || "";
 
 const nextConfig = {
   output: "export",
   basePath: basePath || undefined,
-  assetPrefix: basePath || undefined,
   images: {
     unoptimized: true,
     remotePatterns: [

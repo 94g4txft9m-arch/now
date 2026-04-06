@@ -2,9 +2,15 @@
   "name": "now",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/94g4txft9m-arch/now.git"
+  },
   "scripts": {
     "dev": "next dev",
+    "dev:pages": "node scripts/pages.cjs dev",
     "build": "next build",
+    "build:pages": "node scripts/pages.cjs build",
     "start": "next start",
     "lint": "next lint"
   },
