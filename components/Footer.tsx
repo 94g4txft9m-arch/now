@@ -22,7 +22,7 @@ export function Footer() {
               STRINGS
             </p>
             <p className="mt-4 text-sm text-text-muted-light">
-              © 2025 STRINGS. Všetky práva vyhradené.
+              © 2026 STRINGS. Všetky práva vyhradené.
             </p>
           </div>
           <nav
