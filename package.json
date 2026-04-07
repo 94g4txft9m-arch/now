@@ -2,7 +2,7 @@
   "name": "strings-static",
   "private": true,
   "scripts": {
-    "dev": "npx --yes serve -l 3330 .",
-    "start": "npx --yes serve -l 3330 ."
+    "dev": "node dev-server.mjs",
+    "start": "node dev-server.mjs"
   }
 }
