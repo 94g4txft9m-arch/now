@@ -1,0 +1,31 @@
+GitHub Pages — celý proces (repozitár „now“)
+============================================
+
+Máš dve nezávislé cesty; stačí jedna.
+
+────────────────────────────────────────────
+A) Nasadenie z vetvy gh-pages (najjednoduchšie)
+────────────────────────────────────────────
+1. https://github.com/94g4txft9m-arch/now/settings/pages
+2. Build and deployment → Source: „Deploy from a branch“
+3. Branch: gh-pages    Folder: / (root)    → Save
+4. Web: https://94g4txft9m-arch.github.io/now/
+
+Po každom „git push origin gh-pages“ sa stránka sama prebuildí (GitHub).
+
+────────────────────────────────────────────
+B) GitHub Actions workflow (súbor v repozitári)
+────────────────────────────────────────────
+Súbor: .github/workflows/deploy-strings-static-pages.yml
+
+1. Pushni vetvu cjs-runner (PAT s oprávnením „workflow“ alebo SSH):
+     ./scripts/github-pages-process.sh push
+2. Na GitHube vytvor Pull request: cjs-runner → main a zmeň.
+3. Settings → Pages → Source: „GitHub Actions“ (ak chceš deploy cez tento workflow).
+
+Poznámka: Cursor alebo token bez „workflow“ push odmietne — spusti push v Termináli na Macu.
+
+────────────────────────────────────────────
+C) Kópia workflow (záloha)
+────────────────────────────────────────────
+Identický obsah je v: docs/deploy-strings-static-pages.yml

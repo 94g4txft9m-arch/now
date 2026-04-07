@@ -11,3 +11,4 @@ out/
 # os / editor
 .DS_Store
 *.log
+.vscode/.vscode.gh-pages-bak/

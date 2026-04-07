@@ -1,0 +1,40 @@
+# Kópia workflow pre GitHub Actions (živá verzia je na vetve `main` v `.github/workflows/`).
+# Vetva `cjs-runner` tento súbor v `.github/workflows/` neobsahuje kvôli obmedzeniam PAT pri `git push`
+# (GitHub vyžaduje oprávnenie `workflow`). Pri merge do `main` ponechajte verziu z `main`.
+#
+# Verejná adresa po zapnutí Pages (Settings → Pages → GitHub Actions):
+# https://<owner>.github.io/<repository>/
+name: Deploy GitHub Pages (STRINGS static)
+
+on:
+  push:
+    branches: [main, master, cjs-runner]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: strings-static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
