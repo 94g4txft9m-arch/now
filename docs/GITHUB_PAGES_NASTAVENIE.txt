@@ -14,18 +14,17 @@ A) Nasadenie z vetvy gh-pages (najjednoduchšie)
 Po každom „git push origin gh-pages“ sa stránka sama prebuildí (GitHub).
 
 ────────────────────────────────────────────
-B) GitHub Actions workflow (súbor v repozitári)
+B) GitHub Actions workflow (voliteľné)
 ────────────────────────────────────────────
-Súbor: .github/workflows/deploy-strings-static-pages.yml
+Šablóna: docs/deploy-strings-static-pages.yml
+→ skopíruj do .github/workflows/deploy-strings-static-pages.yml a commitni
+   (PAT musí mať scope „workflow“, inak GitHub push odmietne).
 
-1. Pushni vetvu cjs-runner (PAT s oprávnením „workflow“ alebo SSH):
-     ./scripts/github-pages-process.sh push
-2. Na GitHube vytvor Pull request: cjs-runner → main a zmeň.
-3. Settings → Pages → Source: „GitHub Actions“ (ak chceš deploy cez tento workflow).
-
-Poznámka: Cursor alebo token bez „workflow“ push odmietne — spusti push v Termináli na Macu.
+1. ./scripts/github-pages-process.sh push   (vetva cjs-runner), alebo push z Macu cez SSH.
+2. Pull request cjs-runner → main.
+3. Settings → Pages → Source: „GitHub Actions“.
 
 ────────────────────────────────────────────
-C) Kópia workflow (záloha)
+C) Aktualizovať len statiku (bez Actions)
 ────────────────────────────────────────────
-Identický obsah je v: docs/deploy-strings-static-pages.yml
+./scripts/github-pages-process.sh sync-gh-pages

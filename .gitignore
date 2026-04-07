@@ -12,3 +12,6 @@ out/
 .DS_Store
 *.log
 .vscode/.vscode.gh-pages-bak/
+
+# typescript
+*.tsbuildinfo
