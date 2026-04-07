@@ -1,5 +1,6 @@
-# Kópia pre .github/workflows/ — vlož ručne a pushni s účtom, ktoré má scope „workflow“.
-# Alebo nepoužívaj Actions vôbec: Settings → Pages → Deploy from branch → gh-pages / (root).
+# STRINGS: statický web z vetvy gh-pages (koreň = obsah stránky).
+# Pages: Settings → Build and deployment → Source: „GitHub Actions“
+# (ak máš „Deploy from branch → gh-pages“, tento workflow netreba spúšťať.)
 name: Deploy STRINGS static (gh-pages)
 
 on:
