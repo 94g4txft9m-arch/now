@@ -56,9 +56,13 @@ cmd_sync_gh_pages() {
     echo "Pracovný strom nie je čistý — commitni alebo stashni zmeny pred sync-gh-pages."
     exit 1
   fi
-  local prev
+  local prev tmp
   prev="$(git rev-parse --abbrev-ref HEAD)"
-  echo "Synchronizácia strings-static/ → vetva gh-pages (potom návrat na: $prev)"
+  tmp="$(mktemp -d)"
+  trap 'rm -rf "$tmp"' EXIT
+  echo "Export strings-static z vetvy $prev (git archive) → dočasný priečinok"
+  git archive "$prev" strings-static | tar -x -C "$tmp"
+  echo "Synchronizácia → vetva gh-pages (potom návrat na: $prev)"
   git fetch origin gh-pages
   if git show-ref --verify --quiet refs/heads/gh-pages; then
     git checkout gh-pages
@@ -68,7 +72,7 @@ cmd_sync_gh_pages() {
   git pull --ff-only origin gh-pages 2>/dev/null || true
   rsync -a --delete \
     --exclude='.git/' \
-    "${ROOT}/strings-static/" "${ROOT}/"
+    "${tmp}/strings-static/" "${ROOT}/"
   git add -A
   if git diff --staged --quiet; then
     echo "Žiadne zmeny oproti aktuálnemu gh-pages."
