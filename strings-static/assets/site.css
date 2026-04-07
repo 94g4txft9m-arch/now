@@ -79,6 +79,14 @@ h2 { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.1; letter-spacing: -.02
 }
 .navbar.open .nav-backdrop { display: block; }
 body.nav-open { overflow: hidden; }
+.links:focus-within .nav-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
 
 .hero {
   min-height: 100vh;
