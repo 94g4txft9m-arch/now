@@ -6,8 +6,27 @@
   <title>STRINGS — Business & Podnikanie</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
-<body>
-  <header class="navbar"><div class="wrap nav-inner"><a class="logo" href="index.html">STRINGS</a><nav class="links"><a class="nav-link" href="index.html">Domov</a><a class="nav-link" href="o-nas.html">O nás</a><a class="nav-link" href="technologie.html">Technológie</a><a class="nav-link" href="business-podnikanie.html">Business</a><a class="nav-link" href="gdpr-privacy.html">GDPR</a><a class="nav-link" href="aktuality.html">Aktuality</a><a class="nav-link" href="kontakt.html">Kontakt</a></nav></div></header>
+<body data-page="business">
+  <header class="navbar">
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html">STRINGS</a>
+    <button type="button" class="nav-toggle" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-backdrop" tabindex="-1" aria-hidden="true"></div>
+    <nav class="links" id="nav-links">
+      <a class="nav-link" data-nav="index" href="index.html">Domov</a>
+      <a class="nav-link" data-nav="o-nas" href="o-nas.html">O nás</a>
+      <a class="nav-link" data-nav="technologie" href="technologie.html">Technológie</a>
+      <a class="nav-link" data-nav="business" href="business-podnikanie.html">Business</a>
+      <a class="nav-link" data-nav="gdpr" href="gdpr-privacy.html">GDPR</a>
+      <a class="nav-link" data-nav="aktuality" href="aktuality.html">Aktuality</a>
+      <a class="nav-link" data-nav="kontakt" href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+</header>
   <section class="hero" style="min-height:72vh;"><div class="hero-bg"></div><div class="hero-grid"></div><div class="wrap hero-content"><h1>Business &amp; Podnikanie</h1><p class="subline">Minimalizujeme právne riziká a pomáhame klientom podnikať, rásť a bezpečne vyjednávať.</p><div class="cta"><a class="btn" href="kontakt.html">Kontaktujte nás</a></div></div></section>
   <section class="section"><div class="wrap"><div class="cards">
     <article class="card animate-on-scroll"><h3>Obchodné spoločnosti</h3><p class="muted">Postaráme sa o firmu od založenia po exit, vrátane dokumentácie, riadenia a dennej agendy.</p></article>
@@ -17,7 +36,7 @@
     <article class="card animate-on-scroll"><h3>RPVS</h3><p class="muted">Príprava dokumentov, overenie konečného užívateľa výhod, zápis, obnova aj výmaz z RPVS.</p></article>
   </div></div></section>
   <section class="section bg-alt"><div class="wrap"><article class="card animate-slide-right"><h3>Case study: Zastupovanie v súdnych sporoch</h3><p class="muted">Obrana voči „šikanóznym“ žalobám, vymáhanie náhrady škody a majetkové spory. Strategická obrana a dôraz na výsledok.</p></article></div></section>
-  <footer class="section bg-dark footer"><div class="wrap"><p><a href="index.html">Späť na domov</a></p></div></footer>
+  <footer class="section bg-dark footer"><div class="wrap"><p class="footer-contact"><a href="tel:+421902203238">0902 203 238</a> · <a href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a> · <a href="index.html">Domov</a></p></div></footer>
   <script src="assets/site.js"></script>
 </body>
 </html>
