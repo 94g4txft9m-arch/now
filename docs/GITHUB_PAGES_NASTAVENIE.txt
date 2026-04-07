@@ -1,0 +1,21 @@
+GitHub Pages — zapnutie nasadenia (repozitár „now“)
+==================================================
+
+Najjednoduchšie (bez GitHub Actions, stačí prehliadač)
+------------------------------------------------------
+1. Otvor: https://github.com/94g4txft9m-arch/now/settings/pages
+2. Sekcia „Build and deployment“ → Source: vyber „Deploy from a branch“.
+3. Branch: gh-pages   Folder: / (root)
+4. Ulož (Save).
+
+Stránka bude na: https://94g4txft9m-arch.github.io/now/
+(po pár minútach od posledného pushu na gh-pages).
+
+Alternatíva: GitHub Actions
+---------------------------
+Ak máš v Source vybrané „GitHub Actions“, skopíruj súbor
+docs/deploy-strings-static-pages.yml do .github/workflows/ a pushni
+s účtom/PAT, ktoré má oprávnenie „workflow“.
+
+Poznámka: lokálny git push môže odmietnuť zmeny v .github/workflows/,
+ak token nemá scope „workflow“ — vtedy použi vetvu gh-pages vyššie.
