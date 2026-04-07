@@ -6,15 +6,34 @@
   <title>STRINGS — Kontakt</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
-<body>
-  <header class="navbar"><div class="wrap nav-inner"><a class="logo" href="index.html">STRINGS</a><nav class="links"><a class="nav-link" href="index.html">Domov</a><a class="nav-link" href="o-nas.html">O nás</a><a class="nav-link" href="technologie.html">Technológie</a><a class="nav-link" href="business-podnikanie.html">Business</a><a class="nav-link" href="gdpr-privacy.html">GDPR</a><a class="nav-link" href="aktuality.html">Aktuality</a><a class="nav-link" href="kontakt.html">Kontakt</a></nav></div></header>
+<body data-page="kontakt">
+  <header class="navbar">
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html">STRINGS</a>
+    <button type="button" class="nav-toggle" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-backdrop" tabindex="-1" aria-hidden="true"></div>
+    <nav class="links" id="nav-links">
+      <a class="nav-link" data-nav="index" href="index.html">Domov</a>
+      <a class="nav-link" data-nav="o-nas" href="o-nas.html">O nás</a>
+      <a class="nav-link" data-nav="technologie" href="technologie.html">Technológie</a>
+      <a class="nav-link" data-nav="business" href="business-podnikanie.html">Business</a>
+      <a class="nav-link" data-nav="gdpr" href="gdpr-privacy.html">GDPR</a>
+      <a class="nav-link" data-nav="aktuality" href="aktuality.html">Aktuality</a>
+      <a class="nav-link" data-nav="kontakt" href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+</header>
   <section class="hero" style="min-height:72vh;"><div class="hero-bg"></div><div class="hero-grid"></div><div class="wrap hero-content"><h1>Kontakt</h1><p class="subline">Hovorte s nami o všetkom. Sídlime v centre diania v Bratislave.</p></div></section>
   <section class="section"><div class="wrap contact-grid">
-    <article class="card animate-slide-left"><h3>Adresa</h3><p class="muted">Klemensova 4<br />811 09 Bratislava</p><p class="muted">Historické centrum Bratislavy pri biznis centre Twin City. V blízkosti je centrum NIVY.</p></article>
-    <article class="card animate-slide-right"><h3>Priamy kontakt</h3><p class="muted">Telefón: 0902 203 238</p><p class="muted">E-mail: motuzova@akmotuzova.sk</p><p class="muted">IČO: 51 827 450 · DIČ: 1034862345 · IČ DPH: SK1034862345</p></article>
+    <article class="card animate-slide-left"><h3>Adresa</h3><p class="muted">Klemensova 4<br />811 09 Bratislava</p><p class="muted">Historické centrum Bratislavy pri biznis centre Twin City. V blízkosti je centrum NIVY.</p><p class="muted"><a class="contact-link" href="https://maps.google.com/?q=Klemensova+4+Bratislava" target="_blank" rel="noopener">Otvoriť v mapách</a></p></article>
+    <article class="card animate-slide-right"><h3>Priamy kontakt</h3><p class="muted">Telefón: <a class="contact-link" href="tel:+421902203238">0902 203 238</a> (Zuzana Motúzová)</p><p class="muted">Telefón: <a class="contact-link" href="tel:+421905686862">0905 68 68 62</a> (Pavel Lacko)</p><p class="muted">E-mail: <a class="contact-link" href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a> · <a class="contact-link" href="mailto:lacko@akmotuzova.sk">lacko@akmotuzova.sk</a> · <a class="contact-link" href="mailto:sencak@akmotuzova.sk">sencak@akmotuzova.sk</a></p><p class="muted">IČO: 51 827 450 · DIČ: 1034862345 · IČ DPH: SK1034862345</p></article>
   </div></section>
   <section class="section bg-alt"><div class="wrap"><h2 class="animate-on-scroll">Ďalšie kroky</h2><p class="muted animate-on-scroll">Ak máte otázky k technológiám, podnikaniu alebo GDPR, prejdite na príslušnú stránku a zistite rozsah našich služieb.</p><a class="btn" href="technologie.html">Technológie</a> <a class="btn" href="gdpr-privacy.html">GDPR</a></div></section>
-  <footer class="section bg-dark footer"><div class="wrap"><p><a href="index.html">Späť na domov</a></p></div></footer>
+  <footer class="section bg-dark footer"><div class="wrap"><p class="footer-contact"><a href="tel:+421902203238">0902 203 238</a> · <a href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a> · <a href="index.html">Domov</a></p></div></footer>
   <script src="assets/site.js"></script>
 </body>
 </html>

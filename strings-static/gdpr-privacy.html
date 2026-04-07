@@ -6,8 +6,27 @@
   <title>STRINGS — GDPR & Privacy</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
-<body>
-  <header class="navbar"><div class="wrap nav-inner"><a class="logo" href="index.html">STRINGS</a><nav class="links"><a class="nav-link" href="index.html">Domov</a><a class="nav-link" href="o-nas.html">O nás</a><a class="nav-link" href="technologie.html">Technológie</a><a class="nav-link" href="business-podnikanie.html">Business</a><a class="nav-link" href="gdpr-privacy.html">GDPR</a><a class="nav-link" href="aktuality.html">Aktuality</a><a class="nav-link" href="kontakt.html">Kontakt</a></nav></div></header>
+<body data-page="gdpr">
+  <header class="navbar">
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html">STRINGS</a>
+    <button type="button" class="nav-toggle" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-backdrop" tabindex="-1" aria-hidden="true"></div>
+    <nav class="links" id="nav-links">
+      <a class="nav-link" data-nav="index" href="index.html">Domov</a>
+      <a class="nav-link" data-nav="o-nas" href="o-nas.html">O nás</a>
+      <a class="nav-link" data-nav="technologie" href="technologie.html">Technológie</a>
+      <a class="nav-link" data-nav="business" href="business-podnikanie.html">Business</a>
+      <a class="nav-link" data-nav="gdpr" href="gdpr-privacy.html">GDPR</a>
+      <a class="nav-link" data-nav="aktuality" href="aktuality.html">Aktuality</a>
+      <a class="nav-link" data-nav="kontakt" href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+</header>
   <section class="hero" style="min-height:72vh;"><div class="hero-bg"></div><div class="hero-grid"></div><div class="wrap hero-content"><h1>GDPR &amp; Privacy</h1><p class="subline">Súkromie a bezpečnosť zákazníkov je vecou reputácie. Pomáhame s dokumentáciou, auditmi aj kontrolami.</p><div class="cta"><a class="btn" href="kontakt.html">Kontaktujte nás</a></div></div></section>
   <section class="section"><div class="wrap"><div class="cards">
     <article class="card animate-on-scroll"><h3>Dokumentácia k GDPR</h3><p class="muted">Príprava GDPR dokumentácie pre malé aj veľké spoločnosti vrátane globálnych hráčov.</p></article>
@@ -17,7 +36,7 @@
     <article class="card animate-on-scroll"><h3>Balančné testy</h3><p class="muted">Posúdenia oprávneného záujmu s cieľom dosiahnuť rovnováhu medzi obchodným cieľom a právami osôb.</p></article>
     <article class="card animate-on-scroll"><h3>DPIA</h3><p class="muted">Posúdenia vplyvu na ochranu údajov pri vysokorizikovom spracúvaní vrátane návrhu nápravných opatrení.</p></article>
   </div></div></section>
-  <footer class="section bg-dark footer"><div class="wrap"><p><a href="index.html">Späť na domov</a></p></div></footer>
+  <footer class="section bg-dark footer"><div class="wrap"><p class="footer-contact"><a href="tel:+421902203238">0902 203 238</a> · <a href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a> · <a href="index.html">Domov</a></p></div></footer>
   <script src="assets/site.js"></script>
 </body>
 </html>

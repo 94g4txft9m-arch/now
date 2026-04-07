@@ -6,15 +6,27 @@
   <title>STRINGS — O nás</title>
   <link rel="stylesheet" href="assets/site.css" />
 </head>
-<body>
+<body data-page="o-nas">
   <header class="navbar">
-    <div class="wrap nav-inner">
-      <a class="logo" href="index.html">STRINGS</a>
-      <nav class="links">
-        <a class="nav-link" href="index.html">Domov</a><a class="nav-link" href="o-nas.html">O nás</a><a class="nav-link" href="technologie.html">Technológie</a><a class="nav-link" href="business-podnikanie.html">Business</a><a class="nav-link" href="gdpr-privacy.html">GDPR</a><a class="nav-link" href="aktuality.html">Aktuality</a><a class="nav-link" href="kontakt.html">Kontakt</a>
-      </nav>
-    </div>
-  </header>
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html">STRINGS</a>
+    <button type="button" class="nav-toggle" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-backdrop" tabindex="-1" aria-hidden="true"></div>
+    <nav class="links" id="nav-links">
+      <a class="nav-link" data-nav="index" href="index.html">Domov</a>
+      <a class="nav-link" data-nav="o-nas" href="o-nas.html">O nás</a>
+      <a class="nav-link" data-nav="technologie" href="technologie.html">Technológie</a>
+      <a class="nav-link" data-nav="business" href="business-podnikanie.html">Business</a>
+      <a class="nav-link" data-nav="gdpr" href="gdpr-privacy.html">GDPR</a>
+      <a class="nav-link" data-nav="aktuality" href="aktuality.html">Aktuality</a>
+      <a class="nav-link" data-nav="kontakt" href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+</header>
 
   <section class="hero" style="min-height:72vh;">
     <div class="hero-bg"></div><div class="hero-grid"></div>
@@ -43,32 +55,34 @@
     <div class="wrap">
       <div class="accent-line animate-clip"></div>
       <h2 class="animate-on-scroll">Tím</h2>
-      <div class="cards">
+      <div class="cards team-cards">
         <article class="card animate-on-scroll">
-          <img class="animate-scale" src="images/zuzana-motuzova.jpg" alt="Zuzana Motúzová" style="width:100%;height:auto;margin-bottom:1rem;" />
+          <img class="animate-scale team-photo" src="images/zuzana-motuzova.png" alt="Zuzana Motúzová" width="724" height="1024" loading="lazy" />
           <h3>Zuzana Motúzová</h3>
           <p class="muted"><strong>CEO, Advokát</strong></p>
           <p class="muted">Počas 15 rokov advokátskej praxe vo vlastnej kancelárii i v nadnárodných softvérových domoch zostavila stovky zmlúv pre klientov z IT. Zameriava sa na technologické právo a zmluvy o vývoji softvéru.</p>
-          <p class="muted">Kontakt: 0902 203 238 · motuzova@akmotuzova.sk</p>
+          <p class="muted">Kontakt: <a class="contact-link" href="tel:+421902203238">0902 203 238</a> · <a class="contact-link" href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a></p>
         </article>
         <article class="card animate-on-scroll">
+          <img class="animate-scale team-photo" src="images/pavel-lacko.png" alt="Pavel Lacko" width="724" height="1024" loading="lazy" />
           <h3>Pavel Lacko</h3>
           <p class="muted"><strong>Advokát</strong></p>
           <p class="muted">Špecializácia: všeobecné obchodné právo, právo obchodných spoločností, riešenie sporov, medzinárodné právo súkromné, právo duševného vlastníctva a ochrana osobných údajov.</p>
           <p class="muted">LL.M. Cambridge, externý lektor Právnickej fakulty UK. Jazykovo: slovenčina, angličtina, nemčina, francúzština.</p>
-          <p class="muted">Kontakt: 0905 68 68 62 · lacko@akmotuzova.sk</p>
+          <p class="muted">Kontakt: <a class="contact-link" href="tel:+421905686862">0905 68 68 62</a> · <a class="contact-link" href="mailto:lacko@akmotuzova.sk">lacko@akmotuzova.sk</a></p>
         </article>
         <article class="card animate-on-scroll">
+          <img class="animate-scale team-photo" src="images/jozef-sencak.png" alt="Jozef Manuel Senčák" width="724" height="1024" loading="lazy" />
           <h3>Jozef Manuel Senčák</h3>
           <p class="muted"><strong>Paralegal</strong></p>
           <p class="muted">V kancelárii pomáha s právnym rešeršom, priebežnou agendou a ad hoc úlohami. Zameriava sa najmä na IT právo, ochranu osobných údajov a trestné právo v digitálnom prostredí.</p>
-          <p class="muted">Kontakt: sencak@akmotuzova.sk</p>
+          <p class="muted">Kontakt: <a class="contact-link" href="mailto:sencak@akmotuzova.sk">sencak@akmotuzova.sk</a></p>
         </article>
       </div>
     </div>
   </section>
 
-  <footer class="section bg-dark footer"><div class="wrap"><p><a href="index.html">Späť na domov</a></p></div></footer>
+  <footer class="section bg-dark footer"><div class="wrap"><p class="footer-contact"><a href="tel:+421902203238">0902 203 238</a> · <a href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a> · <a href="index.html">Domov</a></p></div></footer>
   <script src="assets/site.js"></script>
 </body>
 </html>
