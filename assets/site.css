@@ -289,9 +289,8 @@ body[data-page="index"] .logo-ch {
   transform-style: preserve-3d;
   backface-visibility: visible;
   transform-origin: center center;
-  /* rotateZ: písmeno ostáva vždy čitateľné (žiadne otočenie „zboku“) */
-  animation: logoLetterSpinZ 22s linear infinite;
-  animation-delay: calc(var(--i) * -2.2s);
+  animation: logoLetterFlip var(--heart-cycle) ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.55s);
   text-shadow:
     0 0 14px rgba(45, 212, 191, 0.55),
     0 0 28px rgba(99, 102, 241, 0.35);
@@ -319,9 +318,12 @@ body[data-page="index"] .logo-ch {
   25% { opacity: 1; transform: scale(1.55); }
   35% { opacity: 1; transform: scale(1); }
 }
-@keyframes logoLetterSpinZ {
-  from { transform: rotateZ(0deg); }
-  to { transform: rotateZ(360deg); }
+@keyframes logoLetterFlip {
+  0%, 35%, 100% { transform: rotateX(0deg) rotateY(0deg); }
+  7% { transform: rotateX(12deg) rotateY(160deg); }
+  14% { transform: rotateX(0deg) rotateY(320deg); }
+  24% { transform: rotateX(8deg) rotateY(400deg); }
+  32% { transform: rotateX(0deg) rotateY(520deg); }
 }
 
 .grid-2 { display: grid; grid-template-columns: 1.15fr .85fr; gap: 2rem; align-items: start; }
