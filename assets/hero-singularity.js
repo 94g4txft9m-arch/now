@@ -23,10 +23,11 @@
   var MAGENTA = [180, 40, 120];
   var WHITE = [255, 255, 255];
   var FLARE = [255, 240, 200];
-  var BG0 = [26, 0, 48];
-  var BG1 = [15, 0, 32];
-  var BG2 = [8, 0, 24];
-  var BG3 = [2, 0, 8];
+  /* Zladené s body[data-page="index"] .hero--singularity .hero-bg (tmavomodrá) */
+  var BG0 = [26, 32, 58];
+  var BG1 = [16, 23, 43];
+  var BG2 = [10, 15, 32];
+  var BG3 = [6, 8, 18];
 
   var RING_COUNT = 90;
   var PARTICLE_COUNT = 600;
@@ -154,16 +155,20 @@
     for (var j = 0; j < PARTICLE_COUNT; j += 1) particles.push(new Particle());
   }
 
+  function fontSizeMedium() {
+    return Math.floor(Math.min(128, Math.max(52, W * 0.105)));
+  }
+
   function rebuildTextPoints() {
     textPoints = [];
     textCanvas.width = W;
     textCanvas.height = H;
     textCtx.clearRect(0, 0, W, H);
-    textCtx.font = "900 " + Math.floor(Math.min(164, Math.max(66, W * 0.16))) + "px Cabinet Grotesk, Arial Black, sans-serif";
+    textCtx.font = "900 " + fontSizeMedium() + "px Cabinet Grotesk, Arial Black, sans-serif";
     textCtx.textAlign = "center";
     textCtx.textBaseline = "middle";
     textCtx.fillStyle = "#ffffff";
-    textCtx.fillText("STRINGS", W * 0.5, H * 0.48);
+    textCtx.fillText("STRINGS", W * 0.5, H * 0.5);
     var img = textCtx.getImageData(0, 0, W, H).data;
     var step = W < 768 ? 7 : 5;
     for (var y = 0; y < H; y += step) {
@@ -209,7 +214,7 @@
     }
   }
 
-  function drawCenterGlow(time) {
+  function drawCenterGlow(time, now) {
     var pulse = 0.8 + 0.2 * Math.sin(time * 1.2);
     var maxR = 180 * pulse;
     var g1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
@@ -234,12 +239,13 @@
     ctx.fillRect(cx - flareW, cy - 15, flareW * 2, 30);
     ctx.globalAlpha = 1;
     if (textMode) {
-      ctx.font = "900 " + Math.floor(Math.min(152, Math.max(58, W * 0.14))) + "px Cabinet Grotesk, Arial Black, sans-serif";
+      ctx.font = "900 " + fontSizeMedium() + "px Cabinet Grotesk, Arial Black, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      var reveal = Math.sin(Math.min(1, (time * 1000 - textModeStart) / textModeDuration) * Math.PI);
+      var tReveal = Math.min(1, (now - textModeStart) / textModeDuration);
+      var reveal = Math.sin(tReveal * Math.PI);
       ctx.fillStyle = "rgba(239, 213, 255," + (0.16 + reveal * 0.24).toFixed(3) + ")";
-      ctx.fillText("STRINGS", cx, cy * 0.96);
+      ctx.fillText("STRINGS", cx, cy);
     }
   }
 
@@ -283,7 +289,7 @@
       particles[j].update();
       particles[j].draw();
     }
-    drawCenterGlow(time);
+    drawCenterGlow(time, now);
     requestAnimationFrame(animate);
   }
 
