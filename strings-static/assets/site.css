@@ -98,6 +98,23 @@ body.nav-open { overflow: hidden; }
   animation: heroFadeIn 1s ease-out forwards;
   opacity: 0;
 }
+.hero--compact {
+  min-height: 72vh;
+  min-height: 72dvh;
+}
+.hero:not(.hero--singularity) .hero-bg {
+  background: linear-gradient(140deg, #0a0a0f 0%, #10172b 44%, #1a2442 100%);
+}
+.hero:not(.hero--singularity)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(120, 158, 255, 0.12), transparent 36%),
+    radial-gradient(circle at 84% 78%, rgba(45, 212, 191, 0.09), transparent 42%);
+}
 .hero-bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg,#0a0a0f,#111827,#0f172a,#1a1a2e); background-size: 400% 400%; animation: gradientDrift 25s ease infinite; }
 .hero-stars {
   position: absolute;
@@ -341,6 +358,9 @@ body[data-page="index"] .logo-ch {
 .post-content { padding: 1.75rem; }
 .post-content h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 1rem; }
 .post-content h2, .post-content h3 { margin-top: 1.5rem; }
+.post-content p { max-width: 72ch; }
+.post-content h2, .post-content h3 { line-height: 1.25; }
+.post-content a { color: #0f766e; text-underline-offset: 3px; }
 .post-content img { max-width: 100%; height: auto; border-radius: 4px; }
 .post-content .wp-caption { max-width: 100% !important; margin: 1.5rem 0; }
 .post-content figcaption { font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; }
