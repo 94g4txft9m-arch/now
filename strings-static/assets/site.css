@@ -211,8 +211,7 @@ body[data-page="index"] .logo--singularity {
   font-weight: 800;
   font-size: calc(1rem + 1px);
   letter-spacing: 0.12em;
-  filter: drop-shadow(0 0 24px rgba(45, 212, 191, 0.65));
-  animation: none;
+  animation: logoGlowBreath 8.8s ease-in-out infinite;
 }
 body[data-page="index"] .logo-em-ring {
   position: absolute;
@@ -248,13 +247,27 @@ body[data-page="index"] .logo-str {
   z-index: 1;
   display: inline-flex;
   gap: 0.03em;
+  perspective: 520px;
+  transform-style: preserve-3d;
 }
 body[data-page="index"] .logo-ch {
   display: inline-block;
   transform-style: preserve-3d;
   backface-visibility: visible;
-  animation: none;
-  text-shadow: 0 0 14px rgba(45, 212, 191, 0.45);
+  animation: logoLetterFlip var(--heart-cycle) ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.55s);
+  text-shadow:
+    0 0 14px rgba(45, 212, 191, 0.55),
+    0 0 28px rgba(99, 102, 241, 0.35);
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="index"] .logo--singularity {
+    animation: none;
+    filter: drop-shadow(0 0 20px rgba(45, 212, 191, 0.55));
+  }
+  body[data-page="index"] .logo-ch {
+    animation: none;
+  }
 }
 @keyframes logoEmRing {
   0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
@@ -392,10 +405,14 @@ body[data-page="index"] .logo-ch {
 }
 @keyframes logoGlowBreath {
   0%, 100% {
-    filter: drop-shadow(0 0 18px rgba(45, 212, 191, 0.5));
+    filter:
+      drop-shadow(0 0 18px rgba(45, 212, 191, 0.55))
+      drop-shadow(0 0 36px rgba(99, 102, 241, 0.22));
   }
   50% {
-    filter: drop-shadow(0 0 30px rgba(45, 212, 191, 0.82));
+    filter:
+      drop-shadow(0 0 34px rgba(45, 212, 191, 0.95))
+      drop-shadow(0 0 56px rgba(99, 102, 241, 0.45));
   }
 }
 
