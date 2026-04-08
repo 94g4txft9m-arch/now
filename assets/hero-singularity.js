@@ -23,6 +23,10 @@
   var targetCanvas = document.createElement("canvas");
   var targetCtx = targetCanvas.getContext("2d");
   var count = window.innerWidth < 768 ? 460 : 900;
+  var nextFlashAt = performance.now() + rand(10000, 13000);
+  var flashStart = 0;
+  var flashDuration = 1100;
+  var flashActive = false;
 
   function rand(a, b) {
     return a + Math.random() * (b - a);
@@ -164,6 +168,20 @@
 
   function draw(now) {
     var time = (now - t0) / 1000;
+    if (!flashActive && now >= nextFlashAt) {
+      flashActive = true;
+      flashStart = now;
+      nextFlashAt = now + rand(11000, 14000);
+    }
+    var flashT = 0;
+    if (flashActive) {
+      flashT = (now - flashStart) / flashDuration;
+      if (flashT >= 1) {
+        flashActive = false;
+        flashT = 0;
+      }
+    }
+    var flashEnv = flashActive ? Math.sin(Math.min(1, flashT) * Math.PI) : 0;
     ctx.clearRect(0, 0, W, H);
     var base = ctx.createLinearGradient(0, 0, 0, H);
     base.addColorStop(0, "rgba(4, 14, 32, 0.28)");
@@ -176,6 +194,14 @@
     core.addColorStop(1, "rgba(56, 189, 248, 0)");
     ctx.fillStyle = core;
     ctx.fillRect(0, 0, W, H);
+    if (flashEnv > 0) {
+      var flash = ctx.createRadialGradient(W * 0.5, H * 0.48, 0, W * 0.5, H * 0.48, Math.min(W, H) * 0.5);
+      flash.addColorStop(0, "rgba(190, 242, 255," + (0.16 * flashEnv).toFixed(4) + ")");
+      flash.addColorStop(0.45, "rgba(56, 189, 248," + (0.09 * flashEnv).toFixed(4) + ")");
+      flash.addColorStop(1, "rgba(56, 189, 248,0)");
+      ctx.fillStyle = flash;
+      ctx.fillRect(0, 0, W, H);
+    }
     drawStreams(time);
     updateTargets(time);
     drawParticles(time);
