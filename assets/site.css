@@ -167,7 +167,7 @@ body.nav-open { overflow: hidden; }
 
 /* Domov: singularita — nanosimulácia, EM výboj, rytmus srdca (~72 BPM) */
 body[data-page="index"] {
-  --heart-cycle: calc(60s / 72);
+  --heart-cycle: calc(60s / 71);
 }
 .hero-sim-canvas {
   position: absolute;
@@ -181,6 +181,16 @@ body[data-page="index"] .hero--singularity .hero-bg,
 body[data-page="index"] .hero--singularity .hero-stars,
 body[data-page="index"] .hero--singularity .hero-vortex {
   opacity: 0.88;
+}
+body[data-page="index"] .hero--singularity .hero-bg {
+  animation: none;
+  background: #0a0a0f;
+}
+body[data-page="index"] .hero--singularity .hero-stars {
+  display: none;
+}
+body[data-page="index"] .hero--singularity .hero-grid {
+  opacity: 0.05;
 }
 body[data-page="index"] .logo--singularity {
   position: relative;
