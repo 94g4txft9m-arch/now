@@ -180,8 +180,16 @@ body[data-page="index"] {
   mix-blend-mode: screen;
   opacity: 1;
 }
+/* Hero text vľavo hore — rovnaký horizontálny okraj ako .wrap so STRINGS; stred animácie ostáva voľný */
+body[data-page="index"] .hero.hero--singularity {
+  align-items: start;
+}
 body[data-page="index"] .hero--singularity .hero-content {
   pointer-events: auto;
+  width: 100%;
+  align-self: start;
+  padding-top: clamp(5.35rem, 11vh, 6.75rem);
+  padding-bottom: clamp(1.75rem, 5vh, 3rem);
 }
 body[data-page="index"] .hero--singularity .hero-bg,
 body[data-page="index"] .hero--singularity .hero-stars,
@@ -200,7 +208,10 @@ body[data-page="index"] .hero--singularity .hero-grid {
 }
 /* Bez „rámu“ — ako pred skleneným panelom; čitateľnosť cez text-shadow */
 body[data-page="index"] .hero--singularity .hero-copy {
-  max-width: 40rem;
+  max-width: min(36rem, 100%);
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
   padding: 0;
   background: transparent;
   border: none;
@@ -231,6 +242,12 @@ body[data-page="index"] .hero--singularity .hero-copy .subline {
   font-size: 1rem;
   font-weight: 500;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.72), 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+@media (min-width: 981px) {
+  body[data-page="index"] .hero--singularity .hero-copy .cta .btn {
+    width: auto;
+    display: inline-block;
+  }
 }
 body[data-page="index"] .logo--singularity {
   position: relative;
@@ -318,12 +335,13 @@ body[data-page="index"] .logo-ch {
   25% { opacity: 1; transform: scale(1.55); }
   35% { opacity: 1; transform: scale(1); }
 }
+/* Jemnejší 3D náklon — STRINGS ostáva čitateľné, rovnaký cyklus a stagger */
 @keyframes logoLetterFlip {
-  0%, 35%, 100% { transform: rotateX(0deg) rotateY(0deg); }
-  7% { transform: rotateX(12deg) rotateY(160deg); }
-  14% { transform: rotateX(0deg) rotateY(320deg); }
-  24% { transform: rotateX(8deg) rotateY(400deg); }
-  32% { transform: rotateX(0deg) rotateY(520deg); }
+  0%, 38%, 100% { transform: rotateX(0deg) rotateY(0deg); }
+  8% { transform: rotateX(5deg) rotateY(36deg); }
+  16% { transform: rotateX(0deg) rotateY(0deg); }
+  24% { transform: rotateX(4deg) rotateY(-22deg); }
+  31% { transform: rotateX(0deg) rotateY(0deg); }
 }
 
 .grid-2 { display: grid; grid-template-columns: 1.15fr .85fr; gap: 2rem; align-items: start; }
@@ -483,6 +501,9 @@ body[data-page="index"] .logo-ch {
   }
   .nav-link::after { display: none; }
   .hero-content { padding-top: 120px; }
+  body[data-page="index"] .hero--singularity .hero-content {
+    padding-top: clamp(6.25rem, 20vw, 8rem);
+  }
   .grid-2 { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .cards { grid-template-columns: 1fr; }
@@ -523,6 +544,10 @@ body[data-page="index"] .logo-ch {
 /* Krátka obrazovka (1366×768 a podobné): hero ostane „nad čiarou“ */
 @media (min-width: 900px) and (max-height: 760px) {
   .hero-content { padding-top: 52px; padding-bottom: 1.5rem; }
+  body[data-page="index"] .hero--singularity .hero-content {
+    padding-top: 4.5rem;
+    padding-bottom: 1.25rem;
+  }
   .hero h1 { font-size: clamp(2rem, 4vw, 3.35rem); }
   .subline { font-size: 0.98rem; line-height: 1.55; }
   .cta { margin-top: 1rem; }
