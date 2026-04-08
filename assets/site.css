@@ -208,11 +208,16 @@ body[data-page="index"] .hero--singularity .hero-grid {
 }
 /* Bez „rámu“ — ako pred skleneným panelom; čitateľnosť cez text-shadow */
 body[data-page="index"] .hero--singularity .hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
   max-width: min(36rem, 100%);
-  margin-left: 0;
+  margin-left: -0.14em;
   margin-right: auto;
-  text-align: left;
   padding: 0;
+  text-align: left;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -228,25 +233,46 @@ body[data-page="index"] .hero--singularity .hero-copy .hero-eyebrow {
   text-shadow:
     0 0 24px rgba(45, 212, 191, 0.45),
     0 2px 14px rgba(0, 0, 0, 0.75);
-  margin-bottom: 0.85rem;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 body[data-page="index"] .hero--singularity .hero-copy h1 {
   color: var(--light);
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
   font-weight: 700;
+  margin: 0 0 0.8rem;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 body[data-page="index"] .hero--singularity .hero-copy .subline {
   color: #f8fafc;
-  max-width: 48ch;
+  width: 100%;
+  max-width: none;
   line-height: 1.7;
   font-size: 1rem;
   font-weight: 500;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.72), 0 1px 2px rgba(0, 0, 0, 0.55);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body[data-page="index"] .hero--singularity .hero-copy .cta {
+  margin: 1.4rem 0 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 @media (min-width: 981px) {
   body[data-page="index"] .hero--singularity .hero-copy .cta .btn {
     width: auto;
     display: inline-block;
+    margin-left: 0;
   }
 }
 body[data-page="index"] .logo--singularity {
