@@ -184,7 +184,7 @@ body[data-page="index"] .hero--singularity .hero-vortex {
 }
 body[data-page="index"] .hero--singularity .hero-bg {
   animation: none;
-  background: #0a0a0f;
+  background: linear-gradient(140deg, #0a0a0f 0%, #10172b 44%, #1a2442 100%);
 }
 body[data-page="index"] .hero--singularity .hero-stars {
   display: none;
