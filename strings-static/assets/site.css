@@ -29,6 +29,39 @@ body {
   font-size: 16px;
   overflow-x: hidden;
 }
+#swarm-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+#shape-controls {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+#shape-controls button {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(66, 153, 225, 0.2);
+  background: rgba(3, 7, 18, 0.35);
+  color: #bee3f8;
+  cursor: pointer;
+}
+#shape-controls button:hover {
+  border-color: rgba(66, 153, 225, 0.6);
+}
+body > *:not(#swarm-canvas) {
+  position: relative;
+  z-index: 1;
+}
 h1, h2, h3 { font-family: 'Cabinet Grotesk', sans-serif; margin: 0 0 .8rem; }
 h1 { font-size: clamp(2.4rem, 6vw, 4.8rem); line-height: 1.05; letter-spacing: -.03em; }
 h2 { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.1; letter-spacing: -.02em; }

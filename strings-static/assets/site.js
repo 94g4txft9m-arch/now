@@ -1,6 +1,5 @@
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.documentElement.setAttribute('data-visual-version', 'seedance-2-0');
   var nav = document.querySelector('.navbar');
   var toggle = document.querySelector('.nav-toggle');
   var backdrop = document.querySelector('.nav-backdrop');
@@ -110,46 +109,6 @@
 
     document.querySelectorAll('.animate-on-scroll,.animate-slide-left,.animate-slide-right,.animate-scale,.animate-clip')
       .forEach(function (el) { observer.observe(el); });
-
-    // SEEDANCE 2.0: lightweight ambient layers for all hero sections.
-    document.querySelectorAll('.hero').forEach(function (hero) {
-      if (!hero.querySelector('.seedance-hero-layer--aurora')) {
-        var aurora = document.createElement('div');
-        aurora.className = 'seedance-hero-layer seedance-hero-layer--aurora';
-        hero.appendChild(aurora);
-      }
-      if (!hero.querySelector('.seedance-hero-layer--noise')) {
-        var noise = document.createElement('div');
-        noise.className = 'seedance-hero-layer seedance-hero-layer--noise';
-        hero.appendChild(noise);
-      }
-    });
-
-    var progress = document.createElement('div');
-    progress.className = 'seedance-progress';
-    document.body.appendChild(progress);
-    var updateProgress = function () {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      var ratio = max > 0 ? ((window.scrollY || window.pageYOffset || 0) / max) : 0;
-      progress.style.width = Math.max(0, Math.min(100, ratio * 100)) + '%';
-    };
-    updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
-
-    var cards = document.querySelectorAll('.card');
-    cards.forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var r = card.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width;
-        var y = (e.clientY - r.top) / r.height;
-        var rx = (0.5 - y) * 5;
-        var ry = (x - 0.5) * 6;
-        card.style.transform = 'translateY(-6px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
-      });
-      card.addEventListener('mouseleave', function () {
-        card.style.transform = '';
-      });
-    });
   } else {
     document.querySelectorAll('.animate-on-scroll,.animate-slide-left,.animate-slide-right,.animate-scale,.animate-clip')
       .forEach(function (el) { el.classList.add('visible'); });
