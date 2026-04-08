@@ -14,7 +14,7 @@ def main() -> None:
     assert "hero-singularity.js" in html
     assert "site.css" in html
     assert ".hero--singularity .hero-copy" in css
-    assert "logoLetterSpinZ" in css
+    assert "logoLetterFlip" in css
     print("verify_static_home: OK")
 
 
