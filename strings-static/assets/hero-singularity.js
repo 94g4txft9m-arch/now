@@ -72,9 +72,9 @@
       streams.push({
         x: (i / Math.max(1, streamCount - 1)) * W,
         y: rand(-H, H),
-        speed: rand(0.9, 2.8),
+        speed: rand(0.45, 1.55),
         len: rand(40, 160),
-        alpha: rand(0.08, 0.36)
+        alpha: rand(0.1, 0.42)
       });
     }
   }
@@ -98,13 +98,13 @@
   }
 
   function updateTargets(time) {
-    var drift = Math.sin(time * 0.7) * 8;
-    textPulse = 1 + Math.sin(time * 1.4) * 0.028;
+    var drift = Math.sin(time * 0.52) * 6;
+    textPulse = 1 + Math.sin(time * 0.92) * 0.04;
     for (var i = 0; i < particles.length; i += 1) {
       var p = particles[i];
       var t = textTargets[i % textTargets.length];
       p.tx = W * 0.5 + (t.x - W * 0.5) * textPulse;
-      p.ty = H * 0.48 + (t.y - H * 0.48) * textPulse + Math.sin(time * 1.2 + p.phase) * 2 + drift * 0.08;
+      p.ty = H * 0.48 + (t.y - H * 0.48) * textPulse + Math.sin(time * 0.9 + p.phase) * 1.6 + drift * 0.08;
     }
   }
 
@@ -134,16 +134,16 @@
   }
 
   function drawParticles(time) {
-    var stiffness = 0.018;
-    var damping = 0.89;
+    var stiffness = 0.024;
+    var damping = 0.9;
     for (var i = 0; i < particles.length; i += 1) {
       var p = particles[i];
       p.vx = (p.vx + (p.tx - p.x) * stiffness) * damping;
       p.vy = (p.vy + (p.ty - p.y) * stiffness) * damping;
-      p.x += p.vx + Math.sin(time * 1.3 + p.phase) * 0.24;
-      p.y += p.vy + Math.cos(time * 1.1 + p.phase * 1.7) * 0.24;
+      p.x += p.vx + Math.sin(time * 1.05 + p.phase) * 0.16;
+      p.y += p.vy + Math.cos(time * 0.92 + p.phase * 1.7) * 0.16;
 
-      ctx.strokeStyle = "rgba(56, 189, 248," + (0.08 + p.glow * 0.07) + ")";
+      ctx.strokeStyle = "rgba(56, 189, 248," + (0.1 + p.glow * 0.08) + ")";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(p.x, p.y - p.trail);
@@ -151,13 +151,13 @@
       ctx.stroke();
 
       var r = 0.8 + p.glow * 1.35;
-      var radial = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 4.8);
+      var radial = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 5.6);
       radial.addColorStop(0, "rgba(220, 245, 255,0.95)");
       radial.addColorStop(0.22, "rgba(125, 211, 252,0.85)");
       radial.addColorStop(1, "rgba(56, 189, 248,0)");
       ctx.fillStyle = radial;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, r * 4.8, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, r * 5.6, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -166,9 +166,15 @@
     var time = (now - t0) / 1000;
     ctx.clearRect(0, 0, W, H);
     var base = ctx.createLinearGradient(0, 0, 0, H);
-    base.addColorStop(0, "rgba(4, 14, 32, 0.34)");
-    base.addColorStop(1, "rgba(2, 8, 24, 0.52)");
+    base.addColorStop(0, "rgba(4, 14, 32, 0.28)");
+    base.addColorStop(1, "rgba(2, 8, 24, 0.46)");
     ctx.fillStyle = base;
+    ctx.fillRect(0, 0, W, H);
+    var core = ctx.createRadialGradient(W * 0.5, H * 0.48, 0, W * 0.5, H * 0.48, Math.min(W, H) * 0.36);
+    core.addColorStop(0, "rgba(56, 189, 248, 0.16)");
+    core.addColorStop(0.6, "rgba(56, 189, 248, 0.05)");
+    core.addColorStop(1, "rgba(56, 189, 248, 0)");
+    ctx.fillStyle = core;
     ctx.fillRect(0, 0, W, H);
     drawStreams(time);
     updateTargets(time);
