@@ -16,6 +16,18 @@
   var H = 0;
   var t0 = performance.now();
   var codeChars = "01{}[]()<>/\\\\.;:=+-_*$#";
+  var codeSnippets = [
+    "const legalAI = secure(data);",
+    "function validate(contract) {",
+    "if (riskScore > 0.7) escalate();",
+    "SELECT * FROM compliance_log;",
+    "let privacyByDesign = true;",
+    "export class CyberShield {}",
+    "while (claims.open) resolveCase();",
+    "token.sign({ issuer: 'STRINGS' });",
+    "for (let i=0; i<terms.length; i++)",
+    "return strategy.optimize(outcome);"
+  ];
   var streams = [];
   var particles = [];
   var textTargets = [];
@@ -78,7 +90,10 @@
         y: rand(-H, H),
         speed: rand(0.45, 1.55),
         len: rand(40, 160),
-        alpha: rand(0.1, 0.42)
+        alpha: rand(0.1, 0.42),
+        snippet: codeSnippets[(Math.random() * codeSnippets.length) | 0],
+        offset: (Math.random() * 24) | 0,
+        size: W < 768 ? 9 : 10
       });
     }
   }
@@ -118,21 +133,31 @@
       s.y += s.speed;
       if (s.y - s.len > H + 20) {
         s.y = -rand(20, H * 0.5);
+        s.snippet = codeSnippets[(Math.random() * codeSnippets.length) | 0];
+        s.offset = (Math.random() * 48) | 0;
       }
       var g = ctx.createLinearGradient(s.x, s.y - s.len, s.x, s.y);
-      g.addColorStop(0, "rgba(56, 189, 248, 0)");
-      g.addColorStop(0.65, "rgba(56, 189, 248," + (s.alpha * 0.85) + ")");
-      g.addColorStop(1, "rgba(186, 230, 253," + s.alpha + ")");
+      g.addColorStop(0, "rgba(34, 197, 94, 0)");
+      g.addColorStop(0.65, "rgba(34, 197, 94," + (s.alpha * 0.85) + ")");
+      g.addColorStop(1, "rgba(187, 247, 208," + s.alpha + ")");
       ctx.strokeStyle = g;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(s.x, s.y - s.len);
       ctx.lineTo(s.x, s.y);
       ctx.stroke();
-      if (Math.random() < 0.6) {
-        ctx.fillStyle = "rgba(191, 219, 254," + (s.alpha + 0.08) + ")";
-        ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
-        ctx.fillText(codeChars[(Math.random() * codeChars.length) | 0], s.x - 3, s.y + 2 + Math.sin(time + s.x) * 2);
+      var rows = Math.max(6, Math.floor(s.len / 10));
+      var step = Math.max(9, Math.floor(s.len / rows));
+      ctx.font = s.size + "px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
+      for (var r = 0; r < rows; r += 1) {
+        var yi = s.y - s.len + r * step;
+        if (yi < -10 || yi > H + 10) continue;
+        var charIdx = (s.offset + r + ((time * 10) | 0)) % s.snippet.length;
+        var ch = s.snippet.charAt(charIdx) || codeChars[(Math.random() * codeChars.length) | 0];
+        var tailAlpha = Math.max(0.04, (r / rows) * s.alpha);
+        ctx.fillStyle = "rgba(74, 222, 128," + tailAlpha.toFixed(3) + ")";
+        if (r === rows - 1) ctx.fillStyle = "rgba(220, 252, 231," + Math.min(0.95, s.alpha + 0.35).toFixed(3) + ")";
+        ctx.fillText(ch, s.x - 3, yi + Math.sin(time * 0.8 + s.x * 0.1) * 1.5);
       }
     }
   }
