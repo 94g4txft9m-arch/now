@@ -6,10 +6,18 @@
 
 Statický export Next.js pre Vercel a GitHub Pages. **Koreň projektu** je priečinok s `app/` a `package.json`). Ak otvoríte omylom `strings-web/`, použite `npm run dev` aj tam — skripty sa presmerujú do koreňa.
 
-**Pred prvým spustením:** v koreňovom priečinku spustite `npm install`.
+**Pred prvým spustením:** v koreňovom priečinku spustite `npm install` a `pip install -r requirements.txt` (Python 3.12 odporúčané; verzia je v [`.python-version`](.python-version)).
 
-- Lokálne: [http://localhost:3000](http://localhost:3000) po `npm run dev`
-- GitHub Pages (po nasadení): `https://<owner>.github.io/<repo>/` — napr. `https://94g4txft9m-arch.github.io/now/`
+### FastAPI (Python)
+
+- API kód: [`main.py`](main.py), vstup pre Vercel: [`api/index.py`](api/index.py) (Mangum).
+- Lokálne: `npm run dev:api` alebo `python3 main.py` → [http://127.0.0.1:8000](http://127.0.0.1:8000), dokumentácia OpenAPI: `/docs`.
+- Premenné: skopíruj [`.env.example`](.env.example) do `.env` (`.env` sa necommituje).
+- Testy: `pip install -r requirements-dev.txt` a `npm run test:api`.
+- Vercel: po prepojení repozitára v dashboarde sa pri každom pushi na sledovanú vetvu spustí build (`vercel.json` inštaluje aj `requirements.txt`). CI šablóna: [`docs/ci-python-next.yml`](docs/ci-python-next.yml). Podrobnosti: [`docs/SETUP_ASSISTANT.md`](docs/SETUP_ASSISTANT.md).
+
+- Lokálne Next.js: [http://localhost:3000](http://localhost:3000) po `npm run dev`
+- GitHub Pages (statika): `https://<owner>.github.io/<repo>/` — napr. `https://94g4txft9m-arch.github.io/now/`
 
 ## Getting Started
 

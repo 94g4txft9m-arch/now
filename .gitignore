@@ -6,6 +6,7 @@ node_modules/
 out/
 
 # env
+.env
 .env*.local
 
 # os / editor
@@ -15,3 +16,10 @@ out/
 
 # typescript
 *.tsbuildinfo
+
+# python
+__pycache__/
+.pytest_cache/
+*.pyc
+.venv/
+venv/

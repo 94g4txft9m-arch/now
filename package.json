@@ -9,11 +9,13 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:api": "python3 -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload",
     "dev:pages": "node scripts/pages.cjs dev",
     "build": "next build",
     "build:pages": "node scripts/pages.cjs build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:api": "python3 -m pytest tests -q"
   },
   "dependencies": {
     "react": "^18",

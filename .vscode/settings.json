@@ -1,4 +1,10 @@
 {
   "terminal.integrated.cwd": "${workspaceFolder}",
-  "npm.packageManager": "npm"
+  "npm.packageManager": "npm",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.terminal.activateEnvironment": true,
+  "[python]": {
+    "editor.tabSize": 4
+  }
 }
+

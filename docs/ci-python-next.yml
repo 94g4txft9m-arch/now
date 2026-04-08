@@ -1,0 +1,36 @@
+# Záložná kópia CI workflowu (rovnaký obsah ako .github/workflows/ci.yml).
+# Ak GitHub odmietne push do .github/workflows/ (PAT bez scope „workflow“),
+# vytvor súbor v repozitári cez UI a vlož obsah z .github/workflows/ci.yml.
+
+name: CI
+
+on:
+  push:
+    branches: [main, cjs-runner]
+  pull_request:
+    branches: [main]
+
+jobs:
+  next-and-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: API tests
+        run: python -m pytest tests -q
