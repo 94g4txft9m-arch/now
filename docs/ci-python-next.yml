@@ -22,7 +22,6 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm run build
 
       - uses: actions/setup-python@v5
         with:
@@ -34,3 +33,8 @@ jobs:
 
       - name: API tests
         run: python -m pytest tests -q
+
+      - name: Next build (ako na Verceli — VERCEL=1 vypína output: export)
+        env:
+          VERCEL: "1"
+        run: npm run build

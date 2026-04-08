@@ -2,20 +2,20 @@
 
 Tento dokument popisuje, čo je v repozitári zapojené a ako to používať. Úplne „bez jediného kliknutia“ to nejde: **GitHub push** a **Vercel deploy** vždy vyžadujú tvoj účet (token alebo SSH kľúč) alebo jednorazové prepojenie projektu vo Vercel dashboarde.
 
-## 1. Čo bolo pridané
+## 1. Čo je v repozitári
 
 | Súčasť | Účel |
 |--------|------|
-| `main.py` | FastAPI aplikácia (`/`, `/health`, `/docs`). |
-| `api/index.py` | Handler pre Vercel (Mangum → ASGI). |
-| `requirements.txt` | Produkčné Python závislosti. |
+| `main.py` | FastAPI `app` — endpointy **iba** pod `/api/*` (žiadna kolízia s Next.js na `/`). OpenAPI: `/api/docs`. |
+| `requirements.txt` | Produkčné Python závislosti (bez Mangum — Vercel FastAPI je natívny). |
 | `requirements-dev.txt` | Pytest + httpx pre testy. |
-| `tests/` | Základné API testy. |
-| `vercel.json` | `installCommand`: npm + pip pred buildom Next.js. |
+| `tests/` | API testy (`/api/health`, `/api/`). |
+| `vercel.json` | `installCommand`: `npm ci` + `pip`; `buildCommand`: `npm run build`. |
+| `next.config.js` | Ak je `VERCEL=1`, **nie je** `output: export` — aby na Verceli fungovali serverless funkcie vrátane FastAPI. Lokálne (bez `VERCEL`) ostáva statický export do `out/`. |
 | `.env.example` | Šablóna premenných; `.env` je v `.gitignore`. |
 | `.python-version` | Odporúčaná verzia Pythonu (3.12). |
 | `.vscode/extensions.json` | Odporúčané rozšírenia Python / Pylance. |
-| `docs/ci-python-next.yml` | Šablóna CI (build Next + pytest). Skopíruj do `.github/workflows/ci.yml` (GitHub vyžaduje PAT s „workflow“ alebo SSH pri pushi workflow súborov). |
+| `docs/ci-python-next.yml` | Šablóna CI. Skopíruj do `.github/workflows/ci.yml` (GitHub môže vyžadovať PAT s „workflow“ pri pushi). |
 
 ## 2. Lokálny vývoj
 
@@ -26,37 +26,35 @@ pip install -r requirements-dev.txt   # voliteľné, pre testy
 ```
 
 - **Next.js:** `npm run dev` → http://localhost:3000  
-- **FastAPI:** `npm run dev:api` alebo `python3 main.py` → http://127.0.0.1:8000 (OpenAPI: `/docs`)  
-- **Testy API:** `npm run test:api`
+- **FastAPI:** `npm run dev:api` alebo `python3 main.py` → http://127.0.0.1:8000 — napr. `/api/health`, `/api/docs`  
+- **Testy API:** `npm run test:api`  
+- **Statický export (ako predtým):** `npm run build` bez `VERCEL` → priečinok `out/`  
+- **Build ako na Verceli:** `VERCEL=1 npm run build`
 
 ## 3. Cursor / VS Code
 
-Projekt používa rovnaké nastavenia ako VS Code (`.vscode/`). Po otvorení priečinka Cursor ponúkne inštaláciu odporúčaných rozšírení (Python, Pylance). Žiadna špeciálna „integrácia AI“ v kóde nie je potrebná — Cursor číta workspace tak ako VS Code.
+Projekt používa rovnaké nastavenia ako VS Code (`.vscode/`). Po otvorení priečinka Cursor ponúkne inštaláciu odporúčaných rozšírení (Python, Pylance).
 
 ## 4. GitHub
 
 - Bežný workflow: commit → `git push`.  
-- Ak GitHub odmietne push súborov pod `.github/workflows/` (PAT bez scope **workflow**), pridaj workflow ručne v UI alebo použij SSH / token s oprávnením **workflow**. Záložný popis je v `docs/ci-python-next.yml`.
+- Ak GitHub odmietne push súborov pod `.github/workflows/`, pridaj workflow ručne v UI alebo použij SSH / token s oprávnením **workflow**. Záložný obsah je v `docs/ci-python-next.yml`.
 
-## 5. Vercel (automatické nasadenie po pushi)
+## 5. Vercel
 
-1. Prihlás sa na [vercel.com](https://vercel.com), **Import Project** → vyber tento GitHub repozitár.  
-2. Framework: **Next.js** (predvolené). Root: koreň repozitára.  
-3. Build použije `vercel.json` → nainštaluje Node aj `pip install -r requirements.txt`.  
-4. Po úspešnom deployi dostaneš URL typu `https://<projekt>.vercel.app`.  
-5. Premenné z `.env.example` môžeš nastaviť v **Project → Settings → Environment Variables** (napr. `ENVIRONMENT=production`, `CORS_ORIGINS=https://tvoj-projekt.vercel.app`).
-
-**Poznámka:** Python funkcia je v `api/index.py`. Cesta na produkcii závisí od Vercel routingu; ak uvidíš 404 na `/api`, skontroluj v dashboarde **Functions** a prípadne pridaj rewrite v `vercel.json` podľa aktuálnej dokumentácie Vercel.
+1. [vercel.com](https://vercel.com) → **Import Project** → tento repozitár.  
+2. Framework: **Next.js**. Root: koreň repozitára.  
+3. Build použije `vercel.json` (Node + Python deps). Premenná **`VERCEL`** nastavuje Vercel automaticky pri deployi — Next tým vypne čistý statický export a funguje spolu s FastAPI.  
+4. Po deployi: frontend na `https://<projekt>.vercel.app/`, API napr. `https://<projekt>.vercel.app/api/health`, dokumentácia `.../api/docs`.  
+5. **Environment Variables:** `ENVIRONMENT`, `CORS_ORIGINS` (vrátane URL tvojho `*.vercel.app`).
 
 ## 6. Čo tým získaš
 
-- **Web (Next.js)** na Vercel + voliteľná **GitHub Pages** statika (`strings-static/`).  
-- **REST API (FastAPI)** s dokumentáciou `/docs`, rozšíriteľné o ďalšie routere v `main.py`.  
-- **CI** na GitHub Actions: build frontendu + pytest pre API.  
-- Jednotné lokálne príkazy v `package.json` (`dev`, `dev:api`, `test:api`).
+- Next.js na Vercel + voliteľná GitHub Pages statika (`strings-static/`).  
+- FastAPI pod `/api/*` bez kolízie s titulnou stránkou Next.js.  
+- CI šablóna: pytest + `VERCEL=1 npm run build`.
 
-## 7. Obmedzenia (realisticky)
+## 7. Obmedzenia
 
-- **Nemôžem** namiesto teba prihlásiť Vercel ani uložiť tvoj token do cloudu.  
-- **Nemôžem** zaručiť push na GitHub bez tvojho overenia (SSH/PAT).  
-- Chyby pri buildoch sa majú opravovať iteratívne; tento repozitár má základ, ktorý by mal prejsť `npm run build` a `pytest` na čistom prostredí.
+- Prihlásenie na Vercel a uloženie tokenov musíš spraviť ty.  
+- Git push vyžaduje tvoje overenie (SSH/PAT).

@@ -1,12 +1,16 @@
 """
-STRINGS — FastAPI backend (lokálne: uvicorn main:app --reload).
-Na Vercel sa používa api/index.py (Mangum handler).
+STRINGS — FastAPI backend.
+
+- Lokálne: `python3 main.py` alebo `npm run dev:api` → http://127.0.0.1:8000
+- Vercel: natívna podpora FastAPI cez `app` v koreňovom main.py (bez Mangum).
+
+Všetky HTTP endpointy sú pod prefixom /api, aby sa neprekrývali s Next.js (stránka /).
 """
 
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
@@ -17,10 +21,30 @@ CORS_ORIGINS = os.getenv(
     "http://localhost:3000,http://127.0.0.1:3000,http://127.0.0.1:3330",
 ).split(",")
 
+api_router = APIRouter(prefix="/api")
+
+
+@api_router.get("/health")
+def health():
+    return {"status": "ok", "environment": ENVIRONMENT}
+
+
+@api_router.get("/")
+def api_root():
+    return {
+        "service": "STRINGS API",
+        "docs": "/api/docs",
+        "health": "/api/health",
+    }
+
+
 app = FastAPI(
     title="STRINGS API",
     version="1.0.0",
     description="FastAPI backend pre projekt STRINGS / now.",
+    docs_url="/api/docs",
+    openapi_url="/api/openapi.json",
+    redoc_url="/api/redoc",
 )
 
 app.add_middleware(
@@ -31,19 +55,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/health")
-def health():
-    return {"status": "ok", "environment": ENVIRONMENT}
-
-
-@app.get("/")
-def root():
-    return {
-        "service": "STRINGS API",
-        "docs": "/docs",
-        "health": "/health",
-    }
+app.include_router(api_router)
 
 
 if __name__ == "__main__":
