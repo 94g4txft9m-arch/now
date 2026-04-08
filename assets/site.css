@@ -206,7 +206,7 @@ body[data-page="index"] .logo--singularity {
   font-size: calc(1rem + 1px);
   letter-spacing: 0.12em;
   filter: drop-shadow(0 0 24px rgba(45, 212, 191, 0.65));
-  animation: logoGlowBreath 8.8s ease-in-out infinite;
+  animation: none;
 }
 body[data-page="index"] .logo-em-ring {
   position: absolute;
@@ -247,8 +247,7 @@ body[data-page="index"] .logo-ch {
   display: inline-block;
   transform-style: preserve-3d;
   backface-visibility: visible;
-  animation: logoLetterFlip var(--heart-cycle) cubic-bezier(0.42, 0, 0.2, 1) infinite;
-  animation-delay: calc(var(--i) * 0.05s);
+  animation: none;
   text-shadow: 0 0 14px rgba(45, 212, 191, 0.45);
 }
 @keyframes logoEmRing {
