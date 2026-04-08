@@ -1,174 +1,182 @@
 /**
- * Úvodná stránka: „nanorobotová“ mriežka, EM blesky, vesmírne výbuchy,
- * pulz v rytme srdca (~72 BPM). Respektuje prefers-reduced-motion.
+ * Homepage cinematic layer: blue code-rain with emergent STRINGS title.
  */
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var canvas = document.getElementById("hero-sim-canvas");
   if (!canvas) return;
-
   var hero = canvas.closest(".hero");
   if (!hero) return;
-
   var ctx = canvas.getContext("2d");
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  if (!ctx) return;
+
+  var dpr = 1;
   var W = 0;
   var H = 0;
   var t0 = performance.now();
+  var codeChars = "01{}[]()<>/\\\\.;:=+-_*$#";
+  var streams = [];
+  var particles = [];
+  var textTargets = [];
+  var textPulse = 0;
+  var targetCanvas = document.createElement("canvas");
+  var targetCtx = targetCanvas.getContext("2d");
+  var count = window.innerWidth < 768 ? 460 : 900;
 
-  /** ~72 BPM: jeden kompletný „lub–dub“ cyklus v sekundách */
-  var HEART_CYCLE = 60 / 72;
-
-  var bolts = [];
-  var bursts = [];
+  function rand(a, b) {
+    return a + Math.random() * (b - a);
+  }
 
   function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = hero.clientWidth;
     H = hero.clientHeight;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
+    canvas.width = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
     canvas.style.width = W + "px";
     canvas.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    targetCanvas.width = W;
+    targetCanvas.height = H;
+    buildTextTargets();
+    initStreams();
+    initParticles();
   }
 
-  function heartPulseScale(now) {
-    var phase = ((now - t0) / 1000) % HEART_CYCLE;
-    var p = phase / HEART_CYCLE;
-    var s = 1;
-    if (p < 0.12) s = 1 + 0.06 * Math.sin((p / 0.12) * Math.PI);
-    else if (p < 0.22) s = 1 + 0.035 * Math.sin(((p - 0.12) / 0.1) * Math.PI);
-    return s;
-  }
-
-  function spawnBolt() {
-    var edge = Math.floor(Math.random() * 4);
-    var x1, y1, x2, y2;
-    var cx = W * 0.5 + (Math.random() - 0.5) * W * 0.3;
-    var cy = H * 0.38 + (Math.random() - 0.5) * H * 0.2;
-    if (edge === 0) {
-      x1 = Math.random() * W;
-      y1 = 0;
-    } else if (edge === 1) {
-      x1 = W;
-      y1 = Math.random() * H;
-    } else if (edge === 2) {
-      x1 = Math.random() * W;
-      y1 = H;
-    } else {
-      x1 = 0;
-      y1 = Math.random() * H;
+  function buildTextTargets() {
+    textTargets = [];
+    targetCtx.clearRect(0, 0, W, H);
+    targetCtx.fillStyle = "#0b1220";
+    targetCtx.fillRect(0, 0, W, H);
+    targetCtx.font = "900 " + Math.floor(Math.min(170, Math.max(62, W * 0.12))) + "px Cabinet Grotesk, Arial Black, sans-serif";
+    targetCtx.textAlign = "center";
+    targetCtx.textBaseline = "middle";
+    targetCtx.fillStyle = "#dff7ff";
+    targetCtx.fillText("STRINGS", W * 0.5, H * 0.48);
+    var img = targetCtx.getImageData(0, 0, W, H).data;
+    var step = W < 768 ? 6 : 4;
+    for (var y = 0; y < H; y += step) {
+      for (var x = 0; x < W; x += step) {
+        var a = img[(y * W + x) * 4 + 3];
+        if (a > 24) textTargets.push({ x: x, y: y });
+      }
     }
-    x2 = cx + (Math.random() - 0.5) * 80;
-    y2 = cy + (Math.random() - 0.5) * 80;
-    var segs = [];
-    var px = x1;
-    var py = y1;
-    for (var i = 0; i < 5; i++) {
-      var t = (i + 1) / 5;
-      segs.push({
-        x: x1 + (x2 - x1) * t + (Math.random() - 0.5) * 40,
-        y: y1 + (y2 - y1) * t + (Math.random() - 0.5) * 40,
+    if (!textTargets.length) textTargets.push({ x: W * 0.5, y: H * 0.5 });
+  }
+
+  function initStreams() {
+    streams = [];
+    var streamCount = Math.floor(W / (W < 768 ? 14 : 11));
+    for (var i = 0; i < streamCount; i += 1) {
+      streams.push({
+        x: (i / Math.max(1, streamCount - 1)) * W,
+        y: rand(-H, H),
+        speed: rand(0.9, 2.8),
+        len: rand(40, 160),
+        alpha: rand(0.08, 0.36)
       });
     }
-    bolts.push({ segs: [{ x: x1, y: y1 }].concat(segs), life: 1, w: 1.2 + Math.random() * 0.8 });
   }
 
-  function spawnBurst() {
-    bursts.push({
-      x: W * (0.15 + Math.random() * 0.7),
-      y: H * (0.15 + Math.random() * 0.55),
-      r: 0,
-      rMax: 35 + Math.random() * 120,
-      life: 1,
-      hue: Math.random() > 0.5 ? 172 : 248,
-    });
+  function initParticles() {
+    particles = [];
+    for (var i = 0; i < count; i += 1) {
+      var t = textTargets[i % textTargets.length];
+      particles.push({
+        x: rand(0, W),
+        y: rand(0, H),
+        vx: 0,
+        vy: 0,
+        tx: t.x,
+        ty: t.y,
+        phase: rand(0, Math.PI * 2),
+        glow: rand(0.4, 1.3),
+        trail: rand(8, 42)
+      });
+    }
+  }
+
+  function updateTargets(time) {
+    var drift = Math.sin(time * 0.7) * 8;
+    textPulse = 1 + Math.sin(time * 1.4) * 0.028;
+    for (var i = 0; i < particles.length; i += 1) {
+      var p = particles[i];
+      var t = textTargets[i % textTargets.length];
+      p.tx = W * 0.5 + (t.x - W * 0.5) * textPulse;
+      p.ty = H * 0.48 + (t.y - H * 0.48) * textPulse + Math.sin(time * 1.2 + p.phase) * 2 + drift * 0.08;
+    }
+  }
+
+  function drawStreams(time) {
+    for (var i = 0; i < streams.length; i += 1) {
+      var s = streams[i];
+      s.y += s.speed;
+      if (s.y - s.len > H + 20) {
+        s.y = -rand(20, H * 0.5);
+      }
+      var g = ctx.createLinearGradient(s.x, s.y - s.len, s.x, s.y);
+      g.addColorStop(0, "rgba(56, 189, 248, 0)");
+      g.addColorStop(0.65, "rgba(56, 189, 248," + (s.alpha * 0.85) + ")");
+      g.addColorStop(1, "rgba(186, 230, 253," + s.alpha + ")");
+      ctx.strokeStyle = g;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y - s.len);
+      ctx.lineTo(s.x, s.y);
+      ctx.stroke();
+      if (Math.random() < 0.6) {
+        ctx.fillStyle = "rgba(191, 219, 254," + (s.alpha + 0.08) + ")";
+        ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
+        ctx.fillText(codeChars[(Math.random() * codeChars.length) | 0], s.x - 3, s.y + 2 + Math.sin(time + s.x) * 2);
+      }
+    }
+  }
+
+  function drawParticles(time) {
+    var stiffness = 0.018;
+    var damping = 0.89;
+    for (var i = 0; i < particles.length; i += 1) {
+      var p = particles[i];
+      p.vx = (p.vx + (p.tx - p.x) * stiffness) * damping;
+      p.vy = (p.vy + (p.ty - p.y) * stiffness) * damping;
+      p.x += p.vx + Math.sin(time * 1.3 + p.phase) * 0.24;
+      p.y += p.vy + Math.cos(time * 1.1 + p.phase * 1.7) * 0.24;
+
+      ctx.strokeStyle = "rgba(56, 189, 248," + (0.08 + p.glow * 0.07) + ")";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y - p.trail);
+      ctx.lineTo(p.x, p.y + 1);
+      ctx.stroke();
+
+      var r = 0.8 + p.glow * 1.35;
+      var radial = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 4.8);
+      radial.addColorStop(0, "rgba(220, 245, 255,0.95)");
+      radial.addColorStop(0.22, "rgba(125, 211, 252,0.85)");
+      radial.addColorStop(1, "rgba(56, 189, 248,0)");
+      ctx.fillStyle = radial;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r * 4.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   function draw(now) {
-    var pulse = heartPulseScale(now);
     var time = (now - t0) / 1000;
-
     ctx.clearRect(0, 0, W, H);
-
-    var step = W < 640 ? 26 : 16;
-    var half = step * 0.5;
-
-    for (var y = half; y < H; y += step) {
-      for (var x = half; x < W; x += step) {
-        var nx = x / W;
-        var ny = y / H;
-        var wave =
-          Math.sin(time * 2.2 + nx * 14 + ny * 11) * 2.8 +
-          Math.cos(time * 1.6 - nx * 9 + ny * 17) * 2.2;
-        var em =
-          Math.sin(time * 5 + nx * 40) * Math.cos(time * 4.3 + ny * 35) * 0.4;
-        var dx = (wave + em) * pulse;
-        var dy = Math.cos(time * 1.9 + nx * 20) * 2.5 * pulse;
-        var a = 0.04 + 0.06 * (0.5 + 0.5 * Math.sin(time * 3 + nx * 30 + ny * 30));
-        ctx.fillStyle = "rgba(45,212,191," + a + ")";
-        ctx.fillRect(x + dx - 0.6, y + dy - 0.6, 1.4, 1.4);
-        ctx.fillStyle = "rgba(147,197,253," + (a * 0.35) + ")";
-        ctx.fillRect(x + dx * 0.7 + 1, y + dy * 0.7, 0.7, 0.7);
-      }
-    }
-
-    var cx = W * 0.5;
-    var cy = H * 0.42;
-    var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W, H) * 0.45);
-    grd.addColorStop(0, "rgba(5,5,12," + (0.15 * pulse) + ")");
-    grd.addColorStop(0.35, "rgba(45,212,191," + (0.04 * pulse) + ")");
-    grd.addColorStop(0.55, "rgba(99,102,241," + (0.03 * pulse) + ")");
-    grd.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = grd;
+    var base = ctx.createLinearGradient(0, 0, 0, H);
+    base.addColorStop(0, "rgba(4, 14, 32, 0.34)");
+    base.addColorStop(1, "rgba(2, 8, 24, 0.52)");
+    ctx.fillStyle = base;
     ctx.fillRect(0, 0, W, H);
-
-    for (var b = bursts.length - 1; b >= 0; b--) {
-      var B = bursts[b];
-      B.r += (B.rMax - B.r) * 0.09;
-      B.life -= 0.018;
-      if (B.life <= 0) {
-        bursts.splice(b, 1);
-        continue;
-      }
-      ctx.beginPath();
-      ctx.arc(B.x, B.y, B.r, 0, Math.PI * 2);
-      ctx.strokeStyle =
-        "hsla(" + B.hue + ",85%,72%," + (0.45 * B.life * B.life) + ")";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
-
-    for (var k = bolts.length - 1; k >= 0; k--) {
-      var bolt = bolts[k];
-      bolt.life -= 0.035;
-      if (bolt.life <= 0) {
-        bolts.splice(k, 1);
-        continue;
-      }
-      ctx.beginPath();
-      ctx.moveTo(bolt.segs[0].x, bolt.segs[0].y);
-      for (var s = 1; s < bolt.segs.length; s++) {
-        ctx.lineTo(bolt.segs[s].x, bolt.segs[s].y);
-      }
-      ctx.strokeStyle = "rgba(186,230,253," + (0.55 * bolt.life) + ")";
-      ctx.shadowColor = "rgba(45,212,191,0.9)";
-      ctx.shadowBlur = 12 * bolt.life;
-      ctx.lineWidth = bolt.w * bolt.life;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-    }
-
-    if (Math.random() < 0.022) spawnBolt();
-    if (Math.random() < 0.009) spawnBurst();
-
+    drawStreams(time);
+    updateTargets(time);
+    drawParticles(time);
     requestAnimationFrame(draw);
   }
 
   resize();
   window.addEventListener("resize", resize);
-
-  document.body.classList.add("hero-singularity-ready");
   requestAnimationFrame(draw);
 })();
