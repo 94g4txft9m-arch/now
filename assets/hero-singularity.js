@@ -32,6 +32,13 @@
   var PARTICLE_COUNT = 600;
   var rings = [];
   var particles = [];
+  var textPoints = [];
+  var textMode = false;
+  var nextTextAt = performance.now() + 7000;
+  var textModeStart = 0;
+  var textModeDuration = 4200;
+  var textCanvas = document.createElement("canvas");
+  var textCtx = textCanvas.getContext("2d");
 
   function lerp(a, b, t) { return a + (b - a) * t; }
   function lerpColor(c1, c2, t) {
@@ -100,6 +107,8 @@
     this.size = 0.3 + Math.random() * 2;
     this.life = 1;
     this.decay = 0.0008 + Math.random() * 0.002;
+    this.vx = 0;
+    this.vy = 0;
     this.orbitSpeed = (0.001 + Math.random() * 0.005) * (Math.random() < 0.5 ? 1 : -1);
     this.inwardSpeed = 0.15 + Math.random() * 0.6;
     var pick = Math.random();
@@ -109,6 +118,15 @@
     else this.color = WHITE;
   };
   Particle.prototype.update = function () {
+    if (textMode && textPoints.length) {
+      var target = textPoints[(Math.random() * textPoints.length) | 0];
+      this.vx = (this.vx + (target.x - this.x) * 0.018) * 0.9;
+      this.vy = (this.vy + (target.y - this.y) * 0.018) * 0.9;
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life = Math.min(1, this.life + 0.002);
+      return;
+    }
     var dx = this.x - cx;
     var dy = this.y - cy;
     var dist = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -134,6 +152,26 @@
     particles = [];
     for (var i = 0; i < RING_COUNT; i += 1) rings.push(new Ring(i));
     for (var j = 0; j < PARTICLE_COUNT; j += 1) particles.push(new Particle());
+  }
+
+  function rebuildTextPoints() {
+    textPoints = [];
+    textCanvas.width = W;
+    textCanvas.height = H;
+    textCtx.clearRect(0, 0, W, H);
+    textCtx.font = "900 " + Math.floor(Math.min(164, Math.max(66, W * 0.16))) + "px Cabinet Grotesk, Arial Black, sans-serif";
+    textCtx.textAlign = "center";
+    textCtx.textBaseline = "middle";
+    textCtx.fillStyle = "#ffffff";
+    textCtx.fillText("STRINGS", W * 0.5, H * 0.48);
+    var img = textCtx.getImageData(0, 0, W, H).data;
+    var step = W < 768 ? 7 : 5;
+    for (var y = 0; y < H; y += step) {
+      for (var x = 0; x < W; x += step) {
+        var a = img[(y * W + x) * 4 + 3];
+        if (a > 12) textPoints.push({ x: x, y: y });
+      }
+    }
   }
 
   function drawBackground() {
@@ -195,6 +233,14 @@
     ctx.globalAlpha = 0.3;
     ctx.fillRect(cx - flareW, cy - 15, flareW * 2, 30);
     ctx.globalAlpha = 1;
+    if (textMode) {
+      ctx.font = "900 " + Math.floor(Math.min(152, Math.max(58, W * 0.14))) + "px Cabinet Grotesk, Arial Black, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      var reveal = Math.sin(Math.min(1, (time * 1000 - textModeStart) / textModeDuration) * Math.PI);
+      ctx.fillStyle = "rgba(239, 213, 255," + (0.16 + reveal * 0.24).toFixed(3) + ")";
+      ctx.fillText("STRINGS", cx, cy * 0.96);
+    }
   }
 
   function resize() {
@@ -208,11 +254,26 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     cx = W * 0.5;
     cy = H * 0.5;
+    rebuildTextPoints();
     createSystems();
   }
 
   function animate(now) {
     var time = (now - startTime) / 1000;
+    if (!textMode && now >= nextTextAt) {
+      textMode = true;
+      textModeStart = now;
+    }
+    if (textMode && now - textModeStart >= textModeDuration) {
+      textMode = false;
+      nextTextAt = now + 9000 + Math.random() * 6000;
+      for (var i = 0; i < particles.length; i += 1) {
+        var p = particles[i];
+        var ang = Math.random() * Math.PI * 2;
+        p.vx += Math.cos(ang) * 2.6;
+        p.vy += Math.sin(ang) * 2.6;
+      }
+    }
     ctx.globalCompositeOperation = "source-over";
     drawBackground();
     ctx.globalCompositeOperation = "screen";
