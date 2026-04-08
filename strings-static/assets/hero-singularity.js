@@ -1,5 +1,5 @@
 /**
- * Homepage cinematic layer: blue code-rain with emergent STRINGS title.
+ * Cosmic vortex scene inspired by user's reference.
  */
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -11,37 +11,190 @@
   var ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  var dpr = 1;
   var W = 0;
   var H = 0;
-  var t0 = performance.now();
-  var codeChars = "01{}[]()<>/\\\\.;:=+-_*$#";
-  var codeSnippets = [
-    "const legalAI = secure(data);",
-    "function validate(contract) {",
-    "if (riskScore > 0.7) escalate();",
-    "SELECT * FROM compliance_log;",
-    "let privacyByDesign = true;",
-    "export class CyberShield {}",
-    "while (claims.open) resolveCase();",
-    "token.sign({ issuer: 'STRINGS' });",
-    "for (let i=0; i<terms.length; i++)",
-    "return strategy.optimize(outcome);"
-  ];
-  var streams = [];
-  var particles = [];
-  var textTargets = [];
-  var textPulse = 0;
-  var targetCanvas = document.createElement("canvas");
-  var targetCtx = targetCanvas.getContext("2d");
-  var count = window.innerWidth < 768 ? 460 : 900;
-  var nextFlashAt = performance.now() + rand(10000, 13000);
-  var flashStart = 0;
-  var flashDuration = 1100;
-  var flashActive = false;
+  var cx = 0;
+  var cy = 0;
+  var dpr = 1;
+  var startTime = performance.now();
 
+  var PURPLE = [80, 35, 121];
+  var TEAL = [30, 180, 200];
+  var MAGENTA = [180, 40, 120];
+  var WHITE = [255, 255, 255];
+  var FLARE = [255, 240, 200];
+  var BG0 = [26, 0, 48];
+  var BG1 = [15, 0, 32];
+  var BG2 = [8, 0, 24];
+  var BG3 = [2, 0, 8];
+
+  var RING_COUNT = 90;
+  var PARTICLE_COUNT = 600;
+  var rings = [];
+  var particles = [];
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpColor(c1, c2, t) {
+    return [lerp(c1[0], c2[0], t), lerp(c1[1], c2[1], t), lerp(c1[2], c2[2], t)];
+  }
+  function rgba(c, a) {
+    return "rgba(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + "," + a + ")";
+  }
   function rand(a, b) {
     return a + Math.random() * (b - a);
+  }
+
+  function Ring(i) {
+    this.i = i;
+    var t = i / RING_COUNT;
+    this.baseRadius = 20 + t * Math.max(W, H) * 0.6;
+    this.angle = 0;
+    this.speed = 0.0005 + (1 - t) * 0.004;
+    this.wobbleAmp = 2 + t * 8;
+    this.wobbleFreq = 1.5 + Math.random() * 2;
+    this.phase = Math.random() * Math.PI * 2;
+    this.thickness = 0.5 + t * 2.2;
+    if (t < 0.3) this.color = lerpColor(WHITE, MAGENTA, t / 0.3);
+    else if (t < 0.6) this.color = lerpColor(MAGENTA, PURPLE, (t - 0.3) / 0.3);
+    else this.color = lerpColor(PURPLE, TEAL, (t - 0.6) / 0.4);
+    this.alpha = t < 0.1 ? t / 0.1 : (t > 0.85 ? (1 - t) / 0.15 : 0.6 + 0.4 * Math.sin(t * Math.PI));
+    this.eccentricity = 0.15 + Math.random() * 0.25;
+    this.tiltAngle = Math.random() * Math.PI * 2;
+  }
+  Ring.prototype.draw = function (time) {
+    var wobble = Math.sin(time * this.wobbleFreq + this.phase) * this.wobbleAmp;
+    var r = this.baseRadius + wobble;
+    var rx = r;
+    var ry = r * (1 - this.eccentricity);
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(this.angle);
+
+    var pulse = 0.7 + 0.3 * Math.sin(time * 0.8 + this.i * 0.1);
+    var alpha = this.alpha * pulse;
+
+    ctx.beginPath();
+    ctx.ellipse(0, 0, Math.max(1, rx), Math.max(1, ry), this.tiltAngle, 0, Math.PI * 2);
+    ctx.strokeStyle = rgba(this.color, alpha * 0.7);
+    ctx.lineWidth = this.thickness;
+    ctx.stroke();
+
+    if (this.i < RING_COUNT * 0.35) {
+      ctx.strokeStyle = rgba(this.color, alpha * 0.15);
+      ctx.lineWidth = this.thickness + 4;
+      ctx.stroke();
+    }
+    ctx.restore();
+    this.angle += this.speed;
+  };
+
+  function Particle() {
+    this.reset();
+  }
+  Particle.prototype.reset = function () {
+    var angle = Math.random() * Math.PI * 2;
+    var dist = 200 + Math.random() * Math.max(W, H) * 0.5;
+    this.x = cx + Math.cos(angle) * dist;
+    this.y = cy + Math.sin(angle) * dist;
+    this.size = 0.3 + Math.random() * 2;
+    this.life = 1;
+    this.decay = 0.0008 + Math.random() * 0.002;
+    this.orbitSpeed = (0.001 + Math.random() * 0.005) * (Math.random() < 0.5 ? 1 : -1);
+    this.inwardSpeed = 0.15 + Math.random() * 0.6;
+    var pick = Math.random();
+    if (pick < 0.35) this.color = PURPLE;
+    else if (pick < 0.6) this.color = TEAL;
+    else if (pick < 0.8) this.color = MAGENTA;
+    else this.color = WHITE;
+  };
+  Particle.prototype.update = function () {
+    var dx = this.x - cx;
+    var dy = this.y - cy;
+    var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    var angle = Math.atan2(dy, dx);
+    var speedMult = 1 + (300 / (dist + 50));
+    var newDist = dist - this.inwardSpeed * speedMult;
+    var newAngle = angle + this.orbitSpeed * speedMult * 2;
+    this.x = cx + Math.cos(newAngle) * newDist;
+    this.y = cy + Math.sin(newAngle) * newDist;
+    this.life -= this.decay;
+    if (this.life <= 0 || newDist < 5) this.reset();
+  };
+  Particle.prototype.draw = function () {
+    var alpha = this.life * 0.8;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = rgba(this.color, alpha);
+    ctx.fill();
+  };
+
+  function createSystems() {
+    rings = [];
+    particles = [];
+    for (var i = 0; i < RING_COUNT; i += 1) rings.push(new Ring(i));
+    for (var j = 0; j < PARTICLE_COUNT; j += 1) particles.push(new Particle());
+  }
+
+  function drawBackground() {
+    var bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.7);
+    bg.addColorStop(0, rgba(BG0, 1));
+    bg.addColorStop(0.3, rgba(BG1, 1));
+    bg.addColorStop(0.6, rgba(BG2, 1));
+    bg.addColorStop(1, rgba(BG3, 1));
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function drawSpiralArms(time) {
+    var armCount = 3;
+    for (var a = 0; a < armCount; a += 1) {
+      var baseAngle = (a / armCount) * Math.PI * 2 + time * 0.15;
+      ctx.beginPath();
+      for (var s = 0; s < 300; s += 1) {
+        var t = s / 300;
+        var r = 10 + t * Math.max(W, H) * 0.45;
+        var spiralAngle = baseAngle + t * 6;
+        var x = cx + Math.cos(spiralAngle) * r;
+        var y = cy + Math.sin(spiralAngle) * r * 0.7;
+        if (s === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.45);
+      grad.addColorStop(0, rgba(WHITE, 0.08));
+      grad.addColorStop(0.3, rgba(MAGENTA, 0.04));
+      grad.addColorStop(0.6, rgba(PURPLE, 0.03));
+      grad.addColorStop(1, rgba(TEAL, 0.01));
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+
+  function drawCenterGlow(time) {
+    var pulse = 0.8 + 0.2 * Math.sin(time * 1.2);
+    var maxR = 180 * pulse;
+    var g1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
+    g1.addColorStop(0, rgba(WHITE, 0.9));
+    g1.addColorStop(0.05, "rgba(255,220,255,0.6)");
+    g1.addColorStop(0.2, rgba(MAGENTA, 0.25));
+    g1.addColorStop(0.5, rgba(PURPLE, 0.08));
+    g1.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, W, H);
+
+    var flareW = 400 + 100 * Math.sin(time * 0.7);
+    var g2 = ctx.createLinearGradient(cx - flareW, cy, cx + flareW, cy);
+    g2.addColorStop(0, "rgba(255,255,255,0)");
+    g2.addColorStop(0.4, rgba(FLARE, 0.15 * pulse));
+    g2.addColorStop(0.5, rgba(WHITE, 0.5 * pulse));
+    g2.addColorStop(0.6, rgba(FLARE, 0.15 * pulse));
+    g2.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = g2;
+    ctx.fillRect(cx - flareW, cy - 2, flareW * 2, 4);
+    ctx.globalAlpha = 0.3;
+    ctx.fillRect(cx - flareW, cy - 15, flareW * 2, 30);
+    ctx.globalAlpha = 1;
   }
 
   function resize() {
@@ -53,187 +206,27 @@
     canvas.style.width = W + "px";
     canvas.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    targetCanvas.width = W;
-    targetCanvas.height = H;
-    buildTextTargets();
-    initStreams();
-    initParticles();
+    cx = W * 0.5;
+    cy = H * 0.5;
+    createSystems();
   }
 
-  function buildTextTargets() {
-    textTargets = [];
-    targetCtx.clearRect(0, 0, W, H);
-    targetCtx.fillStyle = "#0b1220";
-    targetCtx.fillRect(0, 0, W, H);
-    targetCtx.font = "900 " + Math.floor(Math.min(170, Math.max(62, W * 0.12))) + "px Cabinet Grotesk, Arial Black, sans-serif";
-    targetCtx.textAlign = "center";
-    targetCtx.textBaseline = "middle";
-    targetCtx.fillStyle = "#dff7ff";
-    targetCtx.fillText("STRINGS", W * 0.5, H * 0.48);
-    var img = targetCtx.getImageData(0, 0, W, H).data;
-    var step = W < 768 ? 6 : 4;
-    for (var y = 0; y < H; y += step) {
-      for (var x = 0; x < W; x += step) {
-        var a = img[(y * W + x) * 4 + 3];
-        if (a > 24) textTargets.push({ x: x, y: y });
-      }
+  function animate(now) {
+    var time = (now - startTime) / 1000;
+    ctx.globalCompositeOperation = "source-over";
+    drawBackground();
+    ctx.globalCompositeOperation = "screen";
+    drawSpiralArms(time);
+    for (var i = 0; i < rings.length; i += 1) rings[i].draw(time);
+    for (var j = 0; j < particles.length; j += 1) {
+      particles[j].update();
+      particles[j].draw();
     }
-    if (!textTargets.length) textTargets.push({ x: W * 0.5, y: H * 0.5 });
-  }
-
-  function initStreams() {
-    streams = [];
-    var streamCount = Math.floor(W / (W < 768 ? 14 : 11));
-    for (var i = 0; i < streamCount; i += 1) {
-      streams.push({
-        x: (i / Math.max(1, streamCount - 1)) * W,
-        y: rand(-H, H),
-        speed: rand(0.45, 1.55),
-        len: rand(40, 160),
-        alpha: rand(0.1, 0.42),
-        snippet: codeSnippets[(Math.random() * codeSnippets.length) | 0],
-        offset: (Math.random() * 24) | 0,
-        size: W < 768 ? 9 : 10
-      });
-    }
-  }
-
-  function initParticles() {
-    particles = [];
-    for (var i = 0; i < count; i += 1) {
-      var t = textTargets[i % textTargets.length];
-      particles.push({
-        x: rand(0, W),
-        y: rand(0, H),
-        vx: 0,
-        vy: 0,
-        tx: t.x,
-        ty: t.y,
-        phase: rand(0, Math.PI * 2),
-        glow: rand(0.4, 1.3),
-        trail: rand(8, 42)
-      });
-    }
-  }
-
-  function updateTargets(time) {
-    var drift = Math.sin(time * 0.52) * 6;
-    textPulse = 1 + Math.sin(time * 0.92) * 0.04;
-    for (var i = 0; i < particles.length; i += 1) {
-      var p = particles[i];
-      var t = textTargets[i % textTargets.length];
-      p.tx = W * 0.5 + (t.x - W * 0.5) * textPulse;
-      p.ty = H * 0.48 + (t.y - H * 0.48) * textPulse + Math.sin(time * 0.9 + p.phase) * 1.6 + drift * 0.08;
-    }
-  }
-
-  function drawStreams(time) {
-    for (var i = 0; i < streams.length; i += 1) {
-      var s = streams[i];
-      s.y += s.speed;
-      if (s.y - s.len > H + 20) {
-        s.y = -rand(20, H * 0.5);
-        s.snippet = codeSnippets[(Math.random() * codeSnippets.length) | 0];
-        s.offset = (Math.random() * 48) | 0;
-      }
-      var g = ctx.createLinearGradient(s.x, s.y - s.len, s.x, s.y);
-      g.addColorStop(0, "rgba(34, 197, 94, 0)");
-      g.addColorStop(0.65, "rgba(34, 197, 94," + (s.alpha * 0.85) + ")");
-      g.addColorStop(1, "rgba(187, 247, 208," + s.alpha + ")");
-      ctx.strokeStyle = g;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(s.x, s.y - s.len);
-      ctx.lineTo(s.x, s.y);
-      ctx.stroke();
-      var rows = Math.max(6, Math.floor(s.len / 10));
-      var step = Math.max(9, Math.floor(s.len / rows));
-      ctx.font = s.size + "px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
-      for (var r = 0; r < rows; r += 1) {
-        var yi = s.y - s.len + r * step;
-        if (yi < -10 || yi > H + 10) continue;
-        var charIdx = (s.offset + r + ((time * 10) | 0)) % s.snippet.length;
-        var ch = s.snippet.charAt(charIdx) || codeChars[(Math.random() * codeChars.length) | 0];
-        var tailAlpha = Math.max(0.04, (r / rows) * s.alpha);
-        ctx.fillStyle = "rgba(74, 222, 128," + tailAlpha.toFixed(3) + ")";
-        if (r === rows - 1) ctx.fillStyle = "rgba(220, 252, 231," + Math.min(0.95, s.alpha + 0.35).toFixed(3) + ")";
-        ctx.fillText(ch, s.x - 3, yi + Math.sin(time * 0.8 + s.x * 0.1) * 1.5);
-      }
-    }
-  }
-
-  function drawParticles(time) {
-    var stiffness = 0.024;
-    var damping = 0.9;
-    for (var i = 0; i < particles.length; i += 1) {
-      var p = particles[i];
-      p.vx = (p.vx + (p.tx - p.x) * stiffness) * damping;
-      p.vy = (p.vy + (p.ty - p.y) * stiffness) * damping;
-      p.x += p.vx + Math.sin(time * 1.05 + p.phase) * 0.16;
-      p.y += p.vy + Math.cos(time * 0.92 + p.phase * 1.7) * 0.16;
-
-      ctx.strokeStyle = "rgba(56, 189, 248," + (0.1 + p.glow * 0.08) + ")";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y - p.trail);
-      ctx.lineTo(p.x, p.y + 1);
-      ctx.stroke();
-
-      var r = 0.8 + p.glow * 1.35;
-      var radial = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 5.6);
-      radial.addColorStop(0, "rgba(220, 245, 255,0.95)");
-      radial.addColorStop(0.22, "rgba(125, 211, 252,0.85)");
-      radial.addColorStop(1, "rgba(56, 189, 248,0)");
-      ctx.fillStyle = radial;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, r * 5.6, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function draw(now) {
-    var time = (now - t0) / 1000;
-    if (!flashActive && now >= nextFlashAt) {
-      flashActive = true;
-      flashStart = now;
-      nextFlashAt = now + rand(11000, 14000);
-    }
-    var flashT = 0;
-    if (flashActive) {
-      flashT = (now - flashStart) / flashDuration;
-      if (flashT >= 1) {
-        flashActive = false;
-        flashT = 0;
-      }
-    }
-    var flashEnv = flashActive ? Math.sin(Math.min(1, flashT) * Math.PI) : 0;
-    ctx.clearRect(0, 0, W, H);
-    var base = ctx.createLinearGradient(0, 0, 0, H);
-    base.addColorStop(0, "rgba(4, 14, 32, 0.28)");
-    base.addColorStop(1, "rgba(2, 8, 24, 0.46)");
-    ctx.fillStyle = base;
-    ctx.fillRect(0, 0, W, H);
-    var core = ctx.createRadialGradient(W * 0.5, H * 0.48, 0, W * 0.5, H * 0.48, Math.min(W, H) * 0.36);
-    core.addColorStop(0, "rgba(56, 189, 248, 0.16)");
-    core.addColorStop(0.6, "rgba(56, 189, 248, 0.05)");
-    core.addColorStop(1, "rgba(56, 189, 248, 0)");
-    ctx.fillStyle = core;
-    ctx.fillRect(0, 0, W, H);
-    if (flashEnv > 0) {
-      var flash = ctx.createRadialGradient(W * 0.5, H * 0.48, 0, W * 0.5, H * 0.48, Math.min(W, H) * 0.5);
-      flash.addColorStop(0, "rgba(190, 242, 255," + (0.16 * flashEnv).toFixed(4) + ")");
-      flash.addColorStop(0.45, "rgba(56, 189, 248," + (0.09 * flashEnv).toFixed(4) + ")");
-      flash.addColorStop(1, "rgba(56, 189, 248,0)");
-      ctx.fillStyle = flash;
-      ctx.fillRect(0, 0, W, H);
-    }
-    drawStreams(time);
-    updateTargets(time);
-    drawParticles(time);
-    requestAnimationFrame(draw);
+    drawCenterGlow(time);
+    requestAnimationFrame(animate);
   }
 
   resize();
   window.addEventListener("resize", resize);
-  requestAnimationFrame(draw);
+  requestAnimationFrame(animate);
 })();
