@@ -12,21 +12,6 @@
   }
 
   var controls = document.getElementById("shape-controls");
-  if (!controls) {
-    controls = document.createElement("div");
-    controls.id = "shape-controls";
-    controls.setAttribute("aria-label", "Swarm shape controls");
-    var labels = ["Sphere", "Torus", "Helix", "Cube", "Wave"];
-    for (var i = 0; i < labels.length; i += 1) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = String(i + 1);
-      btn.setAttribute("data-shape-index", String(i));
-      btn.setAttribute("aria-label", labels[i]);
-      controls.appendChild(btn);
-    }
-    body.appendChild(controls);
-  }
 
   var ctx = canvas.getContext("2d", { alpha: true });
   if (!ctx) return;
@@ -91,10 +76,6 @@
 
   function lerp(a, b, t) {
     return a + (b - a) * t;
-  }
-
-  function easeInOutSin(t) {
-    return 0.5 - 0.5 * Math.cos(Math.PI * t);
   }
 
   function setupCanvas() {
@@ -354,14 +335,16 @@
     requestAnimationFrame(draw);
   }
 
-  controls.addEventListener("click", function (e) {
-    var btn = e.target && e.target.closest ? e.target.closest("button[data-shape-index]") : null;
-    if (!btn) return;
-    var idx = Number(btn.getAttribute("data-shape-index"));
-    if (!Number.isFinite(idx)) return;
-    shapeIndex = Math.max(0, Math.min(4, idx));
-    generateShapeTargets(shapeIndex);
-  });
+  if (controls) {
+    controls.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest("button[data-shape-index]") : null;
+      if (!btn) return;
+      var idx = Number(btn.getAttribute("data-shape-index"));
+      if (!Number.isFinite(idx)) return;
+      shapeIndex = Math.max(0, Math.min(4, idx));
+      generateShapeTargets(shapeIndex);
+    });
+  }
 
   document.addEventListener("mousemove", function (e) {
     mouseX = e.clientX;
