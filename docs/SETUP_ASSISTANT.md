@@ -46,7 +46,7 @@ Projekt používa rovnaké nastavenia ako VS Code (`.vscode/`). Po otvorení pri
 2. Framework: **Next.js**. Root: koreň repozitára.  
 3. Build použije `vercel.json` (Node + Python deps). Premenná **`VERCEL`** nastavuje Vercel automaticky pri deployi — Next tým vypne čistý statický export a funguje spolu s FastAPI.  
 4. Po deployi: frontend na `https://<projekt>.vercel.app/`, API napr. `https://<projekt>.vercel.app/api/health`, dokumentácia `.../api/docs`.  
-5. **Environment Variables:** `ENVIRONMENT`, `CORS_ORIGINS` (vrátane URL tvojho `*.vercel.app`).
+5. **CORS na Verceli:** `main.py` automaticky pridá `https://<VERCEL_URL>` a produkčnú doménu z `VERCEL_PROJECT_PRODUCTION_URL` (systémové premenné Vercelu). **Netreba** v dashboarde ručne nastavovať `CORS_ORIGINS` len kvôli `*.vercel.app`. Voliteľné: `CORS_ORIGINS` pre vlastné domény, `ENVIRONMENT`.
 
 ## 6. Čo tým získaš
 
