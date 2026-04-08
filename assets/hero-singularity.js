@@ -196,6 +196,9 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     textMode: false,
     emLife: 0,
     audioBoost: 0,
+      mood: "focus",
+      moodEnergy: 0.56,
+      nextMoodAt: 8,
     fpsWindow: 0,
     fpsTimer: 0,
     quality: initialQuality,
@@ -233,7 +236,6 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     shapeBuffers.wave = makeWave(particleCount, 120, 86);
     shapeBuffers.text = makeText("STRINGS", particleCount);
     setShape("sphere", true);
-    highlightQuality(qualityName);
     state.quality = qualityName;
     try {
       localStorage.setItem(QUALITY_STORAGE_KEY, qualityName);
@@ -455,7 +457,6 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     setShape(shapeName, false);
     if (!textCycle) state.shapeIndex += 1;
     pulseLightning(textCycle);
-    highlightButton(shapeName);
   }
 
   function pulseLightning(textCycle) {
@@ -502,17 +503,39 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return (sum / (data.length * 255)) * 0.45;
   }
 
-  function highlightButton(shape) {
-    const active = shape === "text" ? "sphere" : shape;
-    document.querySelectorAll(".shape-btn").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.getAttribute("data-shape") === active);
-    });
+  function resolveAiMood(nowSeconds) {
+    const external = window.__STRINGS_AI_MOOD__;
+    if (!external) return null;
+    try {
+      const payload = typeof external === "function" ? external(nowSeconds) : external;
+      if (!payload || typeof payload !== "object") return null;
+      const mood = payload.mood;
+      const energy = Number(payload.energy);
+      if (!["calm", "focus", "surge"].includes(mood)) return null;
+      return { mood, energy: Number.isFinite(energy) ? THREE.MathUtils.clamp(energy, 0, 1) : null };
+    } catch (_err) {
+      return null;
+    }
   }
 
-  function highlightQuality(name) {
-    document.querySelectorAll(".quality-btn").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.getAttribute("data-quality") === name);
-    });
+  function stepAutonomousMood(nowSeconds) {
+    const ai = resolveAiMood(nowSeconds);
+    if (ai) {
+      state.mood = ai.mood;
+      if (ai.energy !== null) state.moodEnergy = ai.energy;
+      return;
+    }
+    if (nowSeconds < state.nextMoodAt) return;
+    const r = Math.random();
+    if (r < 0.28) state.mood = "calm";
+    else if (r < 0.75) state.mood = "focus";
+    else state.mood = "surge";
+    state.moodEnergy = THREE.MathUtils.clamp(
+      state.mood === "calm" ? 0.3 + Math.random() * 0.2 : state.mood === "focus" ? 0.45 + Math.random() * 0.2 : 0.72 + Math.random() * 0.22,
+      0,
+      1
+    );
+    state.nextMoodAt = nowSeconds + 6 + Math.random() * 10;
   }
 
   function downgradeQuality() {
@@ -531,9 +554,11 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       state.fpsWindow += 1;
     if (!state.paused) {
       uniforms.uTime.value = now;
+      stepAutonomousMood(now);
       state.audioBoost = resolveAudioLevel();
-      uniforms.uPulse.value = Math.min(1.8, heartbeatScale(now) + state.audioBoost);
-      points.rotation.y += dt * 0.1;
+      const moodPulse = 1 + state.moodEnergy * 0.15;
+      uniforms.uPulse.value = Math.min(1.8, heartbeatScale(now) * moodPulse + state.audioBoost);
+      points.rotation.y += dt * (0.06 + state.moodEnergy * 0.14);
       points.rotation.x = Math.sin(now * 0.2) * 0.05;
       const pos = geometry.attributes.position.array;
       const from = geometry.attributes.aFrom.array;
@@ -544,8 +569,8 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       updateLines();
       state.emLife = Math.max(0, state.emLife - dt * 1.1);
       lightningMaterial.opacity = state.emLife * 0.9;
-      raysMesh.rotation.z += dt * 0.08;
-      raysMat.opacity = state.textMode ? 0.13 + Math.sin(now * 3.5) * 0.02 : 0.06;
+      raysMesh.rotation.z += dt * (0.04 + state.moodEnergy * 0.18);
+      raysMat.opacity = state.textMode ? 0.1 + state.moodEnergy * 0.08 + Math.sin(now * 3.5) * 0.02 : 0.04 + state.moodEnergy * 0.04;
       key.position.x = 30 + Math.sin(now * 1.8) * 6;
       rim.position.y = -18 + Math.cos(now * 1.4) * 5;
       composer.render();
@@ -573,26 +598,6 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     uniforms.uPointer.value.copy(tempV3);
   }
 
-  const btns = document.querySelectorAll(".shape-btn");
-  btns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      state.shapeIndex = SHAPES.indexOf(btn.getAttribute("data-shape"));
-      setShape(SHAPES[state.shapeIndex], true);
-      highlightButton(SHAPES[state.shapeIndex]);
-      state.shapeIndex += 1;
-    });
-  });
-
-  const qualityBtns = document.querySelectorAll(".quality-btn");
-  qualityBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const qualityName = btn.getAttribute("data-quality");
-      if (!QUALITY_COUNTS[qualityName] || state.quality === qualityName) return;
-      state.autoDowngraded = false;
-      rebuildParticleSystem(qualityName);
-    });
-  });
-
   const ctaBtn = hero.querySelector(".cta .btn");
   if (ctaBtn) {
     ctaBtn.addEventListener("mouseenter", () => { state.paused = true; });
@@ -609,7 +614,13 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   onResize();
   rebuildParticleSystem(initialQuality);
   gsap.to(points.rotation, { y: Math.PI * 2, duration: 56, ease: "none", repeat: -1 });
-  setInterval(nextCycle, CYCLE_SECONDS * 1000);
+  (function scheduleCycle() {
+    nextCycle();
+    const moodFactor = state.mood === "calm" ? 1.35 : state.mood === "surge" ? 0.78 : 1;
+    const jitter = 0.82 + Math.random() * 0.35;
+    const waitMs = CYCLE_SECONDS * 1000 * moodFactor * jitter;
+    setTimeout(scheduleCycle, waitMs);
+  })();
   requestAnimationFrame(animate);
   }
 }

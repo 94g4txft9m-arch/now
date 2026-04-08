@@ -177,76 +177,6 @@ body[data-page="index"] {
   mix-blend-mode: screen;
   opacity: 0.95;
 }
-.hero-shape-controls {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 14px;
-  background: rgba(4, 8, 24, 0.48);
-  backdrop-filter: blur(8px);
-}
-.hero-quality-controls {
-  position: absolute;
-  right: 16px;
-  bottom: 250px;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 14px;
-  background: rgba(4, 8, 24, 0.48);
-  backdrop-filter: blur(8px);
-}
-.shape-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
-  color: #e6f0ff;
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-.shape-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 16px rgba(108, 192, 255, 0.5);
-}
-.shape-btn.is-active {
-  border-color: rgba(108, 192, 255, 0.9);
-  box-shadow: 0 0 18px rgba(108, 192, 255, 0.7);
-  background: rgba(108, 192, 255, 0.2);
-}
-.quality-btn {
-  width: 36px;
-  height: 28px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  color: #e6f0ff;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-.quality-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 14px rgba(108, 192, 255, 0.4);
-}
-.quality-btn.is-active {
-  border-color: rgba(108, 192, 255, 0.9);
-  box-shadow: 0 0 14px rgba(108, 192, 255, 0.6);
-  background: rgba(108, 192, 255, 0.24);
-}
 body[data-page="index"] .hero--singularity .hero-bg,
 body[data-page="index"] .hero--singularity .hero-stars,
 body[data-page="index"] .hero--singularity .hero-vortex {
@@ -547,24 +477,4 @@ body[data-page="index"] .logo-ch {
   .hero-vortex { width: min(190vw, 100%); height: min(190vw, 100%); top: 36%; }
   body[data-page="index"] .logo-em-ring { width: 38px; height: 38px; left: -6px; }
   body[data-page="index"] .logo-ch { letter-spacing: 0.08em; }
-  .hero-shape-controls {
-    right: 10px;
-    bottom: 10px;
-    gap: 6px;
-    padding: 7px;
-  }
-  .shape-btn {
-    width: 32px;
-    height: 32px;
-  }
-  .hero-quality-controls {
-    right: 10px;
-    bottom: 212px;
-    gap: 6px;
-    padding: 7px;
-  }
-  .quality-btn {
-    width: 32px;
-    height: 26px;
-  }
 }
