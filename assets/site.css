@@ -167,7 +167,7 @@ body.nav-open { overflow: hidden; }
 
 /* Domov: singularita — nanosimulácia, EM výboj, rytmus srdca (~72 BPM) */
 body[data-page="index"] {
-  --heart-cycle: calc(60s / 70);
+  --heart-cycle: calc(60s / 69);
 }
 .hero-sim-canvas {
   position: absolute;
