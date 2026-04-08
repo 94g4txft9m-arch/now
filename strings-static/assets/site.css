@@ -172,10 +172,16 @@ body[data-page="index"] {
 .hero-sim-canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
   z-index: 1;
   pointer-events: none;
   mix-blend-mode: screen;
-  opacity: 0.92;
+  opacity: 1;
+}
+body[data-page="index"] .hero--singularity .hero-content {
+  pointer-events: auto;
 }
 body[data-page="index"] .hero--singularity .hero-bg,
 body[data-page="index"] .hero--singularity .hero-stars,
