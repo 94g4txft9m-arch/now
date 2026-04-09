@@ -1179,3 +1179,213 @@ body::before {
     animation: none !important;
   }
 }
+
+/* ===== PREMIUM EDITORIAL REMASTER (JT INSPIRED) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root {
+  --pe-bg: #f5f3ef;
+  --pe-surface: #ffffff;
+  --pe-text: #111216;
+  --pe-muted: #5d6068;
+  --pe-line: rgba(17, 18, 22, 0.12);
+  --pe-accent: #1d5cff;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--pe-bg);
+  color: var(--pe-text);
+}
+
+body::before,
+body::after,
+.anime-overlay-canvas,
+.cc-top-status,
+.cc-scanline {
+  display: none !important;
+}
+
+.wrap {
+  max-width: 1240px;
+  padding: 0 32px;
+}
+
+.navbar {
+  padding: 16px 0;
+  background: rgba(245, 243, 239, 0.86);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--pe-line);
+}
+.navbar.scrolled {
+  background: rgba(245, 243, 239, 0.95);
+  border-bottom: 1px solid rgba(17, 18, 22, 0.16);
+}
+.logo {
+  font-family: 'Manrope', sans-serif;
+  color: var(--pe-text);
+  letter-spacing: 0.16em;
+  font-size: 0.93rem;
+  font-weight: 800;
+  text-shadow: none;
+}
+.nav-link {
+  font-size: 0.83rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4c4f57;
+}
+.nav-link:hover,
+.nav-link.is-active {
+  color: var(--pe-text);
+  text-shadow: none;
+}
+
+.hero {
+  min-height: 94vh;
+  border: 0;
+}
+.hero-bg {
+  background:
+    radial-gradient(800px 420px at 7% 0%, rgba(29, 92, 255, 0.07), transparent 62%),
+    linear-gradient(180deg, #f7f5f1 0%, #f0ede8 100%);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent 38%);
+}
+.hero-grid,
+.hero-stars,
+.hero-vortex {
+  display: none !important;
+}
+.hero-content {
+  padding-top: 140px;
+}
+.hero-eyebrow {
+  color: var(--pe-accent);
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+.hero h1,
+h1, h2 {
+  font-family: 'Playfair Display', serif;
+  color: #0f1013;
+  text-transform: none;
+  letter-spacing: -0.015em;
+  text-shadow: none;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 6.6vw, 5.4rem);
+  line-height: 0.98;
+  max-width: 12ch;
+}
+.subline {
+  color: var(--pe-muted);
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  max-width: 56ch;
+}
+
+.section {
+  padding: 96px 0;
+}
+.section::before {
+  border-top: 1px solid var(--pe-line);
+  left: 32px;
+  right: 32px;
+}
+.bg-alt,
+.bg-dark {
+  background: #f0ece6;
+  color: var(--pe-text);
+}
+
+.card {
+  background: var(--pe-surface);
+  border: 1px solid var(--pe-line);
+  border-radius: 4px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.06);
+  transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s cubic-bezier(.16,1,.3,1);
+}
+.card::before {
+  display: none;
+}
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.09);
+}
+.card h3 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.05rem;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.btn {
+  background: #111216;
+  color: #ffffff;
+  border: 1px solid #111216;
+  border-radius: 999px;
+  font-family: 'Manrope', sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  background: #2a2d35;
+  border-color: #2a2d35;
+  box-shadow: none;
+}
+.accent-line {
+  height: 2px;
+  width: 90px;
+  background: #111216;
+  box-shadow: none;
+}
+
+.partner {
+  background: #fff;
+  border-color: var(--pe-line);
+}
+.footer {
+  background: #ebe6de;
+  border-top: 1px solid var(--pe-line);
+}
+.footer-contact__link {
+  color: #41434a;
+  border-bottom-color: rgba(17, 18, 22, 0.2);
+}
+
+.page-motif,
+.page-transition-overlay {
+  display: none !important;
+}
+
+.section-reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  filter: blur(6px);
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1), filter .9s cubic-bezier(.16,1,.3,1);
+}
+.section-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (max-width: 980px) {
+  .wrap {
+    padding: 0 18px;
+  }
+  .hero-content {
+    padding-top: 112px;
+  }
+  .section::before {
+    left: 18px;
+    right: 18px;
+  }
+}

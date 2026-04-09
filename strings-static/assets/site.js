@@ -1,5 +1,98 @@
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nav = document.querySelector('.navbar');
+  var toggle = document.querySelector('.nav-toggle');
+  var backdrop = document.querySelector('.nav-backdrop');
+  var links = document.getElementById('nav-links');
+  var page = document.body && document.body.getAttribute('data-page');
+  var scrollLockY = 0;
+
+  function lockScroll() {
+    scrollLockY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + scrollLockY + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollLockY);
+  }
+
+  function setNavOpen(open) {
+    if (!nav || !toggle) return;
+    nav.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.classList.toggle('nav-open', open);
+    if (open) lockScroll();
+    else unlockScroll();
+  }
+
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      setNavOpen(!nav.classList.contains('open'));
+    });
+  }
+  if (backdrop) backdrop.addEventListener('click', function () { setNavOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav && nav.classList.contains('open')) setNavOpen(false);
+  });
+
+  if (page) {
+    document.querySelectorAll('.nav-link[data-nav="' + page + '"]').forEach(function (el) {
+      el.classList.add('is-active');
+    });
+  }
+
+  if (nav) {
+    window.addEventListener('scroll', function () {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+  }
+
+  var revealTargets = document.querySelectorAll('.animate-on-scroll,.animate-slide-left,.animate-slide-right,.animate-scale,.animate-clip,section.section');
+  revealTargets.forEach(function (el) {
+    if (el.tagName.toLowerCase() === 'section') el.classList.add('section-reveal');
+  });
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible', 'is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+
+    revealTargets.forEach(function (el) { observer.observe(el); });
+  } else {
+    revealTargets.forEach(function (el) { el.classList.add('visible', 'is-visible'); });
+  }
+
+  // Refined pointer interaction: subtle card lift to keep premium feel.
+  document.querySelectorAll('.card').forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      if (reduceMotion) return;
+      var rect = card.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width;
+      var py = (e.clientY - rect.top) / rect.height;
+      var rx = (py - 0.5) * -3;
+      var ry = (px - 0.5) * 3;
+      card.style.transform = 'perspective(800px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-8px)';
+    });
+    card.addEventListener('pointerleave', function () {
+      card.style.transform = '';
+    });
+  });
+})();
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var page = document.body && document.body.getAttribute('data-page');
   var nav = document.querySelector('.navbar');
   var toggle = document.querySelector('.nav-toggle');
