@@ -132,17 +132,24 @@
         var torus = new THREE.Mesh(lineGeom, lineMat);
         scene.add(torus);
 
-        var t0 = performance.now();
-        function tick(now) {
-          var t = (now - t0) * 0.001;
+        function applyFrame(t) {
           points.rotation.y = t * 0.06;
           points.rotation.x = Math.sin(t * 0.2) * 0.08;
           torus.rotation.x = t * 0.11;
           torus.rotation.y = t * 0.17;
           renderer.render(scene, camera);
+        }
+
+        if (window.STRINGS_BRAIN && typeof window.STRINGS_BRAIN.subscribe === 'function') {
+          window.STRINGS_BRAIN.subscribe(applyFrame);
+        } else {
+          var t0 = performance.now();
+          function tick(now) {
+            applyFrame((now - t0) * 0.001);
+            requestAnimationFrame(tick);
+          }
           requestAnimationFrame(tick);
         }
-        requestAnimationFrame(tick);
 
         function resize() {
           var w = host.clientWidth;
