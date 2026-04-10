@@ -82,7 +82,8 @@ body::after {
 .wrap {
   max-width: 1260px;
   margin: 0 auto;
-  padding: 0 max(30px, env(safe-area-inset-left, 0px)) 0 max(30px, env(safe-area-inset-right, 0px));
+  /* top | right | bottom | left — správne priradenie safe-area */
+  padding: 0 max(30px, env(safe-area-inset-right, 0px)) 0 max(30px, env(safe-area-inset-left, 0px));
 }
 .section { position: relative; padding: 96px 0; }
 .section::before {
@@ -157,14 +158,19 @@ p { margin: 0 0 1rem; }
   position: relative;
 }
 @media (min-width: 981px) {
-  /* Logo čo najviac doľava; menu vpravo v druhom stľpci. */
+  /* Navbar full width on PC: logo aligns to viewport (wrap max-width no longer boxes it in). */
   .navbar .wrap.nav-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     column-gap: 1.25rem;
-    padding-left: max(0px, env(safe-area-inset-left, 0px));
-    padding-right: max(30px, env(safe-area-inset-right, 0px));
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    /* Left inset: .navbar padding + safe-area only. */
+    padding-left: 0;
+    padding-right: 24px;
   }
   .navbar .wrap.nav-inner::before {
     content: none;
