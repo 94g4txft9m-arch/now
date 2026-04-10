@@ -109,29 +109,53 @@
     strip.innerHTML =
       '<div class="wrap market-strip-inner">' +
       '<span>Bratislava · <strong>obchodné</strong> a <strong>technologické</strong> právo</span>' +
-      '<span><a href="tel:+421902203238">+421 902 203 238</a> · <a href="kontakt.html">Kontakt</a></span>' +
       '</div>';
     nav.insertBefore(strip, nav.firstChild);
   }
+
+  var NAV_ICONS = {
+    index:
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M9 22V12h6v10"/></svg>',
+    'o-nas':
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    technologie:
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01"/></svg>',
+    business:
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+    gdpr:
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    aktuality:
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9h9v11"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M9 10h.01M15 10h.01"/></svg>',
+    kontakt:
+      '<svg class="nav-ic-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="m22 6-10 7L2 6"/></svg>'
+  };
 
   function addNavIcons() {
     document.querySelectorAll('.nav-link').forEach(function (el) {
       if (el.querySelector('.nav-ic')) return;
       var slug = el.getAttribute('data-nav') || '';
-      var icon = '◇';
-      if (slug === 'index') icon = '◉';
-      if (slug === 'o-nas') icon = '◌';
-      if (slug === 'technologie') icon = '⌁';
-      if (slug === 'business') icon = '◈';
-      if (slug === 'gdpr') icon = '▣';
-      if (slug === 'aktuality') icon = '◍';
-      if (slug === 'kontakt') icon = '◎';
+      var svg = NAV_ICONS[slug] || NAV_ICONS.index;
       var span = document.createElement('span');
       span.className = 'nav-ic';
       span.setAttribute('aria-hidden', 'true');
-      span.textContent = icon + ' ';
+      span.innerHTML = svg;
       el.insertBefore(span, el.firstChild);
     });
+  }
+
+  function addFootMotif() {
+    if (document.getElementById('site-foot-motif')) return;
+    var wrap = document.createElement('div');
+    wrap.id = 'site-foot-motif';
+    wrap.className = 'site-foot-motif';
+    wrap.setAttribute('aria-hidden', 'true');
+    wrap.innerHTML =
+      '<svg class="site-foot-motif__svg" viewBox="0 0 120 72" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<path class="site-foot-motif__beam" d="M60 8v56M28 24h64M28 48h64" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>' +
+      '<path class="site-foot-motif__scale" d="M60 32c-8 0-14 6-14 14v6c0 5 4 9 9 10v8h10v-8c5-1 9-5 9-10v-6c0-8-6-14-14-14z" stroke="currentColor" stroke-width="1.35" opacity="0.65"/>' +
+      '<circle cx="60" cy="40" r="3" stroke="currentColor" stroke-width="1" opacity="0.55"/>' +
+      '</svg>';
+    document.body.appendChild(wrap);
   }
 
   function activateScrollAnimations() {
@@ -155,70 +179,11 @@
     targets.forEach(function (el) { observer.observe(el); });
   }
 
-  function setupHeroVoiceVariants() {
-    if (page !== 'index') return;
-    var eyebrow = document.getElementById('hero-eyebrow');
-    var title = document.getElementById('hero-title');
-    var subline = document.getElementById('hero-subline');
-    if (!eyebrow || !title || !subline) return;
-
-    var variants = [
-      {
-        eyebrow: 'Advokátska kancelária · Bratislava',
-        title: 'Právo s váhou a prehľadom',
-        subline: 'Spájame klasickú právnu starostlivosť s pochopením technológií a podnikania. Diskrétnosť, presnosť a zrozumiteľné riešenia.'
-      },
-      {
-        eyebrow: 'Technológie a regulácia',
-        title: 'Právna istota v digitálnom prostredí',
-        subline: 'Softvér, dáta, kyberbezpečnosť a duševné vlastníctvo — od zmlúv až po sporovú obranu, s jazykom, ktorému rozumie váš tím.'
-      },
-      {
-        eyebrow: 'Obchod a transakcie',
-        title: 'Zmluvy, spoločnosti, investície',
-        subline: 'Pripravíme a vyjednáme dokumentáciu, ktorá chráni vaše záujmy: M&amp;A, VC, obchodné spoločnosti a každodenná firemná agenda.'
-      }
-    ];
-
-    function applyVariant(idx) {
-      var v = variants[idx] || variants[0];
-      eyebrow.textContent = v.eyebrow;
-      title.textContent = v.title;
-      subline.textContent = v.subline;
-      document.querySelectorAll('.hero-voice-btn').forEach(function (btn) {
-        btn.classList.toggle('is-active', Number(btn.getAttribute('data-voice')) === idx);
-      });
-    }
-
-    document.querySelectorAll('.hero-voice-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        applyVariant(Number(btn.getAttribute('data-voice')) || 0);
-      });
-    });
-  }
-
   function enhanceHeroHome() {
     if (page !== 'index') return;
     var hero = document.querySelector('.hero');
     var content = document.querySelector('.hero-content');
     if (!hero || !content) return;
-
-    if (!hero.querySelector('.hero-kpi')) {
-      var kpi = document.createElement('div');
-      kpi.className = 'hero-kpi';
-      if (hero.classList.contains('hero--prestige')) {
-        kpi.innerHTML =
-          '<span class="hero-kpi-chip">Diskrétnosť <strong>štandard</strong></span>' +
-          '<span class="hero-kpi-chip">Termíny <strong>jasné</strong></span>' +
-          '<span class="hero-kpi-chip">Komunikácia <strong>priama</strong></span>';
-      } else {
-        kpi.innerHTML =
-          '<span class="hero-kpi-chip">Incident desk <strong>online</strong></span>' +
-          '<span class="hero-kpi-chip">GDPR readiness <strong>98%</strong></span>' +
-          '<span class="hero-kpi-chip">Contract response <strong>&lt;24h</strong></span>';
-      }
-      content.appendChild(kpi);
-    }
 
     if (hero.classList.contains('hero--singularity') || hero.classList.contains('hero--prestige')) return;
     if (reduceMotion || hero.querySelector('.hero-command-canvas')) return;
@@ -422,8 +387,8 @@
   setActiveNav();
   setupNavScrollState();
   addNavIcons();
+  addFootMotif();
   activateScrollAnimations();
-  setupHeroVoiceVariants();
   enhanceHeroHome();
   setupGlobalCinematic();
   setupTransitions();
