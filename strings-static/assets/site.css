@@ -166,27 +166,43 @@ p { margin: 0 0 1rem; }
   font-family: 'DM Sans', sans-serif;
 }
 .logo--prestige {
-  letter-spacing: 0.26em;
+  font-size: clamp(0.92rem, 2.4vw, 1.35rem);
+  letter-spacing: clamp(0.22em, 1.05vw, 0.39em);
+  transform: scaleX(1.08);
+  transform-origin: left center;
   position: relative;
-  padding-bottom: 2px;
+  padding-bottom: 6px;
   z-index: 2;
   flex-shrink: 0;
 }
 .logo--prestige::after {
   content: "";
   position: absolute;
-  left: 0;
+  left: -4%;
   bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, var(--brand-2), transparent);
-  opacity: 0.85;
-  transform-origin: left;
-  animation: logoGoldLine 8s ease-in-out infinite;
+  width: 108%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 169, 98, 0.2) 12%,
+    #e8d5a8 38%,
+    #c9a962 52%,
+    #9a7b4f 68%,
+    rgba(201, 169, 98, 0.25) 88%,
+    transparent 100%
+  );
+  opacity: 0.95;
+  transform-origin: center;
+  box-shadow:
+    0 0 14px rgba(232, 213, 168, 0.55),
+    0 0 28px rgba(201, 169, 98, 0.28);
+  animation: logoGoldLine 5.5s ease-in-out infinite;
 }
 @keyframes logoGoldLine {
-  0%, 100% { transform: scaleX(1); opacity: 0.75; }
-  50% { transform: scaleX(0.55); opacity: 1; }
+  0%, 100% { transform: scaleX(0.42); opacity: 0.82; }
+  50% { transform: scaleX(1); opacity: 1; }
 }
 .logo--singularity {
   font-family: 'DM Sans', sans-serif;
@@ -244,6 +260,10 @@ p { margin: 0 0 1rem; }
 
 .nav-toggle {
   display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   width: 48px;
   height: 48px;
   min-width: 48px;
@@ -257,7 +277,36 @@ p { margin: 0 0 1rem; }
   border-radius: 8px;
   flex-shrink: 0;
 }
-.nav-toggle-bar { display: block; width: 22px; height: 2px; margin: 4px auto; background: var(--ink); }
+.nav-toggle-bar {
+  display: block;
+  width: 26px;
+  height: 2px;
+  margin: 0;
+  border-radius: 2px;
+  background: var(--ink);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease;
+  transform-origin: center;
+}
+.nav-toggle-bar:nth-child(2) {
+  height: 2.5px;
+  background: linear-gradient(90deg, #9a7b4f, #e8d5a8, #c9a962, #e8d5a8, #9a7b4f);
+  box-shadow: 0 0 10px rgba(201, 169, 98, 0.45);
+}
+.navbar.open .nav-toggle {
+  gap: 0;
+}
+.navbar.open .nav-toggle-bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+  background: var(--ink);
+  box-shadow: none;
+}
+.navbar.open .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.2);
+}
+.navbar.open .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
 .nav-backdrop { display: none; }
 
 .hero {
@@ -296,8 +345,8 @@ p { margin: 0 0 1rem; }
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.62;
-  background: url("quantum-fallback.svg") 50% 42% / min(140%, 1200px) no-repeat;
+  opacity: 0.55;
+  background: url("quantum-fallback.svg") 50% 38% / min(132%, 1100px) no-repeat;
   mix-blend-mode: screen;
 }
 html.strings-hero-canvas-ready .hero-quantum-fallback {
@@ -319,7 +368,7 @@ html.strings-hero-canvas-ready .hero-quantum-fallback {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.48;
+  opacity: 0.82;
   mix-blend-mode: screen;
 }
 .hero--prestige .hero-three-host--prestige {
@@ -996,7 +1045,7 @@ footer.footer:not(.bg-dark) {
     display: none;
   }
   .hero--prestige .hero-quantum-canvas {
-    opacity: 0.42;
+    opacity: 0.72;
   }
   .hero--quantum-frame::before {
     inset: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
