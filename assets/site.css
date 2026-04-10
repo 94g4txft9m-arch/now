@@ -2,15 +2,20 @@
 @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1,2&display=swap');
 
 :root {
-  --bg-0: #fafafa;
+  /* Figma: mapujte Variables sem (File → Share → Inspect alebo export tokenov). */
+  --figma-surface: #fafafa;
+  --figma-ink: #111111;
+  --figma-accent: #2dd4bf;
+
+  --bg-0: var(--figma-surface);
   --bg-1: #f0eeeb;
   --panel: rgba(255, 255, 255, 0.82);
   --panel-strong: #ffffff;
-  --ink: #111111;
+  --ink: var(--figma-ink);
   --muted: #555555;
   --line: rgba(15, 17, 23, 0.14);
   --brand: #0f172a;
-  --brand-2: #2dd4bf;
+  --brand-2: var(--figma-accent);
   --gold: #64748b;
   --ok: #0f8c56;
   --nav-h: 84px;
@@ -276,6 +281,75 @@ body[data-page="index"] .hero--singularity .hero-sim-canvas {
   pointer-events: none;
   opacity: 0.88;
 }
+
+/* Three.js (toolchain-experience.js) — pod singularity canvasom */
+.hero-three-host {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.hero-three-host canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Lottie dekorácia v hero */
+.hero-lottie-wrap {
+  position: absolute;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: 12%;
+  width: min(132px, 28vw);
+  height: min(132px, 28vw);
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.72;
+  filter: drop-shadow(0 0 24px rgba(45, 212, 191, 0.25));
+}
+body[data-page="index"] .hero--singularity .hero-lottie-wrap {
+  opacity: 0.55;
+}
+
+/* Spline embed (interaktívny roh) */
+.hero-spline-slot {
+  position: absolute;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(320px, 42vw);
+  height: min(280px, 38vh);
+  z-index: 5;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(248, 250, 252, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(10px);
+}
+.hero-spline-slot iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Rive canvas */
+.hero-rive-wrap {
+  position: absolute;
+  left: max(12px, env(safe-area-inset-left));
+  bottom: 14%;
+  width: 100px;
+  height: 100px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.75;
+}
+.hero-rive-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
 body[data-page="index"] .hero--singularity .hero-eyebrow { color: #5eead4; }
 body[data-page="index"] .hero--singularity h1 { color: #f8fafc; }
 body[data-page="index"] .hero--singularity .subline { color: rgba(248, 250, 252, 0.84); }
@@ -523,6 +597,13 @@ body[data-page="index"] .hero--singularity .btn:hover {
   .partner-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-content { padding-top: calc(126px + env(safe-area-inset-top, 0px)); }
   body[data-page="index"] .hero--singularity .hero-sim-canvas { opacity: 0.62; }
+  .hero-spline-slot {
+    width: min(280px, 88vw);
+    height: min(220px, 32vh);
+    right: 8px;
+    bottom: 8px;
+  }
+  .hero-lottie-wrap { width: min(100px, 22vw); height: min(100px, 22vw); opacity: 0.45; }
   .hero h1 { font-size: clamp(2.1rem, 9vw, 3.2rem); }
   .subline { font-size: 1rem; }
   .btn { width: 100%; justify-content: center; }
@@ -540,6 +621,10 @@ body[data-page="index"] .hero--singularity .btn:hover {
   .logo--singularity .logo-ch { animation: none !important; text-shadow: none !important; }
   .hero-command-canvas,
   .cinematic-canvas,
+  .hero-three-host,
+  .hero-lottie-wrap,
+  .hero-spline-slot,
+  .hero-rive-wrap,
   body[data-page="index"] .hero--singularity .hero-sim-canvas { display: none !important; }
   .animate-on-scroll,
   .animate-slide-left,

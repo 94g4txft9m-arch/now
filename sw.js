@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-full1';
+var CACHE = 'strings-20260410-toolchain1';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
