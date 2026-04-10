@@ -24,7 +24,7 @@
    * STRINGS (logo) — nezávislý posun od menu (Domov, O nás, … ostávajú v grid stpci).
    * Uprav len tieto dve hodnoty (px, rem, …). Záporné X = doľava, záporné Y = hore.
    */
-  --strings-logo-offset-x: -5px;
+  --strings-logo-offset-x: -3px;
   --strings-logo-offset-y: 0px;
 }
 
