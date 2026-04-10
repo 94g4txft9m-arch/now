@@ -168,9 +168,11 @@ p { margin: 0 0 1rem; }
     width: 100%;
     margin-left: 0;
     margin-right: 0;
-    /* Left inset: .navbar padding + safe-area only. */
+    /* Logo vľavo k oknu; menu vpravo ako v centrovanom .wrap (1260 + pôvodný padding). */
     padding-left: 0;
-    padding-right: 24px;
+    padding-right: calc(
+      (100% - min(1260px, 100%)) / 2 + max(30px, env(safe-area-inset-right, 0px))
+    );
   }
   .navbar .wrap.nav-inner::before {
     content: none;
