@@ -1,0 +1,43 @@
+---
+description: Kvalitný web, grafika a animácie — konzistentný výstup pri každom zadaní (Next/React/Tailwind a všeobecné princípy).
+alwaysApply: true
+---
+
+# Web, grafika, animácie — štandard kvality
+
+Cieľ: pri každom príkaze dávať **kvalitný, konzistentný** výstup (typografia, farby, pohyb, výkon, prístupnosť). Cursor **nesynchronizuje sám** aplikácie (Figma, Blender, Framer.com); „synchronizácia“ = **rovnaké pravidlá v Cursori + exporty/tokeny + voliteľné MCP**. Pre **globálne** správanie na všetkých repo skopíruj tento súbor do `.cursor/rules/` v každom projekte alebo ho pridaj ako **User Rules** (Cursor Settings).
+
+## Vrstvenie pravidiel
+
+Úpravy `strings-static/` (STRINGS): dodržať [deepseek-legal-web.mdc](deepseek-legal-web.mdc) a konzervatívny tón; **neťahaj** agresívne animácie ani „startup“ vizuál do advokátskeho webu bez súhlasu.
+
+- Next.js / `app/`, `components/`: plný vizuálny a motion štandard nižšie.
+
+## Dizajn a grafika
+
+- **Mriežka a rytmus:** používaj existujúce design tokeny (`tailwind.config`, CSS variables). Ak chýbajú, navrhni malú škálu (4/8 px, max šírka čítania ~65–75 znakov pre text).
+- **Kontrast:** text a interaktívne prvky aspoň orientačne **WCAG AA** (sufficient contrast); nespoliehaj sa len na farbu pre význam.
+- **Obrázky:** v Next.js `next/image` kde sa dá; vždy `width`/`height` alebo `fill` + definovaný kontajner proti layout shiftu; formáty WebP/AVIF kde dáva zmysel; zmysluplný `alt`.
+- **SVG:** čisté ID, žiadne zbytočné editorové balasty; optimalizácia ak súbor rastie.
+
+## Animácie a motion
+
+- **Zmysel:** animácia má **viesť pozornosť** alebo spätú väzbu (hover, prechod stavu), nie odpútavať od obsahu.
+- **Trvanie:** krátke pre UI (cca 150–300 ms pre mikrointerakcie); dlhšie len pre hero / scrollové sekcie s rozumným dôvodom.
+- **Redukcia pohybu:** rešpektuj `prefers-reduced-motion: reduce` — poskytni **redukovanú alebo žiadnu** animáciu (CSS `@media`, alebo v `framer-motion` `useReducedMotion`).
+- **Výkon:** uprednostni `transform` a `opacity`; vyhýbaj sa animovaniu `width`/`height`/`top`/`left` na veľkých plochách; náročné canvas/WebGL len s fallbackom a lazy mountom.
+
+## Technická kvalita (frontend)
+
+- **Responzívnosť:** mobile-first alebo aspoň explicitné body zlomu; žiadne horizontálne posúvanie kvôli pretečeniu.
+- **Interakcie:** viditeľný **focus** pre klávesnicu; tlačidlá a odkazy s dostatočnou plochou na dotyk.
+- **Čitateľnosť kódu:** zdieľané komponenty namiesto copy-paste; konzistentné pomenovanie.
+
+## Prepojenie s „externými“ aplikáciami (realita)
+
+- **Figma / grafika:** export assetov + (ideálne) **design tokeny** (farby, typografia) do kódu alebo Tailwind theme — agent pracuje s tým, čo je v repozitári.
+- **Blender / 3D:** export **glTF** alebo **video/WebM** pre hero; priamy beh Blendera z Cursoru neočakávaj — treba export alebo externý render.
+- **Framer.com** (nástroj): samostatná služba; v kóde zodpovedá často **Framer Motion** alebo vlastné CSS — nie priame „prepojenie“ bez exportu.
+- **Vercel / GitHub:** nasadenie cez git push a CLI/GitHub Actions; voliteľne **MCP** pre GitHub v Cursori na issue/PR kontext.
+
+Pri novom projekte agent **najprv** zosúladí stack (Next/Tailwind/TS) a **potom** implementuje zmeny v súlade s týmto súborom, pokiaľ používateľ výslovne nepožiada o iný štýl.
