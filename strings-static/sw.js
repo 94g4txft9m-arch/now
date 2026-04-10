@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-logo2px';
+var CACHE = 'strings-20260410-logo2cm';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
