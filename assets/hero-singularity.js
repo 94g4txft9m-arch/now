@@ -133,10 +133,13 @@
   };
 
   function createSystems() {
+    var narrow = window.matchMedia("(max-width: 768px)").matches;
+    var ringTarget = narrow ? Math.min(48, RING_COUNT) : RING_COUNT;
+    var partTarget = narrow ? Math.min(260, PARTICLE_COUNT) : PARTICLE_COUNT;
     rings = [];
     particles = [];
-    for (var i = 0; i < RING_COUNT; i += 1) rings.push(new Ring(i));
-    for (var j = 0; j < PARTICLE_COUNT; j += 1) particles.push(new Particle());
+    for (var i = 0; i < ringTarget; i += 1) rings.push(new Ring(i));
+    for (var j = 0; j < partTarget; j += 1) particles.push(new Particle());
   }
 
   function drawBackground() {
