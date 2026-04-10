@@ -71,15 +71,20 @@ cmd_sync_gh_pages() {
   echo "Export strings-static z vetvy $prev (git archive) → dočasný priečinok"
   git archive "$prev" strings-static | tar -x -C "$_GH_SYNC_TMP"
   echo "Synchronizácia → vetva gh-pages (potom návrat na: $prev)"
-  git fetch origin gh-pages
+  git fetch origin gh-pages 2>/dev/null || true
   if git show-ref --verify --quiet refs/heads/gh-pages; then
     git checkout gh-pages
+  elif git rev-parse --verify refs/remotes/origin/gh-pages >/dev/null 2>&1; then
+    git checkout -b gh-pages refs/remotes/origin/gh-pages
   else
-    git checkout -b gh-pages origin/gh-pages
+    echo "Vytváram vetvu gh-pages (prvá publikácia)…"
+    git checkout --orphan gh-pages
+    git rm -rf . >/dev/null 2>&1 || true
   fi
   git pull --ff-only origin gh-pages 2>/dev/null || true
   rsync -a --delete \
     --exclude='.git/' \
+    --exclude='.cursor/' \
     "${_GH_SYNC_TMP}/strings-static/" "${ROOT}/"
   git add -A
   if git diff --staged --quiet; then
