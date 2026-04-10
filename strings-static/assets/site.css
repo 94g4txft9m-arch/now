@@ -173,13 +173,13 @@ p { margin: 0 0 1rem; }
   .navbar .logo.logo--prestige {
     grid-column: 1;
     grid-row: 1;
-    justify-self: center;
-    margin-left: -2cm;
+    justify-self: start;
+    margin-left: 1cm;
     transform: scaleX(1.08);
-    transform-origin: center center;
+    transform-origin: left center;
   }
   .navbar .logo.logo--prestige::after {
-    transform-origin: center center;
+    transform-origin: left center;
   }
   .navbar .links {
     grid-column: 2;
