@@ -1,0 +1,22 @@
+---
+description: STRINGS statický web — jednotný motion stack a nasadenie
+globs: strings-static/**/*
+alwaysApply: false
+---
+
+# STRINGS `strings-static/` — default stack
+
+Pri úpravách tohto priečinka **prednostne zachovaj a rozširuj** tento reťazec (nie nové ad-hoc animácie mimo neho):
+
+1. **`assets/strings-brain.js`** — jeden `requestAnimationFrame` takt; `STRINGS_BRAIN.subscribe(fn)` / event `stringsbrain:tick`.
+2. **`assets/hero-quantum-spiral.js`** —2D canvas špirála (viazaná na mozog).
+3. **`assets/toolchain-experience.js`** — voliteľne Three.js / Lottie / Rive / Spline (`data-*` na `<body>`, sloty v HTML).
+4. **`assets/hero-cinematic.js`** + **GSAP** — vstup hero a scroll.
+5. **Fallback grafika** — `assets/quantum-fallback.svg` + `.hero-quantum-fallback` (viditeľné bez JS / pri starom deployi).
+6. **Konzultácie copy** — DeepSeek podľa `deepseek-legal-web.mdc`; finál schváliť v kancelárii.
+
+## Nasadenie na GitHub Pages
+
+- **Všetky nové súbory v `strings-static/` musia byť v gite** (`git add`), inak `git archive` v `./scripts/github-pages-process.sh sync-gh-pages` **neexportuje** napr. `hero-quantum-spiral.js` → na webe **404** a grafika chýba.
+- Po commite: `./scripts/github-pages-process.sh sync-gh-pages` (vetva `gh-pages`).
+- Referencia: [`toolchain/STACK.txt`](strings-static/toolchain/STACK.txt).

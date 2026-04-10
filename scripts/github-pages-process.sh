@@ -52,6 +52,14 @@ cmd_push() {
 }
 
 cmd_sync_gh_pages() {
+  local untracked
+  untracked="$(git ls-files --others --exclude-standard strings-static/ 2>/dev/null || true)"
+  if [[ -n "$untracked" ]]; then
+    echo "CHYBA: V strings-static sú nezaradené súbory — git archive ich do gh-pages nepošle."
+    echo "Spusti: git add strings-static && git commit -m \"…\""
+    echo "$untracked"
+    exit 1
+  fi
   if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
     echo "Pracovný strom nie je čistý — commitni alebo stashni zmeny pred sync-gh-pages."
     exit 1

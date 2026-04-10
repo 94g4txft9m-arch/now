@@ -12,6 +12,7 @@
   var eyebrow = document.getElementById('hero-eyebrow');
   var title = document.getElementById('hero-title');
   var subline = document.getElementById('hero-subline');
+  var techArc = document.getElementById('hero-tech-arc');
   var cta = hero.querySelector('.hero-copy .cta');
 
   function wrapTitleWords(el) {
@@ -55,9 +56,13 @@
     gsap.set(subline, { opacity: 0, y: 22 });
     tl.to(subline, { opacity: 1, y: 0, duration: 0.72 }, 0.42);
   }
+  if (techArc) {
+    gsap.set(techArc, { opacity: 0, y: 14 });
+    tl.to(techArc, { opacity: 1, y: 0, duration: 0.58 }, 0.52);
+  }
   if (cta) {
     gsap.set(cta, { opacity: 0, y: 16 });
-    tl.to(cta, { opacity: 1, y: 0, duration: 0.55 }, 0.62);
+    tl.to(cta, { opacity: 1, y: 0, duration: 0.55 }, 0.68);
   }
 
   var bg = hero.querySelector('.hero-bg');

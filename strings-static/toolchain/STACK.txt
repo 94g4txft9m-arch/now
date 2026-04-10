@@ -1,11 +1,43 @@
-STRINGS — ako spolu pracujú nástroje (web + motion + 3D)
+STRINGS — ako spolu pracujú nástroje (web + motion + 3D + AI)
 ============================================================
 
-DEEPSEEK AI
-  • Pri copy, štruktúre a právnych formuláciách používajte [DeepSeek Chat](https://chat.deepseek.com)
-    ako doplnkovú analýzu; v Cursori je to zakotvené v .cursor/rules/deepseek-legal-web.mdc.
+Jednotný zoznam (všetko v rámci tímovej spolupráce — dizajn, kód, motion, konzultácie)
+  • Figma
+  • Webflow
+  • Framer (Sites / Motion — Motion cez React inde; na statike GSAP)
+  • Spline
+  • Three.js
+  • React Three Fiber (R3F) — nie priamo v statike; cez samostatný build + iframe
+  • Rive
+  • Lottie
+  • DeepSeek (DeepSeek-V3.2 alebo iný model v DeepSeek Chat / API — podľa vášho výberu)
+  • NVIDIA (referencia v koncepcii hero / paralelný výpočet; nie ako samostatný program v prehliadači)
+
+ČO JE TERAZ SKUTOČNE AKTÍVNE NA DOMOVSKEJ STRÁNKE (index.html)
+  • Figma → tokeny prepísané v assets/site.css (--figma-*).
+  • assets/strings-brain.js — jeden časový takt (requestAnimationFrame) pre synchronizované vrstvy.
+  • GSAP + ScrollTrigger (CDN), assets/hero-cinematic.js (vstupná animácia + scroll).
+  • Vlastný Canvas 2D: assets/hero-quantum-spiral.js (viazaný na STRINGS_BRAIN).
+  • Three.js: assets/toolchain-experience.js + #str-three-host (desktop; rovnaký čas t ako canvas).
+  • assets/site.js (menu, PWA, scroll, …)
+  • Text hero: DeepSeek · NVIDIA (metodická zmienka, nie integrácia API)
+  • CustomEvent stringsbrain:tick — pre ďalšie jemné efekty (voliteľné; pointer-events: none).
+
+Voliteľné vrstvy na indexe (zapnite data-* / HTML sloty podľa potreby)
+  • Lottie, Rive, Spline — stále v assets/toolchain-experience.js; na indexe ich zapnete
+    pridaním prvkov a/alebo data-lottie-url, data-rive-url, data-spline-embed na <body>.
+  • Pozor na výkon na mobile — Three.js sa na úzkych displejoch v toolchain neštartuje; canvas zostáva.
+
+──────────────────────────────────────────────────────────────
+
+DEEPSEEK (DeepSeek-V3.2 a iné modely)
+  • Pri copy, štruktúre a právnych formuláciách: DeepSeek Chat alebo API.
+  • Model (napr. V3.2) vyberte v rozhraní chatu / v API; v kóde stránky model „nebeží“.
+  • V Cursori: .cursor/rules/deepseek-legal-web.mdc
   • Finálne záväzné texty vždy schváliť v kancelárii.
 
+NVIDIA
+  • V hero copy a vo farbách animácie (koncepcia presnosti / HPC), nie ako NVIDIA softvér vkladaný do stránky.
 
 FIGMA
   • Zdroj pravdy pre farby, typografiu, spacing.
@@ -23,29 +55,31 @@ FRAMER
 
 SPLINE
   • Vytvorte scénu → Publish → skopírujte „Viewer“ URL.
-  • V index.html na <body> nastavte data-spline-embed="URL".
-  • Zobrazí sa blok #hero-spline-slot (pravý dolný roh hero).
+  • Na <body> nastavte data-spline-embed="URL" a načítajte toolchain-experience.js.
+  • Zobrazí sa blok #hero-spline-slot (štýl v assets/site.css).
 
 THREE.JS
-  • Beží v assets/toolchain-experience.js — jemná časticová vrstva pod canvasom singularity.
+  • V assets/toolchain-experience.js — jemná časticová vrstva (ak je skript načítaný).
   • Vypnutie: data-toolchain-three="off" na <body>.
-  • Na úzkych displejoch sa Three.js nespúšťa (výkon).
+  • Na úzkych displejoch sa v toolchain-experience.js Three.js nespúšťa (výkon).
 
 REACT THREE FIBER (R3F)
-  • Je to React nad Three.js — v tomto statickom projekte ho nenačítavame priamo.
+  • React nad Three.js — v tomto statickom projekte ho nenačítavame priamo.
   • Postup: samostatný Vite + React + @react-three/fiber projekt → npm run build →
     výstup vložte do strings-static/embeds/r3f/ a na stránku <iframe src="embeds/r3f/index.html">.
 
 RIVE
   • Export .riv do assets/rive/ a na <body> data-rive-url="assets/rive/nazov.riv".
+  • Vyžaduje načítaný toolchain-experience.js a prvok #hero-rive-canvas.
   • State machine v kóde je predvolene „State Machine 1“ (upravte v toolchain-experience.js ak treba).
 
 LOTTIE
   • JSON z After Effects / LottieFiles.
-  • data-lottie-url na <body> alebo nechajte predvolenú ukážku v toolchain-experience.js.
+  • data-lottie-url na <body> alebo predvolená ukážka v toolchain-experience.js.
+  • Vyžaduje načítaný toolchain-experience.js a kontajner #hero-lottie.
 
 Súbory
-  • Integrácia: assets/toolchain-experience.js (volaný len z index.html).
-  • Štýly slotov: assets/site.css (hero-three-host, hero-lottie-wrap, hero-spline-slot).
-  • R3F build výstup: uložte do embeds/r3f/ (napr. index.html + assets) a na stránku vložte iframe.
+  • Voliteľná integrácia motion/3D: assets/toolchain-experience.js
+  • Štýly slotov: assets/site.css (hero-three-host, hero-lottie-wrap, hero-spline-slot, hero-rive-wrap)
+  • R3F build výstup: embeds/r3f/ (napr. index.html + assets) → iframe
   • Rive súbory: assets/rive/*.riv
