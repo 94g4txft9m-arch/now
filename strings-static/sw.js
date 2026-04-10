@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-homeharmony';
+var CACHE = 'strings-20260410-navgutter';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
