@@ -72,7 +72,7 @@
   function buildSparks() {
     sparks = [];
     var i;
-    var cap = Math.min(420, Math.floor((w * h) / 4200));
+    var cap = Math.min(260, Math.floor((w * h) / 6200));
     for (i = 0; i < cap; i += 1) {
       var arm = arms[i % arms.length];
       var p = arm.pts[Math.floor(Math.random() * arm.pts.length)];
@@ -88,7 +88,7 @@
 
   function buildShards() {
     shards = [];
-    var cap = w < 600 ? 30 : 48;
+    var cap = w < 600 ? 14 : 22;
     var i;
     for (i = 0; i < cap; i += 1) {
       shards.push({
@@ -97,7 +97,7 @@
         spin: rand(-0.55, 0.55),
         text: CODE_FRAGS[i % CODE_FRAGS.length],
         hue: Math.random() < 0.45 ? rand(40, 52) : rand(185, 205),
-        size: rand(9, 12.5)
+        size: rand(8, 10.5)
       });
     }
   }
@@ -119,15 +119,15 @@
   }
 
   function drawGalaxy(t) {
-    var rot = t * 0.11;
-    var drift = t * 0.04;
+    var rot = t * 0.045;
+    var drift = t * 0.018;
     var diskY = 0.4;
     var i;
     var a;
 
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.rotate(drift * 0.08);
+    ctx.rotate(drift * 0.035);
     ctx.scale(1, diskY);
 
     for (a = 0; a < arms.length; a += 1) {
@@ -142,7 +142,7 @@
         else ctx.lineTo(x, y);
       }
       ctx.strokeStyle =
-        'hsla(' + arm.hue + ',' + (68 + (a % 3) * 6) + '%,' + (58 + (a % 2) * 6) + '%,' + (0.11 + arm.w0 * 0.06).toFixed(3) + ')';
+        'hsla(' + arm.hue + ',' + (55 + (a % 3) * 5) + '%,' + (58 + (a % 2) * 6) + '%,' + (0.06 + arm.w0 * 0.04).toFixed(3) + ')';
       ctx.lineWidth = 1.05;
       ctx.stroke();
     }
@@ -150,10 +150,10 @@
     ctx.globalCompositeOperation = 'lighter';
     for (i = 0; i < sparks.length; i += 1) {
       var sp = sparks[i];
-      var tw = 0.55 + 0.45 * Math.sin(t * 1.4 + sp.tw);
+      var tw = 0.55 + 0.35 * Math.sin(t * 0.75 + sp.tw);
       var x = sp.r * Math.cos(sp.ang + rot * 1.02);
       var y = sp.r * Math.sin(sp.ang + rot * 1.02);
-      ctx.fillStyle = 'hsla(' + sp.hue + ',85%,72%,' + (tw * 0.22).toFixed(3) + ')';
+      ctx.fillStyle = 'hsla(' + sp.hue + ',70%,68%,' + (tw * 0.11).toFixed(3) + ')';
       ctx.beginPath();
       ctx.arc(x, y, sp.s * tw, 0, Math.PI * 2);
       ctx.fill();
@@ -163,31 +163,31 @@
 
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.rotate(rot * 0.35);
+    ctx.rotate(rot * 0.18);
     ctx.font = '600 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
     for (i = 0; i < shards.length; i += 1) {
       var sh = shards[i];
-      sh.ang += sh.spin * 0.012;
+      sh.ang += sh.spin * 0.005;
       var xr = sh.r * Math.cos(sh.ang + rot * 0.9);
       var yr = sh.r * Math.sin(sh.ang + rot * 0.9) * diskY;
       ctx.font = '600 ' + sh.size + 'px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
-      ctx.shadowBlur = 14;
-      ctx.shadowColor = 'hsla(' + sh.hue + ',90%,60%,0.55)';
-      ctx.fillStyle = 'hsla(' + sh.hue + ',88%,78%,' + (0.42 + 0.2 * Math.sin(t * 2 + i)).toFixed(3) + ')';
+      ctx.shadowBlur = 5;
+      ctx.shadowColor = 'hsla(' + sh.hue + ',55%,55%,0.22)';
+      ctx.fillStyle = 'hsla(' + sh.hue + ',42%,72%,' + (0.2 + 0.08 * Math.sin(t * 0.9 + i)).toFixed(3) + ')';
       ctx.fillText(sh.text, xr, yr);
     }
     ctx.restore();
 
     ctx.shadowBlur = 0;
 
-    var pulse = 0.06 + 0.025 * Math.sin(t * 1.1);
+    var pulse = 0.028 + 0.012 * Math.sin(t * 0.65);
     var rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.55);
     rg.addColorStop(0, 'rgba(255,230,180,' + pulse + ')');
-    rg.addColorStop(0.18, 'rgba(120,200,255,' + (pulse * 0.22) + ')');
-    rg.addColorStop(0.45, 'rgba(20,40,80,' + (pulse * 0.12) + ')');
+    rg.addColorStop(0.22, 'rgba(120,200,255,' + (pulse * 0.1) + ')');
+    rg.addColorStop(0.5, 'rgba(20,40,80,' + (pulse * 0.05) + ')');
     rg.addColorStop(1, 'rgba(8,12,22,0)');
     ctx.fillStyle = rg;
     ctx.fillRect(0, 0, w, h);
