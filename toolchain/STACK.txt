@@ -15,13 +15,9 @@ Jednotný zoznam (všetko v rámci tímovej spolupráce — dizajn, kód, motion
 
 ČO JE TERAZ SKUTOČNE AKTÍVNE NA DOMOVSKEJ STRÁNKE (index.html)
   • Figma → tokeny prepísané v assets/site.css (--figma-*).
-  • assets/strings-brain.js — jeden časový takt (requestAnimationFrame) pre synchronizované vrstvy.
-  • GSAP + ScrollTrigger (CDN), assets/hero-cinematic.js (vstupná animácia + scroll).
-  • Hero canvas (quantum spiral) — odstránené; hero je statický gradient + grain.
-  • Three.js: assets/toolchain-experience.js + #str-three-host (desktop; rovnaký čas t ako canvas).
-  • assets/site.js (menu, PWA, scroll, …)
+  • assets/site.js (menu, PWA, scroll, …); hero bez canvas animácie (gradient + vignette + grain).
+  • Voliteľné: strings-brain, GSAP, Three, Lottie… — nie sú v základnom indexe.
   • Text hero: DeepSeek · NVIDIA (metodická zmienka, nie integrácia API)
-  • CustomEvent stringsbrain:tick — pre ďalšie jemné efekty (voliteľné; pointer-events: none).
 
 Voliteľné vrstvy na indexe (zapnite data-* / HTML sloty podľa potreby)
   • Lottie, Rive, Spline — stále v assets/toolchain-experience.js; na indexe ich zapnete
