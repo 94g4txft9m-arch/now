@@ -158,8 +158,42 @@ p { margin: 0 0 1rem; }
 }
 @media (min-width: 981px) {
   .navbar .wrap.nav-inner {
-    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding-left: max(30px, env(safe-area-inset-left, 0px));
     padding-right: max(30px, env(safe-area-inset-right, 0px));
+  }
+  .navbar .wrap.nav-inner::before {
+    content: "";
+    flex: 1 1 0;
+    min-width: 0;
+    order: 1;
+  }
+  .navbar .logo.logo--prestige {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 0 0 auto;
+    order: 2;
+    transform: scaleX(1.08);
+    transform-origin: center center;
+  }
+  .navbar .nav-toggle {
+    order: 4;
+  }
+  .navbar .nav-backdrop {
+    order: 5;
+  }
+  .navbar .links {
+    flex: 1 1 0;
+    min-width: 0;
+    order: 3;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.2rem;
   }
 }
 .logo {
@@ -177,7 +211,7 @@ p { margin: 0 0 1rem; }
   transform: scaleX(1.08);
   transform-origin: left center;
   position: relative;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
   z-index: 2;
   flex-shrink: 0;
 }
@@ -185,17 +219,28 @@ p { margin: 0 0 1rem; }
   content: "";
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
   width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, var(--brand-2), transparent);
-  opacity: 0.85;
-  transform-origin: left;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(154, 123, 79, 0.25) 12%,
+    var(--brand-2) 35%,
+    var(--gold) 50%,
+    var(--brand-2) 65%,
+    rgba(154, 123, 79, 0.25) 88%,
+    transparent 100%
+  );
+  opacity: 0.92;
+  transform-origin: center center;
   animation: logoGoldLine 8s ease-in-out infinite;
 }
 @keyframes logoGoldLine {
-  0%, 100% { transform: scaleX(1); opacity: 0.75; }
-  50% { transform: scaleX(0.55); opacity: 1; }
+  0%, 100% { transform: scaleX(0.52); opacity: 0.8; }
+  50% { transform: scaleX(1); opacity: 1; }
 }
 .logo--singularity {
   font-family: 'DM Sans', sans-serif;
@@ -331,22 +376,6 @@ p { margin: 0 0 1rem; }
 .hero-sim-canvas { display: none !important; }
 
 /* Domov: prestížny filmový hero (tmavý zamat + zlato) */
-/* Statická „špirála“ — viditeľná hneď (GitHub Pages / bez JS / kým nenačíta canvas) */
-.hero-quantum-fallback {
-  position: absolute;
-  inset: -8%;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.55;
-  background: url("quantum-fallback.svg") 50% 38% / min(132%, 1100px) no-repeat;
-  mix-blend-mode: screen;
-}
-html.strings-hero-canvas-ready .hero-quantum-fallback {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.85s ease, visibility 0s linear 0.85s;
-}
 .hero--prestige .hero-bg {
   position: absolute;
   inset: 0;
@@ -356,30 +385,9 @@ html.strings-hero-canvas-ready .hero-quantum-fallback {
     radial-gradient(ellipse 80% 55% at 12% 88%, rgba(45, 90, 120, 0.08), transparent 50%),
     linear-gradient(168deg, #0a0f1c 0%, #101a2e 38%, #0c1222 100%);
 }
-.hero--prestige .hero-quantum-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.52;
-  mix-blend-mode: screen;
-}
 .hero--prestige .hero-three-host--prestige {
   z-index: 0;
   opacity: 0.36;
-}
-/* Jemný „panel“ ako v mise-en-scène mangy — len dekor, bez textu */
-.hero--quantum-frame::before {
-  content: "";
-  position: absolute;
-  inset: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
-  border: 1px solid rgba(201, 169, 98, 0.16);
-  border-radius: 3px;
-  z-index: 3;
-  pointer-events: none;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 250, 240, 0.04),
-    0 0 40px rgba(0, 0, 0, 0.15);
 }
 .hero--prestige .hero-vignette {
   position: absolute;
@@ -681,12 +689,6 @@ body[data-page="index"] .site-foot-motif {
   animation-duration: 18s;
 }
 .hero-content { position: relative; z-index: 3; padding-top: calc(var(--nav-h) + 28px + env(safe-area-inset-top, 0px)); }
-@media (min-width: 981px) {
-  body[data-page="index"] .hero .wrap.hero-content {
-    padding-left: max(12px, env(safe-area-inset-left, 0px));
-    padding-right: max(30px, env(safe-area-inset-right, 0px));
-  }
-}
 .hero-copy { max-width: 56rem; }
 .hero-eyebrow {
   color: var(--brand-2);
@@ -958,6 +960,13 @@ footer.footer:not(.bg-dark) {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+  .navbar .logo.logo--prestige {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: scaleX(1.08);
+    transform-origin: left center;
+  }
   .logo--prestige {
     max-width: min(72vw, calc(100% - 60px));
     overflow: hidden;
@@ -1043,13 +1052,6 @@ footer.footer:not(.bg-dark) {
   .hero--prestige .hero-motif {
     display: none;
   }
-  .hero--prestige .hero-quantum-canvas {
-    opacity: 0.48;
-  }
-  .hero--quantum-frame::before {
-    inset: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
-    border-color: rgba(201, 169, 98, 0.12);
-  }
   .hero--prestige .hero-voice-switch {
     width: 100%;
     justify-content: flex-start;
@@ -1113,7 +1115,6 @@ footer.footer:not(.bg-dark) {
   .hero-lottie-wrap,
   .hero-spline-slot,
   .hero-rive-wrap,
-  .hero--prestige .hero-quantum-canvas,
   body[data-page="index"] .hero--singularity .hero-sim-canvas { display: none !important; }
   .animate-on-scroll,
   .animate-slide-left,

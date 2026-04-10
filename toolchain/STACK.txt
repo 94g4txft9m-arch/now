@@ -17,7 +17,7 @@ Jednotný zoznam (všetko v rámci tímovej spolupráce — dizajn, kód, motion
   • Figma → tokeny prepísané v assets/site.css (--figma-*).
   • assets/strings-brain.js — jeden časový takt (requestAnimationFrame) pre synchronizované vrstvy.
   • GSAP + ScrollTrigger (CDN), assets/hero-cinematic.js (vstupná animácia + scroll).
-  • Vlastný Canvas 2D: assets/hero-quantum-spiral.js (viazaný na STRINGS_BRAIN).
+  • Hero canvas (quantum spiral) — odstránené; hero je statický gradient + grain.
   • Three.js: assets/toolchain-experience.js + #str-three-host (desktop; rovnaký čas t ako canvas).
   • assets/site.js (menu, PWA, scroll, …)
   • Text hero: DeepSeek · NVIDIA (metodická zmienka, nie integrácia API)
@@ -26,7 +26,7 @@ Jednotný zoznam (všetko v rámci tímovej spolupráce — dizajn, kód, motion
 Voliteľné vrstvy na indexe (zapnite data-* / HTML sloty podľa potreby)
   • Lottie, Rive, Spline — stále v assets/toolchain-experience.js; na indexe ich zapnete
     pridaním prvkov a/alebo data-lottie-url, data-rive-url, data-spline-embed na <body>.
-  • Pozor na výkon na mobile — Three.js sa na úzkych displejoch v toolchain neštartuje; canvas zostáva.
+  • Pozor na výkon na mobile — Three.js sa na úzkych displejoch v toolchain neštartuje.
 
 ──────────────────────────────────────────────────────────────
 
