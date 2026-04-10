@@ -21,12 +21,13 @@
   --nav-h: 84px;
 
   /*
-   * STRINGS (logo) — nezávislý posun od menu (Domov, O nás, … ostávajú v grid stpci).
-   * px, rem, cm, mm, … Záporné X = doľava, záporné Y = hore.
-   * Teraz: 3 cm doľava. (Na jemnejší posun skús napr. -0.3cm alebo -3mm.)
+   * STRINGS (logo) — posun nezávisle od menu. Záporné X = doľava.
+   * Menu (Domov, …) — --nav-links-offset-* (len PC grid).
    */
-  --strings-logo-offset-x: -3cm;
+  --strings-logo-offset-x: -5cm;
   --strings-logo-offset-y: 0cm;
+  --nav-links-offset-x: -2cm;
+  --nav-links-offset-y: 0cm;
 }
 
 *,
@@ -183,6 +184,7 @@ p { margin: 0 0 1rem; }
     grid-row: 1;
     justify-self: end;
     min-width: 0;
+    transform: translateX(var(--nav-links-offset-x)) translateY(var(--nav-links-offset-y));
   }
 }
 .logo {
