@@ -156,6 +156,12 @@ p { margin: 0 0 1rem; }
   padding: 16px 0;
   position: relative;
 }
+@media (min-width: 981px) {
+  .navbar .wrap.nav-inner {
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(30px, env(safe-area-inset-right, 0px));
+  }
+}
 .logo {
   color: var(--ink);
   text-decoration: none;
@@ -171,38 +177,25 @@ p { margin: 0 0 1rem; }
   transform: scaleX(1.08);
   transform-origin: left center;
   position: relative;
-  padding-bottom: 6px;
+  padding-bottom: 2px;
   z-index: 2;
   flex-shrink: 0;
 }
 .logo--prestige::after {
   content: "";
   position: absolute;
-  left: -4%;
+  left: 0;
   bottom: 0;
-  width: 108%;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(201, 169, 98, 0.2) 12%,
-    #e8d5a8 38%,
-    #c9a962 52%,
-    #9a7b4f 68%,
-    rgba(201, 169, 98, 0.25) 88%,
-    transparent 100%
-  );
-  opacity: 0.95;
-  transform-origin: center;
-  box-shadow:
-    0 0 14px rgba(232, 213, 168, 0.55),
-    0 0 28px rgba(201, 169, 98, 0.28);
-  animation: logoGoldLine 5.5s ease-in-out infinite;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--brand-2), transparent);
+  opacity: 0.85;
+  transform-origin: left;
+  animation: logoGoldLine 8s ease-in-out infinite;
 }
 @keyframes logoGoldLine {
-  0%, 100% { transform: scaleX(0.42); opacity: 0.82; }
-  50% { transform: scaleX(1); opacity: 1; }
+  0%, 100% { transform: scaleX(1); opacity: 0.75; }
+  50% { transform: scaleX(0.55); opacity: 1; }
 }
 .logo--singularity {
   font-family: 'DM Sans', sans-serif;
@@ -288,9 +281,9 @@ p { margin: 0 0 1rem; }
   transform-origin: center;
 }
 .nav-toggle-bar:nth-child(2) {
-  height: 2.5px;
-  background: linear-gradient(90deg, #9a7b4f, #e8d5a8, #c9a962, #e8d5a8, #9a7b4f);
-  box-shadow: 0 0 10px rgba(201, 169, 98, 0.45);
+  height: 2px;
+  background: var(--brand-2);
+  box-shadow: none;
 }
 .navbar.open .nav-toggle {
   gap: 0;
@@ -368,7 +361,7 @@ html.strings-hero-canvas-ready .hero-quantum-fallback {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.82;
+  opacity: 0.52;
   mix-blend-mode: screen;
 }
 .hero--prestige .hero-three-host--prestige {
@@ -688,6 +681,12 @@ body[data-page="index"] .site-foot-motif {
   animation-duration: 18s;
 }
 .hero-content { position: relative; z-index: 3; padding-top: calc(var(--nav-h) + 28px + env(safe-area-inset-top, 0px)); }
+@media (min-width: 981px) {
+  body[data-page="index"] .hero .wrap.hero-content {
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(30px, env(safe-area-inset-right, 0px));
+  }
+}
 .hero-copy { max-width: 56rem; }
 .hero-eyebrow {
   color: var(--brand-2);
@@ -1045,7 +1044,7 @@ footer.footer:not(.bg-dark) {
     display: none;
   }
   .hero--prestige .hero-quantum-canvas {
-    opacity: 0.72;
+    opacity: 0.48;
   }
   .hero--quantum-frame::before {
     inset: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
