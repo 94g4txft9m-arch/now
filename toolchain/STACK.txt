@@ -1,6 +1,12 @@
 STRINGS — ako spolu pracujú nástroje (web + motion + 3D)
 ============================================================
 
+DEEPSEEK AI
+  • Pri copy, štruktúre a právnych formuláciách používajte [DeepSeek Chat](https://chat.deepseek.com)
+    ako doplnkovú analýzu; v Cursori je to zakotvené v .cursor/rules/deepseek-legal-web.mdc.
+  • Finálne záväzné texty vždy schváliť v kancelárii.
+
+
 FIGMA
   • Zdroj pravdy pre farby, typografiu, spacing.
   • Exportujte tokeny (Variables) a prepíšte ich do assets/site.css v :root (prefix --figma-*).
