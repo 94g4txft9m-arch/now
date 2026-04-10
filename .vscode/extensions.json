@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "ms-python.python",
+    "ms-python.debugpy",
+    "GitHub.vscode-pull-request-github",
+    "eamodio.gitlens",
+    "vercel.vscode-vercel"
+  ]
+}
