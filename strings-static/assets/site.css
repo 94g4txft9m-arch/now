@@ -158,42 +158,27 @@ p { margin: 0 0 1rem; }
 }
 @media (min-width: 981px) {
   .navbar .wrap.nav-inner {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 0;
-    padding-left: max(30px, env(safe-area-inset-left, 0px));
+    gap: 1.25rem;
+    padding-left: max(24px, env(safe-area-inset-left, 0px));
     padding-right: max(30px, env(safe-area-inset-right, 0px));
   }
   .navbar .wrap.nav-inner::before {
-    content: "";
-    flex: 1 1 0;
-    min-width: 0;
-    order: 1;
+    content: none;
+    display: none;
   }
   .navbar .logo.logo--prestige {
-    position: relative;
-    left: auto;
-    top: auto;
     flex: 0 0 auto;
-    order: 2;
     transform: scaleX(1.08);
-    transform-origin: center center;
-  }
-  .navbar .nav-toggle {
-    order: 4;
-  }
-  .navbar .nav-backdrop {
-    order: 5;
+    transform-origin: left center;
   }
   .navbar .links {
-    flex: 1 1 0;
-    min-width: 0;
-    order: 3;
-    display: flex;
+    flex: 0 1 auto;
     justify-content: flex-end;
     align-items: center;
     gap: 1.2rem;
+    min-width: 0;
   }
 }
 .logo {
@@ -235,7 +220,7 @@ p { margin: 0 0 1rem; }
     transparent 100%
   );
   opacity: 0.92;
-  transform-origin: center center;
+  transform-origin: left center;
   animation: logoGoldLine 8s ease-in-out infinite;
 }
 @keyframes logoGoldLine {
