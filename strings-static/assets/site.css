@@ -19,6 +19,13 @@
   --gold: #b8975e;
   --ok: #3d5a4a;
   --nav-h: 84px;
+
+  /*
+   * STRINGS (logo) — nezávislý posun od menu (Domov, O nás, … ostávajú v grid stpci).
+   * Uprav len tieto dve hodnoty (px, rem, …). Záporné X = doľava, záporné Y = hore.
+   */
+  --strings-logo-offset-x: -5px;
+  --strings-logo-offset-y: 0px;
 }
 
 *,
@@ -169,8 +176,6 @@ p { margin: 0 0 1rem; }
     grid-column: 1;
     grid-row: 1;
     justify-self: start;
-    /* Len STRINGS; odkazy (Domov, O nás, …) v stpci 2 sa nehýbu. */
-    margin-left: -5px;
   }
   .navbar .links {
     grid-column: 2;
@@ -197,6 +202,12 @@ p { margin: 0 0 1rem; }
   padding-bottom: 4px;
   z-index: 2;
   flex-shrink: 0;
+}
+/* Navbar: STRINGS — posun cez :root premenné (--strings-logo-offset-*). */
+.navbar .logo.logo--prestige {
+  transform: translateX(var(--strings-logo-offset-x)) translateY(var(--strings-logo-offset-y))
+    scaleX(1.08);
+  transform-origin: left center;
 }
 .logo--prestige::after {
   content: "";
@@ -947,8 +958,6 @@ footer.footer:not(.bg-dark) {
     position: relative;
     left: auto;
     top: auto;
-    transform: scaleX(1.08);
-    transform-origin: left center;
   }
   .logo--prestige {
     max-width: min(72vw, calc(100% - 60px));
