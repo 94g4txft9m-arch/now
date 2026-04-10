@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="sk" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#030306" />
+  <title>NOIR — Cinematic Digital Studio</title>
+  <meta name="description" content="Premium digital craft. Motion, strategy, and immersive web experiences." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Syne"', 'system-ui', 'sans-serif'],
+            display: ['"Archivo Black"', 'Impact', 'sans-serif'],
+          },
+          colors: {
+            void: '#030306',
+            ink: '#0a0a12',
+            mist: '#12121c',
+            accent: '#00f0c8',
+          },
+          animation: {
+            'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
+          },
+          keyframes: {
+            'pulse-slow': {
+              '0%, 100%': { opacity: '0.4' },
+              '50%': { opacity: '0.85' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-void text-zinc-100 antialiased selection:bg-accent/30 selection:text-white overflow-x-hidden">
+  <!-- Preloader -->
+  <div id="preloader" class="preloader fixed inset-0 z-[200] flex flex-col items-center justify-center bg-void" aria-hidden="true">
+    <div class="preloader__glow absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,rgba(0,240,200,0.12),transparent_65%)]" aria-hidden="true"></div>
+    <p class="preloader__word font-display text-[clamp(2.5rem,12vw,8rem)] uppercase tracking-tighter text-white/90">Noir</p>
+    <div class="preloader__bar mt-10 h-px w-32 overflow-hidden bg-white/10">
+      <div class="preloader__bar-fill h-full w-full origin-left scale-x-0 bg-accent"></div>
+    </div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div id="cursor" class="cursor-dot pointer-events-none fixed left-0 top-0 z-[150] mix-blend-difference" aria-hidden="true">
+    <span class="cursor-dot__inner block h-3 w-3 rounded-full bg-white"></span>
+  </div>
+
+  <!-- Header -->
+  <header class="header fixed left-0 right-0 top-0 z-[100] border-b border-white/[0.06] bg-void/40 px-6 py-5 backdrop-blur-xl backdrop-saturate-150 md:px-10">
+    <div class="mx-auto flex max-w-[1400px] items-center justify-between">
+      <a href="#" class="interactive font-display text-xl tracking-tight text-white md:text-2xl" data-cursor-magnetic>NOIR</a>
+      <nav class="hidden items-center gap-10 md:flex" aria-label="Primary">
+        <a href="#work" class="interactive text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white">Work</a>
+        <a href="#about" class="interactive text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white">About</a>
+        <a href="#contact" class="interactive rounded-full border border-white/15 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-md transition hover:border-accent/40 hover:bg-accent/10">Start</a>
+      </nav>
+      <button type="button" class="interactive relative z-[110] md:hidden" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="drawer" data-menu-toggle>
+        <span class="block h-0.5 w-7 bg-white"></span>
+        <span class="mt-1.5 block h-0.5 w-5 bg-white/70"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="drawer" class="pointer-events-none fixed inset-0 z-[105] flex flex-col bg-void/95 px-8 pb-10 pt-28 opacity-0 backdrop-blur-2xl transition-opacity duration-500 ease-out md:hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav class="flex flex-col gap-8" aria-label="Mobile">
+      <a href="#work" class="interactive font-display text-4xl uppercase tracking-tight text-white">Work</a>
+      <a href="#about" class="interactive font-display text-4xl uppercase tracking-tight text-white">About</a>
+      <a href="#contact" class="interactive mt-4 inline-flex w-max rounded-full border border-accent/40 bg-accent/10 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">Start a project</a>
+    </nav>
+  </div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero relative flex min-h-[100dvh] items-end overflow-hidden pb-16 pt-32 md:items-center md:pb-24 md:pt-0" aria-label="Hero">
+      <div class="hero__bg absolute inset-0 z-0" aria-hidden="true">
+        <div class="hero__bg-image absolute inset-0 scale-110 bg-cover bg-center opacity-40" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-void via-void/70 to-void"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_100%_80%_at_50%_-20%,rgba(0,240,200,0.15),transparent_55%)]"></div>
+      </div>
+      <div class="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
+        <p class="hero__eyebrow mb-6 text-xs font-bold uppercase tracking-[0.35em] text-accent">Digital atelier · Est. 2026</p>
+        <h1 class="hero__title font-display text-[clamp(2.75rem,11vw,7.5rem)] leading-[0.92] uppercase tracking-tight text-white">
+          We shape silence into signal
+        </h1>
+        <p class="hero__sub mt-8 max-w-xl text-lg text-zinc-400 md:text-xl">
+          Cinematic interfaces, ruthless clarity, and motion that breathes with intent.
+        </p>
+        <div class="hero__cta mt-12 flex flex-wrap gap-4">
+          <a href="#work" class="interactive group inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md transition hover:border-accent/50 hover:shadow-[0_0_40px_rgba(0,240,200,0.15)]">
+            View work
+            <span class="text-accent transition-transform group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 md:block" aria-hidden="true">
+        <div class="flex h-14 w-8 items-start justify-center rounded-full border border-white/20 pt-2">
+          <span class="block h-2 w-1 animate-bounce rounded-full bg-accent/80"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- About (pin) -->
+    <section id="about" class="about relative min-h-[280vh] bg-ink">
+      <div class="about__pin relative min-h-[100dvh]">
+        <div class="about__sticky flex min-h-[100dvh] flex-col justify-center px-6 py-24 md:px-10">
+          <div class="mx-auto grid max-w-[1400px] gap-12 md:grid-cols-12 md:gap-8">
+            <div class="about__label md:col-span-4">
+              <span class="text-xs font-bold uppercase tracking-[0.35em] text-accent">About</span>
+              <h2 class="about__headline mt-6 font-display text-4xl uppercase leading-none tracking-tight text-white md:text-5xl lg:text-6xl">
+                Still frames. Living systems.
+              </h2>
+            </div>
+            <div class="about__scroll md:col-span-7 md:col-start-6">
+              <p class="about__para text-xl leading-relaxed text-zinc-400 md:text-2xl md:leading-relaxed">
+                We are a collective of designers and engineers obsessed with the edge between art direction and performance. Every scroll is a cut. Every transition, a beat.
+              </p>
+              <p class="about__para mt-8 text-xl leading-relaxed text-zinc-500 md:text-2xl md:leading-relaxed">
+                From Berlin to Bratislava, we partner with brands that refuse noise. Strategy, identity, and front-end craft — delivered as one continuous experience.
+              </p>
+              <p class="about__para mt-8 text-xl leading-relaxed text-zinc-500 md:text-2xl md:leading-relaxed">
+                Dark by default. Light where it matters. Your audience should feel the room before they read a word.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Selected work -->
+    <section id="work" class="relative bg-void py-24 md:py-32">
+      <div class="mx-auto max-w-[1400px] px-6 md:px-10">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <h2 class="font-display text-5xl uppercase tracking-tight text-white md:text-7xl">Selected work</h2>
+          <p class="max-w-sm text-sm uppercase tracking-[0.2em] text-zinc-500">Case studies · 2024—2026</p>
+        </div>
+        <div class="mt-16 grid gap-8 md:gap-12">
+          <article class="work-item group relative md:grid md:grid-cols-12 md:gap-8">
+            <a href="#" class="interactive work-item__magnetic relative block overflow-hidden rounded-2xl border border-white/[0.08] bg-mist/50 shadow-2xl backdrop-blur-sm md:col-span-8">
+              <div class="work-item__inner aspect-[16/10] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2400&auto=format&fit=crop" alt="" class="work-item__img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" width="1200" height="750" loading="lazy" />
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-void/90 via-transparent to-transparent opacity-80"></div>
+              <div class="absolute bottom-0 left-0 p-8">
+                <span class="text-xs font-bold uppercase tracking-[0.25em] text-accent">Identity</span>
+                <h3 class="mt-2 font-display text-3xl uppercase text-white md:text-4xl">Aether Labs</h3>
+              </div>
+            </a>
+            <div class="mt-6 flex flex-col justify-end md:col-span-4 md:mt-0">
+              <p class="text-zinc-500">Brand system, motion language, and a modular web canvas for a deep-tech venture studio.</p>
+            </div>
+          </article>
+          <article class="work-item group relative md:grid md:grid-cols-12 md:gap-8">
+            <div class="order-2 mt-6 flex flex-col justify-end md:order-1 md:col-span-4 md:mt-0">
+              <p class="text-zinc-500">Immersive launch site with WebGL atmosphere and editorial typography for a European fashion house.</p>
+            </div>
+            <a href="#" class="interactive work-item__magnetic order-1 relative block overflow-hidden rounded-2xl border border-white/[0.08] bg-mist/50 shadow-2xl backdrop-blur-sm md:order-2 md:col-span-8">
+              <div class="work-item__inner aspect-[16/10] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2400&auto=format&fit=crop" alt="" class="work-item__img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" width="1200" height="750" loading="lazy" />
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-void/90 via-transparent to-transparent opacity-80"></div>
+              <div class="absolute bottom-0 left-0 p-8">
+                <span class="text-xs font-bold uppercase tracking-[0.25em] text-accent">Fashion</span>
+                <h3 class="mt-2 font-display text-3xl uppercase text-white md:text-4xl">Velum Atelier</h3>
+              </div>
+            </a>
+          </article>
+          <article class="work-item group relative md:grid md:grid-cols-12 md:gap-8">
+            <a href="#" class="interactive work-item__magnetic relative block overflow-hidden rounded-2xl border border-white/[0.08] bg-mist/50 shadow-2xl backdrop-blur-sm md:col-span-8">
+              <div class="work-item__inner aspect-[16/10] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=2400&auto=format&fit=crop" alt="" class="work-item__img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" width="1200" height="750" loading="lazy" />
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-void/90 via-transparent to-transparent opacity-80"></div>
+              <div class="absolute bottom-0 left-0 p-8">
+                <span class="text-xs font-bold uppercase tracking-[0.25em] text-accent">Product</span>
+                <h3 class="mt-2 font-display text-3xl uppercase text-white md:text-4xl">Pulse OS</h3>
+              </div>
+            </a>
+            <div class="mt-6 flex flex-col justify-end md:col-span-4 md:mt-0">
+              <p class="text-zinc-500">Design system and marketing site for a B2B analytics platform — clarity without sterility.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="relative overflow-hidden border-t border-white/[0.06] bg-ink py-20 md:py-28">
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_100%,rgba(0,240,200,0.08),transparent_60%)]" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-[1400px] px-6 md:px-10">
+        <p class="text-xs font-bold uppercase tracking-[0.35em] text-accent">Contact</p>
+        <h2 class="footer__head mt-6 font-display text-[clamp(3rem,14vw,10rem)] uppercase leading-[0.9] tracking-tight text-white">
+          Let's build<br class="md:hidden" /> the void
+        </h2>
+        <div class="footer__row mt-12 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <a href="mailto:hello@noir.studio" class="interactive text-2xl text-zinc-300 underline decoration-white/20 underline-offset-8 transition hover:text-accent hover:decoration-accent/40 md:text-3xl">hello@noir.studio</a>
+          <div class="flex flex-wrap gap-8">
+            <a href="#" class="interactive text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-white">Instagram</a>
+            <a href="#" class="interactive text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-white">Behance</a>
+            <a href="#" class="interactive text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-white">Twitter</a>
+          </div>
+        </div>
+        <div class="mt-20 flex flex-col justify-between gap-4 border-t border-white/[0.06] pt-10 text-xs uppercase tracking-[0.2em] text-zinc-600 md:flex-row">
+          <span>© 2026 Noir Studio</span>
+          <span>Designed for motion</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

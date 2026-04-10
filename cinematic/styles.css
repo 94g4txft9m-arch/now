@@ -1,0 +1,36 @@
+/* Base + custom cursor + preloader (Tailwind handles the rest) */
+@media (pointer: fine) {
+  body.is-cursor-custom {
+    cursor: none;
+  }
+  body.is-cursor-custom a,
+  body.is-cursor-custom button {
+    cursor: none;
+  }
+}
+
+.cursor-dot {
+  will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
+}
+
+.cursor-dot__inner {
+  transform-origin: center;
+  will-change: transform;
+}
+
+.preloader {
+  will-change: transform, opacity, clip-path;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot {
+    display: none !important;
+  }
+}
+
+.header.is-scrolled {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(3, 3, 6, 0.78);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+}
