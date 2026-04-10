@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-left1cm';
+var CACHE = 'strings-20260410-navflush';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
