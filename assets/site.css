@@ -157,13 +157,13 @@ p { margin: 0 0 1rem; }
   position: relative;
 }
 @media (min-width: 981px) {
-  /* Logo v strede „ľavého pásu“ medzi okrajom a blokom menu (ako čierna hranica na náčrte). */
+  /* Logo čo najviac doľava; menu vpravo v druhom stľpci. */
   .navbar .wrap.nav-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     column-gap: 1.25rem;
-    padding-left: max(24px, env(safe-area-inset-left, 0px));
+    padding-left: max(0px, env(safe-area-inset-left, 0px));
     padding-right: max(30px, env(safe-area-inset-right, 0px));
   }
   .navbar .wrap.nav-inner::before {
@@ -174,7 +174,7 @@ p { margin: 0 0 1rem; }
     grid-column: 1;
     grid-row: 1;
     justify-self: start;
-    margin-left: 1cm;
+    margin-left: 0;
     transform: scaleX(1.08);
     transform-origin: left center;
   }
