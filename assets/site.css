@@ -157,6 +157,26 @@ p { margin: 0 0 1rem; }
   padding: 16px 0;
   position: relative;
 }
+/* PC: grid oddelí logo a menu — posun STRINGS (margin/transform na .logo) neťahá odkazy. */
+@media (min-width: 981px) {
+  .navbar .wrap.nav-inner {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+    column-gap: 1.25rem;
+  }
+  .navbar .logo.logo--prestige {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  .navbar .links {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    min-width: 0;
+  }
+}
 .logo {
   color: var(--ink);
   text-decoration: none;
