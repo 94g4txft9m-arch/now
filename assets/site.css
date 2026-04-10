@@ -22,10 +22,11 @@
 
   /*
    * STRINGS (logo) — nezávislý posun od menu (Domov, O nás, … ostávajú v grid stpci).
-   * Uprav len tieto dve hodnoty (px, rem, …). Záporné X = doľava, záporné Y = hore.
+   * px, rem, cm, mm, … Záporné X = doľava, záporné Y = hore.
+   * Teraz: 3 cm doľava. (Na jemnejší posun skús napr. -0.3cm alebo -3mm.)
    */
-  --strings-logo-offset-x: -3px;
-  --strings-logo-offset-y: 0px;
+  --strings-logo-offset-x: -3cm;
+  --strings-logo-offset-y: 0cm;
 }
 
 *,
