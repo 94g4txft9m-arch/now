@@ -1,6 +1,6 @@
 /**
- * Hero background: quantum / orbital spiral (canvas 2D).
- * Ak existuje STRINGS_BRAIN, kreslí v jednom taktu s Three.js a ostatnými vrstvami.
+ * Hero: „digitálny vesmír“ — pohľad zhora na rotujúcu špirálovú galaxiu
+ * zo žiarivých častíc a krátkych útržkov kódu (canvas 2D).
  */
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -24,22 +24,82 @@
   var h = 0;
   var cx = 0;
   var cy = 0;
-  var orbits = [];
-  var stars = [];
-  var t0Local = performance.now();
+  var t0 = performance.now();
+  var canvasReady = false;
+  var arms = [];
+  var sparks = [];
+  var shards = [];
 
-  var ORBIT_COUNT = 48;
-  var STAR_COUNT = 80;
+  var CODE_FRAGS = [
+    'const', 'return', 'async', 'await', '{ }', '[]', '0x', 'fn',
+    'Law', 'lex', 'data', 'hash', 'TLS', 'API', 'DPA', 'void',
+    'if', 'for', 'map', 'seed', 'node', 'git', 'src', 'build',
+    '//', '/**/', '===', '!==', '=>', 'new', 'try', 'catch',
+    'type', 'null', 'enum', 'case', 'let', 'var', 'doc', 'key'
+  ];
 
   function rand(a, b) {
     return a + Math.random() * (b - a);
   }
 
-  var canvasReady = false;
   function markCanvasReady() {
     if (canvasReady) return;
     canvasReady = true;
     document.documentElement.classList.add('strings-hero-canvas-ready');
+  }
+
+  function buildArms() {
+    arms = [];
+    var armCount = 4;
+    var a;
+    for (a = 0; a < armCount; a += 1) {
+      var pts = [];
+      var i;
+      for (i = 0; i < 220; i += 1) {
+        var u = i * 0.065;
+        var r = 6 + u * u * 0.95;
+        var ang = u * 0.62 + (a * Math.PI * 2) / armCount;
+        pts.push({ r: r, ang: ang });
+      }
+      arms.push({
+        pts: pts,
+        hue: a % 2 === 0 ? rand(38, 48) : rand(188, 210),
+        w0: rand(0.35, 0.85)
+      });
+    }
+  }
+
+  function buildSparks() {
+    sparks = [];
+    var i;
+    var cap = Math.min(420, Math.floor((w * h) / 4200));
+    for (i = 0; i < cap; i += 1) {
+      var arm = arms[i % arms.length];
+      var p = arm.pts[Math.floor(Math.random() * arm.pts.length)];
+      sparks.push({
+        r: p.r * rand(0.92, 1.08) + rand(-4, 4),
+        ang: p.ang + rand(-0.09, 0.09),
+        s: rand(0.35, 1.65),
+        tw: rand(0, Math.PI * 2),
+        hue: arm.hue + rand(-8, 8)
+      });
+    }
+  }
+
+  function buildShards() {
+    shards = [];
+    var cap = w < 600 ? 30 : 48;
+    var i;
+    for (i = 0; i < cap; i += 1) {
+      shards.push({
+        r: rand(28, Math.min(w, h) * 0.46),
+        ang: rand(0, Math.PI * 2),
+        spin: rand(-0.55, 0.55),
+        text: CODE_FRAGS[i % CODE_FRAGS.length],
+        hue: Math.random() < 0.45 ? rand(40, 52) : rand(185, 205),
+        size: rand(9, 12.5)
+      });
+    }
   }
 
   function resize() {
@@ -51,83 +111,93 @@
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    cx = w * 0.52;
-    cy = h * 0.42;
-    orbits = [];
-    var i;
-    for (i = 0; i < ORBIT_COUNT; i += 1) {
-      var hueRoll = Math.random();
-      var hue;
-      if (hueRoll < 0.26) {
-        hue = rand(92, 112);
-      } else if (i < ORBIT_COUNT * 0.42) {
-        hue = rand(280, 320);
-      } else {
-        hue = rand(185, 210);
-      }
-      orbits.push({
-        r: 40 + i * (Math.max(w, h) * 0.022),
-        tilt: rand(-0.95, 0.95),
-        spin: rand(-1, 1) * (0.08 + i * 0.004),
-        phase: rand(0, Math.PI * 2),
-        hue: hue,
-        alpha: rand(0.06, 0.22) * (1 - i / ORBIT_COUNT * 0.35)
-      });
-    }
-    stars = [];
-    for (i = 0; i < STAR_COUNT; i += 1) {
-      stars.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        s: Math.random() * 1.2 + 0.2,
-        tw: rand(0, Math.PI * 2)
-      });
-    }
+    cx = w * 0.5;
+    cy = h * 0.36;
+    buildArms();
+    buildSparks();
+    buildShards();
   }
 
-  function draw(t) {
-    if (w > 1 && h > 1) markCanvasReady();
-    ctx.clearRect(0, 0, w, h);
-
+  function drawGalaxy(t) {
+    var rot = t * 0.11;
+    var drift = t * 0.04;
+    var diskY = 0.4;
     var i;
-    for (i = 0; i < stars.length; i += 1) {
-      var st = stars[i];
-      var tw = 0.35 + 0.2 * Math.sin(t * 1.2 + st.tw);
-      ctx.fillStyle = 'rgba(255,250,240,' + (tw * 0.15).toFixed(3) + ')';
-      ctx.beginPath();
-      ctx.arc(st.x, st.y, st.s, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    var a;
 
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.globalCompositeOperation = 'lighter';
+    ctx.rotate(drift * 0.08);
+    ctx.scale(1, diskY);
 
-    for (i = 0; i < orbits.length; i += 1) {
-      var o = orbits[i];
-      var rot = o.phase + t * o.spin;
-      ctx.save();
-      ctx.rotate(rot);
-      ctx.scale(1, 0.28 + Math.abs(o.tilt) * 0.55);
-      ctx.rotate(o.tilt * 0.4);
-      ctx.strokeStyle = 'hsla(' + o.hue + ',65%,62%,' + o.alpha.toFixed(3) + ')';
-      ctx.lineWidth = 0.6 + (i % 5) * 0.08;
+    for (a = 0; a < arms.length; a += 1) {
+      var arm = arms[a];
       ctx.beginPath();
-      ctx.ellipse(0, 0, o.r, o.r, 0, 0, Math.PI * 2);
+      var pts = arm.pts;
+      for (i = 0; i < pts.length; i += 1) {
+        var p = pts[i];
+        var x = p.r * Math.cos(p.ang + rot);
+        var y = p.r * Math.sin(p.ang + rot);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle =
+        'hsla(' + arm.hue + ',' + (68 + (a % 3) * 6) + '%,' + (58 + (a % 2) * 6) + '%,' + (0.11 + arm.w0 * 0.06).toFixed(3) + ')';
+      ctx.lineWidth = 1.05;
       ctx.stroke();
-      ctx.restore();
+    }
+
+    ctx.globalCompositeOperation = 'lighter';
+    for (i = 0; i < sparks.length; i += 1) {
+      var sp = sparks[i];
+      var tw = 0.55 + 0.45 * Math.sin(t * 1.4 + sp.tw);
+      var x = sp.r * Math.cos(sp.ang + rot * 1.02);
+      var y = sp.r * Math.sin(sp.ang + rot * 1.02);
+      ctx.fillStyle = 'hsla(' + sp.hue + ',85%,72%,' + (tw * 0.22).toFixed(3) + ')';
+      ctx.beginPath();
+      ctx.arc(x, y, sp.s * tw, 0, Math.PI * 2);
+      ctx.fill();
     }
 
     ctx.restore();
 
-    var pulse = 0.04 + 0.03 * Math.sin(t * 0.9);
-    var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.18);
-    g.addColorStop(0, 'rgba(255,255,255,' + pulse + ')');
-    g.addColorStop(0.22, 'rgba(118,185,0,' + (pulse * 0.1) + ')');
-    g.addColorStop(0.4, 'rgba(200,170,230,' + (pulse * 0.32) + ')');
-    g.addColorStop(1, 'rgba(10,16,30,0)');
-    ctx.fillStyle = g;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot * 0.35);
+    ctx.font = '600 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (i = 0; i < shards.length; i += 1) {
+      var sh = shards[i];
+      sh.ang += sh.spin * 0.012;
+      var xr = sh.r * Math.cos(sh.ang + rot * 0.9);
+      var yr = sh.r * Math.sin(sh.ang + rot * 0.9) * diskY;
+      ctx.font = '600 ' + sh.size + 'px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = 'hsla(' + sh.hue + ',90%,60%,0.55)';
+      ctx.fillStyle = 'hsla(' + sh.hue + ',88%,78%,' + (0.42 + 0.2 * Math.sin(t * 2 + i)).toFixed(3) + ')';
+      ctx.fillText(sh.text, xr, yr);
+    }
+    ctx.restore();
+
+    ctx.shadowBlur = 0;
+
+    var pulse = 0.06 + 0.025 * Math.sin(t * 1.1);
+    var rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.55);
+    rg.addColorStop(0, 'rgba(255,230,180,' + pulse + ')');
+    rg.addColorStop(0.18, 'rgba(120,200,255,' + (pulse * 0.22) + ')');
+    rg.addColorStop(0.45, 'rgba(20,40,80,' + (pulse * 0.12) + ')');
+    rg.addColorStop(1, 'rgba(8,12,22,0)');
+    ctx.fillStyle = rg;
     ctx.fillRect(0, 0, w, h);
+  }
+
+  function draw(tSec) {
+    if (w < 2 || h < 2) return;
+    if (w > 1 && h > 1) markCanvasReady();
+    ctx.clearRect(0, 0, w, h);
+    drawGalaxy(tSec);
   }
 
   resize();
@@ -147,7 +217,7 @@
     window.STRINGS_BRAIN.subscribe(onBrainTick);
   } else {
     function legacyLoop(now) {
-      draw((now - t0Local) * 0.001);
+      draw((now - t0) * 0.001);
       requestAnimationFrame(legacyLoop);
     }
     requestAnimationFrame(legacyLoop);
