@@ -1,0 +1,45 @@
+STRINGS — ako spolu pracujú nástroje (web + motion + 3D)
+============================================================
+
+FIGMA
+  • Zdroj pravdy pre farby, typografiu, spacing.
+  • Exportujte tokeny (Variables) a prepíšte ich do assets/site.css v :root (prefix --figma-*).
+  • Režim: dizajn → implementácia v HTML/CSS (tento repozitár).
+
+WEBFLOW
+  • Prototypy alebo marketingové stránky: export kódu (HTML/CSS) alebo publikujte na subdoméne
+    a vložte do strings-static cez <iframe> (rovnako ako Framer Sites).
+  • Pre hlavnú kancelársku stránku odporúčame ponechať čistý statický HTML v strings-static.
+
+FRAMER
+  • Framer Sites: publikovaná URL → iframe na stránke alebo presmerovanie.
+  • Framer Motion: vyžaduje React; pre tento statický web použite GSAP v site.js alebo Lottie/Rive.
+
+SPLINE
+  • Vytvorte scénu → Publish → skopírujte „Viewer“ URL.
+  • V index.html na <body> nastavte data-spline-embed="URL".
+  • Zobrazí sa blok #hero-spline-slot (pravý dolný roh hero).
+
+THREE.JS
+  • Beží v assets/toolchain-experience.js — jemná časticová vrstva pod canvasom singularity.
+  • Vypnutie: data-toolchain-three="off" na <body>.
+  • Na úzkych displejoch sa Three.js nespúšťa (výkon).
+
+REACT THREE FIBER (R3F)
+  • Je to React nad Three.js — v tomto statickom projekte ho nenačítavame priamo.
+  • Postup: samostatný Vite + React + @react-three/fiber projekt → npm run build →
+    výstup vložte do strings-static/embeds/r3f/ a na stránku <iframe src="embeds/r3f/index.html">.
+
+RIVE
+  • Export .riv do assets/rive/ a na <body> data-rive-url="assets/rive/nazov.riv".
+  • State machine v kóde je predvolene „State Machine 1“ (upravte v toolchain-experience.js ak treba).
+
+LOTTIE
+  • JSON z After Effects / LottieFiles.
+  • data-lottie-url na <body> alebo nechajte predvolenú ukážku v toolchain-experience.js.
+
+Súbory
+  • Integrácia: assets/toolchain-experience.js (volaný len z index.html).
+  • Štýly slotov: assets/site.css (hero-three-host, hero-lottie-wrap, hero-spline-slot).
+  • R3F build výstup: uložte do embeds/r3f/ (napr. index.html + assets) a na stránku vložte iframe.
+  • Rive súbory: assets/rive/*.riv
