@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-logocm';
+var CACHE = 'strings-20260410-nav5cm2';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
