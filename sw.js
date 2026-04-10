@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-navsplit';
+var CACHE = 'strings-20260410-logo5';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();

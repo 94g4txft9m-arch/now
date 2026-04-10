@@ -378,7 +378,7 @@
     var loc = window.location;
     if (loc.protocol !== 'https:' && loc.hostname !== 'localhost' && loc.hostname !== '127.0.0.1') return;
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js?v=20260410-navsplit', { scope: './' }).catch(function () {});
+      navigator.serviceWorker.register('sw.js?v=20260410-logo5', { scope: './' }).catch(function () {});
     });
   }
 
