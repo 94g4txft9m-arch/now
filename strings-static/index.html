@@ -7,27 +7,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="format-detection" content="telephone=no, email=no, address=no" />
-  <title>STRINGS — Domov</title>
-  <meta name="description" content="STRINGS — advokátska kancelária pre digitálnu dobu. Technológie, podnikanie, GDPR a sporová agenda. Bratislava." />
-  <meta name="theme-color" content="#0f172a" />
+  <title>STRINGS — Advokátska kancelária</title>
+  <meta name="description" content="STRINGS — advokátska kancelária v Bratislave. Obchodné právo, technológie, ochrana údajov a sporová agenda s dôrazom na diskrétnosť a presnosť." />
+  <meta name="theme-color" content="#0c1222" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/site.css?v=20260410-toolchain1" />
+  <link rel="stylesheet" href="assets/site.css?v=20260410-mobile1" />
 </head>
-<body
-  data-page="index"
-  data-spline-embed=""
-  data-rive-url=""
-  data-lottie-url=""
->
+<body data-page="index">
   <header class="navbar">
   <div class="wrap nav-inner">
-    <a class="logo logo--singularity" href="index.html" aria-label="STRINGS">
-      <span class="logo-str">
-        <span class="logo-ch" style="--i:0" data-char="S">S</span><span class="logo-ch" style="--i:1" data-char="T">T</span><span class="logo-ch" style="--i:2" data-char="R">R</span><span class="logo-ch" style="--i:3" data-char="I">I</span><span class="logo-ch" style="--i:4" data-char="N">N</span><span class="logo-ch" style="--i:5" data-char="G">G</span><span class="logo-ch" style="--i:6" data-char="S">S</span>
-      </span>
-    </a>
+    <a class="logo logo--prestige" href="index.html" aria-label="STRINGS — domov">STRINGS</a>
     <button type="button" class="nav-toggle" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="nav-links">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -45,38 +36,35 @@
     </nav>
   </div>
 </header>
-  <section class="hero hero--singularity">
+  <section class="hero hero--prestige" aria-labelledby="hero-title">
     <div class="hero-bg"></div>
-    <div class="hero-stars" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-grid"></div>
-    <div id="str-three-host" class="hero-three-host" aria-hidden="true"></div>
-    <canvas class="hero-sim-canvas" id="hero-sim-canvas" aria-hidden="true"></canvas>
-    <div class="hero-lottie-wrap" aria-hidden="true"><div id="hero-lottie" class="hero-lottie"></div></div>
-    <div id="hero-rive-wrap" class="hero-rive-wrap" hidden aria-hidden="true">
-      <canvas id="hero-rive-canvas" width="200" height="200" aria-hidden="true"></canvas>
-    </div>
-    <div id="hero-spline-slot" class="hero-spline-slot" hidden aria-hidden="true">
-      <iframe title="Spline 3D" loading="lazy" allow="fullscreen; xr-spatial-tracking" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="hero-motif" aria-hidden="true">
+      <svg viewBox="0 0 200 240" width="200" height="240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 8v224M52 40h96M52 200h96" stroke="currentColor" stroke-width="0.75" opacity="0.35"/>
+        <path d="M100 48c-22 0-40 18-40 40v32c0 16 12 28 28 30v36h24v-36c16-2 28-14 28-30V88c0-22-18-40-40-40z" stroke="currentColor" stroke-width="1.2" opacity="0.45"/>
+        <circle cx="100" cy="108" r="6" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+      </svg>
     </div>
     <div class="wrap hero-content">
       <div class="hero-copy">
-      <p class="animate-on-scroll hero-eyebrow" id="hero-eyebrow">Advokátska kancelária pre digitálnu dobu</p>
-      <h1 id="hero-title">Advokáti v dobe kvantovej fyziky</h1>
-      <p class="subline" id="hero-subline">Sme advokáti digitálnej doby. Prinášame exaktné právne riešenia v technológiách, podnikaní, ochrane údajov a sporovej agende.</p>
-      <div class="hero-voice-switch" aria-label="Varianty hero textu">
-        <button type="button" class="hero-voice-btn is-active" data-voice="0">Voice 01</button>
-        <button type="button" class="hero-voice-btn" data-voice="1">Voice 02</button>
-        <button type="button" class="hero-voice-btn" data-voice="2">Voice 03</button>
+      <p class="animate-on-scroll hero-eyebrow" id="hero-eyebrow">Advokátska kancelária · Bratislava</p>
+      <h1 id="hero-title">Právo s váhou a prehľadom</h1>
+      <p class="subline" id="hero-subline">Spájame klasickú právnu starostlivosť s pochopením technológií a podnikania. Diskrétnosť, presnosť a zrozumiteľné riešenia.</p>
+      <div class="hero-voice-switch" role="group" aria-label="Tón hlavnej správy">
+        <button type="button" class="hero-voice-btn is-active" data-voice="0">Klasický</button>
+        <button type="button" class="hero-voice-btn" data-voice="1">Technológie</button>
+        <button type="button" class="hero-voice-btn" data-voice="2">Obchod</button>
       </div>
-      <div class="cta"><a class="btn" href="kontakt.html">Kontaktujte nás</a></div>
+      <div class="cta"><a class="btn" href="kontakt.html">Dohodnúť konzultáciu</a></div>
       </div>
     </div>
   </section>
-  <section class="section"><div class="wrap"><h2 class="animate-on-scroll">Naša špecializácia</h2><div class="cards"><article class="card animate-on-scroll"><h3>Technológie</h3><p class="muted">Softvér a technológie, informačná a kybernetická bezpečnosť, elektronické podpisovanie, autorské práva, gaming a open source.</p><a class="btn" href="technologie.html">Zistiť viac</a></article><article class="card animate-on-scroll"><h3>Business &amp; Podnikanie</h3><p class="muted">Obchodné spoločnosti, investori a VC, startupy, zmluvy a ich vyjednávanie, RPVS a súvisiaca agenda.</p><a class="btn" href="business-podnikanie.html">Zistiť viac</a></article><article class="card animate-on-scroll"><h3>GDPR &amp; Privacy</h3><p class="muted">Dokumentácia, audit, príprava na kontrolu úradu, balančné testy a DPIA s dôrazom na reputáciu klienta.</p><a class="btn" href="gdpr-privacy.html">Zistiť viac</a></article><article class="card animate-on-scroll"><h3>Aktuality</h3><p class="muted">Prehľad odborných článkov kancelárie o technológiách, regulácii a legislatívnych zmenách.</p><a class="btn" href="aktuality.html">Čítať viac</a></article></div></div></section>
+  <section class="section"><div class="wrap"><h2 class="animate-on-scroll">Oblasti praxe</h2><div class="cards"><article class="card animate-on-scroll"><h3>Technológie</h3><p class="muted">Softvér, kybernetická bezpečnosť, elektronické podpisovanie, autorské práva a digitálne produkty.</p><a class="btn" href="technologie.html">Zistiť viac</a></article><article class="card animate-on-scroll"><h3>Business &amp; podnikanie</h3><p class="muted">Spoločnosti, investície, zmluvy, M&amp;A a súvisiace procesy s dôrazom na istotu transakcií.</p><a class="btn" href="business-podnikanie.html">Zistiť viac</a></article><article class="card animate-on-scroll"><h3>GDPR &amp; privacy</h3><p class="muted">Dokumentácia, audit, príprava na kontrolu, DPIA a ochrana reputácie klienta.</p><a class="btn" href="gdpr-privacy.html">Zistiť viac</a></article><article class="card animate-on-scroll"><h3>Aktuality</h3><p class="muted">Odborné texty o regulácii, technológiách a legislatívnych zmenách.</p><a class="btn" href="aktuality.html">Čítať viac</a></article></div></div></section>
   <section class="section bg-alt"><div class="wrap"><h2 class="animate-on-scroll">Partneri</h2><div class="partner-grid"><a class="partner partner-logo animate-on-scroll" href="https://www.wolterskluwer.com/sk-sk" target="_blank" rel="noopener noreferrer"><img src="images/partners/wolters.webp" alt="Wolters Kluwer" loading="lazy" width="300" height="225" /></a><div class="partner partner-logo animate-on-scroll"><img src="images/partners/rajec.webp" alt="RAJEC" loading="lazy" width="300" height="189" /></div><div class="partner partner-logo animate-on-scroll"><img src="images/partners/spk.webp" alt="SPK" loading="lazy" width="300" height="220" /></div><div class="partner partner-logo animate-on-scroll"><img src="images/partners/sosv.png" alt="SOSV" loading="lazy" width="300" height="158" /></div><div class="partner partner-logo animate-on-scroll"><img src="images/partners/kaiser.jpg" alt="KAISER" loading="lazy" width="300" height="63" /></div></div></div></section>
   <footer class="section bg-dark footer"><div class="wrap"><nav class="footer-contact" aria-label="Rýchly kontakt"><ul class="footer-contact__list"><li><a class="footer-contact__link" href="tel:+421902203238">0902 203 238</a></li><li><a class="footer-contact__link" href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a></li><li><a class="footer-contact__link" href="kontakt.html">Kontakt</a></li></ul></nav></div></footer>
-  <script src="assets/site.js?v=20260410-toolchain1"></script>
-  <script src="assets/hero-singularity.js?v=20260410-toolchain1"></script>
-  <script src="assets/toolchain-experience.js?v=20260410-toolchain1"></script>
+  <script src="assets/site.js?v=20260410-mobile1"></script>
 </body>
 </html>

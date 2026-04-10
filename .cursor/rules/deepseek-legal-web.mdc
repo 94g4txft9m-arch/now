@@ -1,0 +1,15 @@
+---
+description: DeepSeek AI ako súčasť workflow pri webe STRINGS (analýza, texty, koncepcia).
+alwaysApply: true
+---
+
+# DeepSeek + STRINGS web
+
+Pri úpravách `strings-static/` (advokátsky web STRINGS) **zaradiť do procesu aj [DeepSeek](https://www.deepseek.com)** — konzultácia cez [DeepSeek Chat](https://chat.deepseek.com) alebo API — ako druhý „hlas“ pre:
+
+1. **Koncepciu a štruktúru** — logika sekcii, hierarchia obsahu, prestížny konzervatívny tón.
+2. **Právne a jazykové nuansy** (SK) — formulácie hero, meta popisy, formulácie bez zavádzania; zosúladenie s advokátskou etikou.
+3. **Dlhšiu analýzu** — porovnanie variantov copy, checklist GDPR/transparentnosti pri nových blokoch.
+4. **Technické návrhy** — po zhode s Cursor agentom implementovať v HTML/CSS/JS; DeepSeek n Nenahrádza kontrolu advokáta pri záväzných textoch.
+
+**Postup:** návrh v Cursori → krátka kontrola / rozšírenie v DeepSeek → finálna implementácia v repozitári. Cieľ: **jednotná, harmonizovaná** skúsenosť (dizajn + obsah + výkon).

@@ -8,6 +8,7 @@
 
   function lockScroll() {
     scrollLockY = window.scrollY || window.pageYOffset || 0;
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.top = '-' + scrollLockY + 'px';
     document.body.style.left = '0';
@@ -16,6 +17,7 @@
   }
 
   function unlockScroll() {
+    document.documentElement.style.overflow = '';
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.left = '';
@@ -58,6 +60,13 @@
       });
     }
     if (backdrop) backdrop.addEventListener('click', function () { setNavOpen(false); });
+    window.addEventListener(
+      'resize',
+      function () {
+        if (nav && nav.classList.contains('open') && !isMobileNavLayout()) setNavOpen(false);
+      },
+      { passive: true }
+    );
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && nav && nav.classList.contains('open')) setNavOpen(false);
       if (e.key !== 'Tab' || !nav || !nav.classList.contains('open') || !isMobileNavLayout()) return;
@@ -99,8 +108,8 @@
     strip.className = 'market-strip';
     strip.innerHTML =
       '<div class="wrap market-strip-inner">' +
-      '<span>Private legal desk <strong>SK/CZ</strong> • IT &amp; Regulatory counsel</span>' +
-      '<span><a href="tel:+421902203238">+421 902 203 238</a> • <a href="kontakt.html">Kontakt</a></span>' +
+      '<span>Bratislava · <strong>obchodné</strong> a <strong>technologické</strong> právo</span>' +
+      '<span><a href="tel:+421902203238">+421 902 203 238</a> · <a href="kontakt.html">Kontakt</a></span>' +
       '</div>';
     nav.insertBefore(strip, nav.firstChild);
   }
@@ -155,19 +164,19 @@
 
     var variants = [
       {
-        eyebrow: 'Advokátska kancelária pre digitálnu dobu',
-        title: 'Advokáti v dobe kvantovej fyziky',
-        subline: 'Sme advokáti digitálnej doby. Prinášame exaktné právne riešenia v technológiách, podnikaní, ochrane údajov a sporovej agende.'
+        eyebrow: 'Advokátska kancelária · Bratislava',
+        title: 'Právo s váhou a prehľadom',
+        subline: 'Spájame klasickú právnu starostlivosť s pochopením technológií a podnikania. Diskrétnosť, presnosť a zrozumiteľné riešenia.'
       },
       {
-        eyebrow: 'Strategické právo pre technologický kapitál',
-        title: 'Právo, ktoré drží tempo s trhom',
-        subline: 'Podporujeme investorov, founderov a scale-up tímy: od transakcií a zmlúv až po GDPR, kyberbezpečnosť a sporovú obranu.'
+        eyebrow: 'Technológie a regulácia',
+        title: 'Právna istota v digitálnom prostredí',
+        subline: 'Softvér, dáta, kyberbezpečnosť a duševné vlastníctvo — od zmlúv až po sporovú obranu, s jazykom, ktorému rozumie váš tím.'
       },
       {
-        eyebrow: 'Hybrid SK/CZ legal command',
-        title: 'Istota v regulácii. Rýchlosť v rozhodovaní.',
-        subline: 'Spájame presnosť právnej analýzy s business pohľadom, aby firmy mohli bezpečne rásť v prostredí technológií a regulácie.'
+        eyebrow: 'Obchod a transakcie',
+        title: 'Zmluvy, spoločnosti, investície',
+        subline: 'Pripravíme a vyjednáme dokumentáciu, ktorá chráni vaše záujmy: M&amp;A, VC, obchodné spoločnosti a každodenná firemná agenda.'
       }
     ];
 
@@ -197,14 +206,21 @@
     if (!hero.querySelector('.hero-kpi')) {
       var kpi = document.createElement('div');
       kpi.className = 'hero-kpi';
-      kpi.innerHTML =
-        '<span class="hero-kpi-chip">Incident desk <strong>online</strong></span>' +
-        '<span class="hero-kpi-chip">GDPR readiness <strong>98%</strong></span>' +
-        '<span class="hero-kpi-chip">Contract response <strong>&lt;24h</strong></span>';
+      if (hero.classList.contains('hero--prestige')) {
+        kpi.innerHTML =
+          '<span class="hero-kpi-chip">Diskrétnosť <strong>štandard</strong></span>' +
+          '<span class="hero-kpi-chip">Termíny <strong>jasné</strong></span>' +
+          '<span class="hero-kpi-chip">Komunikácia <strong>priama</strong></span>';
+      } else {
+        kpi.innerHTML =
+          '<span class="hero-kpi-chip">Incident desk <strong>online</strong></span>' +
+          '<span class="hero-kpi-chip">GDPR readiness <strong>98%</strong></span>' +
+          '<span class="hero-kpi-chip">Contract response <strong>&lt;24h</strong></span>';
+      }
       content.appendChild(kpi);
     }
 
-    if (hero.classList.contains('hero--singularity')) return;
+    if (hero.classList.contains('hero--singularity') || hero.classList.contains('hero--prestige')) return;
     if (reduceMotion || hero.querySelector('.hero-command-canvas')) return;
     var canvas = document.createElement('canvas');
     canvas.className = 'hero-command-canvas';
@@ -293,6 +309,7 @@
 
   function setupGlobalCinematic() {
     if (reduceMotion || document.querySelector('.cinematic-canvas')) return;
+    if (page === 'index') return;
     if (window.matchMedia('(max-width: 768px)').matches) return;
     var canvas = document.createElement('canvas');
     canvas.className = 'cinematic-canvas';
@@ -313,7 +330,7 @@
       s.r = 0.8 + Math.random() * 1.8;
       s.vy = 0.08 + Math.random() * 0.25;
       s.wave = Math.random() * Math.PI * 2;
-      s.h = Math.random() > 0.5 ? 170 : 242;
+      s.h = Math.random() > 0.5 ? 38 : 43;
     }
 
     function resize() {
@@ -343,7 +360,7 @@
         s.x += Math.sin(sec + s.wave) * 0.18;
         if (s.y < -12) resetSpark(s, false);
         ctx.beginPath();
-        ctx.fillStyle = 'hsla(' + s.h + ', 72%, 52%, 0.14)';
+        ctx.fillStyle = 'hsla(' + s.h + ', 42%, 48%, 0.1)';
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -367,15 +384,16 @@
         var url = new URL(a.href, window.location.href);
         if (url.origin !== window.location.origin) return;
         if (url.pathname === window.location.pathname && url.search === window.location.search) return;
-        document.body.style.transition = 'opacity .2s ease';
-        document.body.style.opacity = '0.85';
-        window.setTimeout(function () { window.location.href = url.href; }, 140);
+        document.body.style.transition = 'opacity .42s cubic-bezier(.22,1,.36,1)';
+        document.body.style.opacity = '0.78';
+        window.setTimeout(function () { window.location.href = url.href; }, 280);
         e.preventDefault();
       });
     });
   }
 
   function subtleCardTilt() {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     document.querySelectorAll('.card').forEach(function (card) {
       card.addEventListener('pointermove', function (e) {
         if (reduceMotion) return;
