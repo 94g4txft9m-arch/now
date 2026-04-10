@@ -26,6 +26,8 @@
   --nav-links-offset-x: 0px;
   --nav-links-offset-y: 0px;
   --nav-links-pc-gap: clamp(0.65rem, 1.6vw, 1.15rem);
+  /* Medzera medzi STRINGS a blokom menu (PC grid). */
+  --nav-logo-menu-gap: clamp(2rem, 5.5vw, 4rem);
   --partner-logo-h: clamp(56px, 10vw, 92px);
 }
 
@@ -171,7 +173,7 @@ p { margin: 0 0 1rem; }
     display: grid;
     grid-template-columns: max-content 1fr;
     align-items: center;
-    column-gap: 1.25rem;
+    column-gap: var(--nav-logo-menu-gap);
   }
   .navbar .logo.logo--prestige {
     grid-column: 1;
