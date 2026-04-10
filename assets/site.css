@@ -22,12 +22,13 @@
 
   /*
    * STRINGS (logo) — posun nezávisle od menu. Záporné X = doľava.
-   * Menu (Domov, …) — --nav-links-offset-* (len PC grid).
+   * Menu (PC): voliteľný jemný posun; riadok je roztiahnutý space-between až k pravému okraju .wrap.
    */
   --strings-logo-offset-x: -5cm;
   --strings-logo-offset-y: 0cm;
-  --nav-links-offset-x: -2cm;
+  --nav-links-offset-x: 0cm;
   --nav-links-offset-y: 0cm;
+  --nav-links-pc-gap: clamp(0.4rem, 2vw, 1.5rem);
 }
 
 *,
@@ -182,8 +183,12 @@ p { margin: 0 0 1rem; }
   .navbar .links {
     grid-column: 2;
     grid-row: 1;
-    justify-self: end;
+    justify-self: stretch;
+    width: 100%;
     min-width: 0;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: var(--nav-links-pc-gap);
     transform: translateX(var(--nav-links-offset-x)) translateY(var(--nav-links-offset-y));
   }
 }
