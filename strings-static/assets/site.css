@@ -169,6 +169,8 @@ p { margin: 0 0 1rem; }
     grid-column: 1;
     grid-row: 1;
     justify-self: start;
+    /* Len STRINGS; odkazy (Domov, O nás, …) v stpci 2 sa nehýbu. */
+    margin-left: -5px;
   }
   .navbar .links {
     grid-column: 2;
