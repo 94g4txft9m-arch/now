@@ -157,49 +157,6 @@ p { margin: 0 0 1rem; }
   padding: 16px 0;
   position: relative;
 }
-@media (min-width: 981px) {
-  /* Navbar full width on PC: logo aligns to viewport (wrap max-width no longer boxes it in). */
-  .navbar .wrap.nav-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 1.25rem;
-    max-width: none;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    /* Logo vľavo k oknu; menu vpravo ako v centrovanom .wrap (1260 + pôvodný padding). */
-    padding-left: 0;
-    padding-right: calc(
-      (100% - min(1260px, 100%)) / 2 + max(30px, env(safe-area-inset-right, 0px))
-    );
-  }
-  .navbar .wrap.nav-inner::before {
-    content: none;
-    display: none;
-  }
-  .navbar .logo.logo--prestige {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: start;
-    margin-left: 0;
-    transform: scaleX(1.08);
-    transform-origin: left center;
-  }
-  .navbar .logo.logo--prestige::after {
-    transform-origin: left center;
-  }
-  .navbar .links {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 1.2rem;
-    min-width: 0;
-  }
-}
 .logo {
   color: var(--ink);
   text-decoration: none;
