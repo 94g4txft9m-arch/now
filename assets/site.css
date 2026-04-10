@@ -157,10 +157,12 @@ p { margin: 0 0 1rem; }
   position: relative;
 }
 @media (min-width: 981px) {
+  /* Logo v strede „ľavého pásu“ medzi okrajom a blokom menu (ako čierna hranica na náčrte). */
   .navbar .wrap.nav-inner {
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1.25rem;
+    column-gap: 1.25rem;
     padding-left: max(24px, env(safe-area-inset-left, 0px));
     padding-right: max(30px, env(safe-area-inset-right, 0px));
   }
@@ -169,13 +171,21 @@ p { margin: 0 0 1rem; }
     display: none;
   }
   .navbar .logo.logo--prestige {
-    flex: 0 0 auto;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
     transform: scaleX(1.08);
-    transform-origin: left center;
+    transform-origin: center center;
+  }
+  .navbar .logo.logo--prestige::after {
+    transform-origin: center center;
   }
   .navbar .links {
-    flex: 0 1 auto;
-    justify-content: flex-end;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 1.2rem;
     min-width: 0;
