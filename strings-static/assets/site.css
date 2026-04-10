@@ -21,7 +21,7 @@
   --nav-h: 84px;
 
   /* Voliteľný jemný posun loga / menu (predvolené 0 = vycentrovaný harmonický navbar v .wrap). */
-  --strings-logo-offset-x: 0px;
+  --strings-logo-offset-x: -2px;
   --strings-logo-offset-y: 0px;
   --nav-links-offset-x: 0px;
   --nav-links-offset-y: 0px;
