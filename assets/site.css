@@ -201,14 +201,37 @@ blockquote {
 table { font-variant-numeric: tabular-nums; }
 
 .market-strip {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 2.85rem;
   /* Rovnaká modrá ako hero na úvodnej stránke (.hero--prestige .hero-bg). */
   background: linear-gradient(168deg, #0a0f1c 0%, #101a2e 52%, #0c1222 100%);
-  border-bottom: 2px solid #c9a962;
-  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.35);
+  border-bottom: none;
+  box-shadow: none;
+}
+/* Zlatý predel pri „Obchodné a technologické…“ — gradient ako pod hero, nie plochý okraj. */
+.market-strip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #8f7348 5%,
+    #c9a962 18%,
+    #f2e6c8 50%,
+    #c9a962 82%,
+    #8f7348 95%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.14);
 }
 .market-strip-inner {
   display: flex;
@@ -266,28 +289,6 @@ table { font-variant-numeric: tabular-nums; }
   box-shadow: 0 12px 40px rgba(12, 18, 34, 0.06);
 }
 
-/* Domov: zlatý predel medzi hornou lištou (biela / strip) a modrou hero plochou. */
-body[data-page="index"] .navbar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4px;
-  z-index: 6;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    #8f7348 5%,
-    #c9a962 20%,
-    #e8d5a8 50%,
-    #c9a962 80%,
-    #8f7348 95%,
-    transparent 100%
-  );
-  box-shadow: 0 2px 14px rgba(201, 169, 98, 0.35);
-}
 .nav-inner {
   display: flex;
   justify-content: space-between;
@@ -364,6 +365,9 @@ body[data-page="index"] .navbar::after {
   );
   box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
   pointer-events: none;
+  transform-origin: left center;
+  animation: logoGoldLine 8s ease-in-out infinite;
+  animation-delay: -4s;
 }
 /* Navbar: STRINGS — posun cez :root premenné (--strings-logo-offset-*). */
 .navbar .logo.logo--prestige {
@@ -875,6 +879,31 @@ body[data-page="index"] .hero--singularity .btn:hover {
   .hero-layout--prestige-home {
     grid-template-columns: 1fr;
     max-width: min(42rem, 100%);
+  }
+}
+
+/* Domov (PC): zlatý predel medzi bielym riadkom menu a hero; na mobile ten istý štýl rieši .market-strip::after. */
+@media (min-width: 981px) {
+  body[data-page="index"] .hero.hero--prestige::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    z-index: 11;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #8f7348 5%,
+      #c9a962 18%,
+      #f2e6c8 50%,
+      #c9a962 82%,
+      #8f7348 95%,
+      transparent 100%
+    );
+    box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
   }
 }
 
@@ -1427,8 +1456,8 @@ footer.footer:not(.bg-dark) {
     order: 2;
     background: linear-gradient(168deg, #0a0f1c 0%, #101a2e 52%, #0c1222 100%);
     border-top: none;
-    border-bottom: 2px solid #c9a962;
-    box-shadow: 0 1px 0 rgba(201, 169, 98, 0.35);
+    border-bottom: none;
+    box-shadow: none;
   }
   .market-strip-inner {
     font-size: 0.58rem;
@@ -1607,6 +1636,7 @@ footer.footer:not(.bg-dark) {
     transition-duration: .01ms !important;
   }
   .logo--singularity .logo-ch { animation: none !important; text-shadow: none !important; }
+  .logo--prestige::before,
   .logo--prestige::after { animation: none !important; }
   .hero--prestige .hero-vignette { animation: none !important; opacity: 1 !important; }
   .site-foot-motif { animation: none !important; }
