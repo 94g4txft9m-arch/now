@@ -545,7 +545,7 @@
     if (loc.protocol !== 'https:' && loc.hostname !== 'localhost' && loc.hostname !== '127.0.0.1') return;
     window.addEventListener('load', function () {
       navigator.serviceWorker
-        .register('sw.js?v=20260411-hero-no-story-gold', { scope: './' })
+        .register('sw.js?v=20260411-nav-gold-softdust', { scope: './' })
         .then(function (reg) {
           setupServiceWorkerLifecycle(reg);
           return reg.update();
