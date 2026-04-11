@@ -289,6 +289,16 @@
     nav.insertBefore(strip, nav.firstChild);
   }
 
+  var MARKET_STRIP_TAGLINE_HTML =
+    '<strong>Obchodné</strong> a <strong>technologické</strong> právo · Bratislava';
+
+  function createMarketStripTaglineEl() {
+    var t = document.createElement('span');
+    t.className = 'market-strip-tagline';
+    t.innerHTML = MARKET_STRIP_TAGLINE_HTML;
+    return t;
+  }
+
   function navLinkLabel(a) {
     if (!a) return '';
     var c = a.cloneNode(true);
@@ -303,16 +313,25 @@
     var ic = active.querySelector('.nav-ic');
     strip.classList.add('market-strip-inner--route');
     strip.innerHTML = '';
+    strip.appendChild(createMarketStripTaglineEl());
+    var sep = document.createElement('span');
+    sep.className = 'market-strip-sep';
+    sep.setAttribute('aria-hidden', 'true');
+    sep.textContent = '·';
+    strip.appendChild(sep);
+    var route = document.createElement('span');
+    route.className = 'market-strip-route';
     if (ic) {
       var wrap = document.createElement('span');
       wrap.className = 'market-strip-ic-wrap';
       wrap.appendChild(ic.cloneNode(true));
-      strip.appendChild(wrap);
+      route.appendChild(wrap);
     }
     var sp = document.createElement('span');
     sp.className = 'market-strip-label';
     sp.textContent = navLinkLabel(active);
-    strip.appendChild(sp);
+    route.appendChild(sp);
+    strip.appendChild(route);
   }
 
   function renderMarketStripFromActive() {
@@ -324,8 +343,8 @@
     var strip = document.getElementById('market-strip-inner');
     if (!strip) return;
     strip.classList.remove('market-strip-inner--route');
-    strip.innerHTML =
-      '<span>Bratislava · <strong>obchodné</strong> a <strong>technologické</strong> právo</span>';
+    strip.innerHTML = '';
+    strip.appendChild(createMarketStripTaglineEl());
   }
 
   function setupStripRovingFocus() {
