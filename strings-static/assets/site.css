@@ -382,25 +382,40 @@ table { font-variant-numeric: tabular-nums; }
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 2px;
+  height: 3px;
   border-radius: 1px;
+  /* Rovnaký gradient ako pás nad STRINGS (::before). */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(154, 123, 79, 0.25) 12%,
-    var(--brand-2) 35%,
-    var(--gold) 50%,
-    var(--brand-2) 65%,
-    rgba(154, 123, 79, 0.25) 88%,
+    #8f7348 6%,
+    #c9a962 22%,
+    #f2e6c8 50%,
+    #c9a962 78%,
+    #8f7348 94%,
     transparent 100%
   );
-  opacity: 0.92;
-  transform-origin: left center;
-  animation: logoGoldLine 8s ease-in-out infinite;
+  box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
+  pointer-events: none;
+  transform-origin: center center;
+  /* Odlišná animácia od hornej: žiara / opacity, nie scaleX. */
+  animation: logoGoldBarGlowBottom 6.5s ease-in-out infinite;
 }
 @keyframes logoGoldLine {
   0%, 100% { transform: scaleX(0.52); opacity: 0.8; }
   50% { transform: scaleX(1); opacity: 1; }
+}
+@keyframes logoGoldBarGlowBottom {
+  0%, 100% {
+    opacity: 0.72;
+    filter: brightness(0.92);
+    box-shadow: 0 0 4px rgba(201, 169, 98, 0.22), 0 1px 6px rgba(201, 169, 98, 0.2);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.18);
+    box-shadow: 0 0 16px rgba(232, 213, 168, 0.45), 0 1px 10px rgba(201, 169, 98, 0.38);
+  }
 }
 .logo--singularity {
   letter-spacing: 0.12em;
