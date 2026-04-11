@@ -28,8 +28,8 @@
   --nav-links-pc-gap: clamp(0.65rem, 1.6vw, 1.15rem);
   /* Medzera medzi STRINGS a blokom menu (PC grid). */
   --nav-logo-menu-gap: clamp(2rem, 5.5vw, 4rem);
-  /* Partneri: do šírky 980px; logá priamo na podklade (.partner-logo). */
-  --partner-logo-h: clamp(88px, 22vw, 140px);
+  /* Partneri: rovnaká „diera“ ako detect (~200×200), logá sa do nej zmestia. */
+  --partner-slot: clamp(156px, 42vw, 200px);
 }
 
 *,
@@ -827,7 +827,7 @@ body[data-page="index"] .site-foot-motif {
 @media (min-width: 981px) {
   :root {
     --strings-logo-offset-x: calc(-2px - 2cm);
-    --partner-logo-h: clamp(104px, 12vw, 168px);
+    --partner-slot: 200px;
   }
   .partner-grid--home {
     max-width: min(1120px, 100%);
@@ -841,7 +841,7 @@ body[data-page="index"] .site-foot-motif {
 .partner {
   display: grid;
   place-items: center;
-  padding: clamp(0.35rem, 1.4vw, 0.75rem);
+  padding: clamp(0.2rem, 0.8vw, 0.45rem);
   border: none;
   background: transparent;
   border-radius: 0;
@@ -862,45 +862,65 @@ a.partner:not(.partner-logo):focus-visible {
   outline: none;
 }
 .section--partners a.partner.partner-logo {
-  border-radius: 10px;
+  width: min(100%, var(--partner-slot));
+  aspect-ratio: 1;
+  margin-inline: auto;
+  border-radius: 8px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  transform: translateZ(0);
+  isolation: isolate;
+  background: transparent;
 }
 /* Myš: žiadny predvolený čierny obrys pri :focus (orezával sa pri overflow-x: clip na body). */
 a.partner.partner-logo:focus:not(:focus-visible) {
   outline: none;
   box-shadow: none;
+  background: transparent;
 }
 a.partner.partner-logo:hover {
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(0);
   opacity: 0.92;
   outline: none;
   box-shadow: none;
+  background: transparent;
 }
 /* Klávesnica: jemný inset prstenec, bez outline-offset (neorezáva sa na okraji). */
 a.partner.partner-logo:focus-visible {
   outline: none;
   opacity: 1;
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(0);
   box-shadow: inset 0 0 0 2px rgba(154, 123, 79, 0.5);
+  background: transparent;
 }
 a.partner.partner-logo:active {
   outline: none;
   box-shadow: none;
   background: transparent;
-  opacity: 0.86;
-  transform: translateY(0) scale(0.985);
+  opacity: 0.88;
+  transform: translateZ(0) scale(0.98);
 }
-/* PNG/JPG: biela v súbore — multiply na svetlosivom podklade (ako ak motúzová). */
+/* PNG/JPG: multiply; klik ide na <a>, obrázok bez vlastného highlightu */
 .section--partners .partner-logo img {
   mix-blend-mode: multiply;
-  max-width: 100%;
-  max-height: var(--partner-logo-h);
+  display: block;
+  max-width: 88%;
+  max-height: 88%;
   width: auto;
   height: auto;
+  margin: auto;
   object-fit: contain;
+  object-position: center;
   user-select: none;
   -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 .section.section--partners {
   padding-top: clamp(4.25rem, 11vw, 5.75rem);
