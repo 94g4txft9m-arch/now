@@ -807,6 +807,7 @@ body[data-page="index"] .site-foot-motif {
   align-items: center;
   justify-items: center;
   gap: clamp(1.35rem, 4vw, 2.25rem);
+  overflow: visible;
 }
 @media (min-width: 600px) {
   .partner-grid--home {
@@ -853,16 +854,35 @@ a.partner:not(.partner-logo):focus-visible {
   transform: translateY(-2px);
   outline: none;
 }
+.section--partners a.partner.partner-logo {
+  border-radius: 10px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Myš: žiadny predvolený čierny obrys pri :focus (orezával sa pri overflow-x: clip na body). */
+a.partner.partner-logo:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
 a.partner.partner-logo:hover {
   transform: translateY(-1px);
-  opacity: 0.9;
+  opacity: 0.92;
   outline: none;
+  box-shadow: none;
 }
+/* Klávesnica: jemný inset prstenec, bez outline-offset (neorezáva sa na okraji). */
 a.partner.partner-logo:focus-visible {
-  transform: translateY(-1px);
+  outline: none;
   opacity: 1;
-  outline: 2px solid var(--brand-2);
-  outline-offset: 4px;
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 2px rgba(154, 123, 79, 0.5);
+}
+a.partner.partner-logo:active {
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  opacity: 0.86;
+  transform: translateY(0) scale(0.985);
 }
 /* PNG partnerov majú často bielu plochu v súbore — multiply ju zlúči so svetlým bg-alt. */
 .section--partners .partner-logo img {
@@ -872,10 +892,13 @@ a.partner.partner-logo:focus-visible {
   width: auto;
   height: auto;
   object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 .section--partners {
   padding-top: clamp(4.5rem, 12vw, 6.5rem);
   padding-bottom: clamp(4.5rem, 11vw, 6.25rem);
+  overflow-x: visible;
 }
 .section--partners .partners-head {
   text-align: center;
