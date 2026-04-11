@@ -283,6 +283,34 @@ table { font-variant-numeric: tabular-nums; }
   padding-left: env(safe-area-inset-left, 0px);
   padding-right: env(safe-area-inset-right, 0px);
 }
+/* Zlaté zvislé okraje po celej výške fixného headera (paleta ako ostatné zlaté deliace). */
+.navbar::before,
+.navbar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 71;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    #5c4a32 0%,
+    #8f7348 14%,
+    #c9a962 42%,
+    #f2e6c8 50%,
+    #c9a962 58%,
+    #8f7348 86%,
+    #5c4a32 100%
+  );
+  box-shadow: 0 0 6px rgba(201, 169, 98, 0.2);
+}
+.navbar::before {
+  left: 0;
+}
+.navbar::after {
+  right: 0;
+}
 .navbar.scrolled {
   background: rgba(255, 252, 247, 0.98);
   border-bottom-color: var(--line);
@@ -355,13 +383,13 @@ table { font-variant-numeric: tabular-nums; }
   border-radius: 1px;
   background: linear-gradient(
     90deg,
-    transparent 0%,
-    #8f7348 6%,
-    #c9a962 22%,
+    #5c4a32 0%,
+    #8f7348 10%,
+    #c9a962 28%,
     #f2e6c8 50%,
-    #c9a962 78%,
-    #8f7348 94%,
-    transparent 100%
+    #c9a962 72%,
+    #8f7348 90%,
+    #5c4a32 100%
   );
   box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
   pointer-events: none;
@@ -384,38 +412,26 @@ table { font-variant-numeric: tabular-nums; }
   width: 100%;
   height: 3px;
   border-radius: 1px;
-  /* Rovnaký gradient ako pás nad STRINGS (::before). */
+  /* Rovnaký gradient a pohyb ako pás nad STRINGS (::before), posunutá fáza. */
   background: linear-gradient(
     90deg,
-    transparent 0%,
-    #8f7348 6%,
-    #c9a962 22%,
+    #5c4a32 0%,
+    #8f7348 10%,
+    #c9a962 28%,
     #f2e6c8 50%,
-    #c9a962 78%,
-    #8f7348 94%,
-    transparent 100%
+    #c9a962 72%,
+    #8f7348 90%,
+    #5c4a32 100%
   );
   box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
   pointer-events: none;
-  transform-origin: center center;
-  /* Odlišná animácia od hornej: žiara / opacity, nie scaleX. */
-  animation: logoGoldBarGlowBottom 6.5s ease-in-out infinite;
+  transform-origin: left center;
+  animation: logoGoldLine 8s ease-in-out infinite;
+  animation-delay: -1.35s;
 }
 @keyframes logoGoldLine {
   0%, 100% { transform: scaleX(0.52); opacity: 0.8; }
   50% { transform: scaleX(1); opacity: 1; }
-}
-@keyframes logoGoldBarGlowBottom {
-  0%, 100% {
-    opacity: 0.72;
-    filter: brightness(0.92);
-    box-shadow: 0 0 4px rgba(201, 169, 98, 0.22), 0 1px 6px rgba(201, 169, 98, 0.2);
-  }
-  50% {
-    opacity: 1;
-    filter: brightness(1.18);
-    box-shadow: 0 0 16px rgba(232, 213, 168, 0.45), 0 1px 10px rgba(201, 169, 98, 0.38);
-  }
 }
 .logo--singularity {
   letter-spacing: 0.12em;
@@ -897,29 +913,27 @@ body[data-page="index"] .hero--singularity .btn:hover {
   }
 }
 
-/* Domov (PC): zlatý predel medzi bielym riadkom menu a hero; na mobile ten istý štýl rieši .market-strip::after. */
-@media (min-width: 981px) {
-  body[data-page="index"] .hero.hero--prestige::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    z-index: 11;
-    pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      #8f7348 5%,
-      #c9a962 18%,
-      #f2e6c8 50%,
-      #c9a962 82%,
-      #8f7348 95%,
-      transparent 100%
-    );
-    box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
-  }
+/* Domov: zlatý predel medzi bielym riadkom menu a hero (stred plný, nie „vyprázdňovaný“ do transparentu). */
+body[data-page="index"] .hero.hero--prestige::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  z-index: 11;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #5c4a32 0%,
+    #8f7348 8%,
+    #c9a962 26%,
+    #f2e6c8 50%,
+    #c9a962 74%,
+    #8f7348 92%,
+    #5c4a32 100%
+  );
+  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
 }
 
 /* Domov: zlatý pás medzi tmavou hero a svetlou sekciou pod ňou (druhý predel). */
@@ -934,13 +948,13 @@ body[data-page="index"] .hero.hero--prestige::after {
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    transparent 0%,
-    #8f7348 5%,
-    #c9a962 18%,
+    #5c4a32 0%,
+    #8f7348 8%,
+    #c9a962 26%,
     #f2e6c8 50%,
-    #c9a962 82%,
-    #8f7348 95%,
-    transparent 100%
+    #c9a962 74%,
+    #8f7348 92%,
+    #5c4a32 100%
   );
   box-shadow:
     0 1px 0 rgba(201, 169, 98, 0.5),
@@ -948,7 +962,7 @@ body[data-page="index"] .hero.hero--prestige::after {
     0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Domov: hologram — celá hero, bez rámu; canvas + jemný „rift“ (procedurálny prach, nie PNG slidery). */
+/* Domov: hologram — celá hero; fotografia siete + jemný rift (canvas vypnutý keď je fotka). */
 body[data-page="index"] .hero--prestige .hero-hologram {
   position: absolute;
   inset: 0;
@@ -957,6 +971,41 @@ body[data-page="index"] .hero--prestige .hero-hologram {
   overflow: hidden;
   /* Rovnaký podklad ako kedysi .hero-cinema__layers (#060910). */
   background: #060910;
+}
+.hero-hologram__media-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-hologram__photo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 118%;
+  height: 118%;
+  max-width: none;
+  object-fit: cover;
+  transform: translate3d(-50%, -50%, 0) scale(1.06);
+  transform-origin: center center;
+  animation: heroNetworkPhotoDrift 34s ease-in-out infinite alternate;
+  will-change: transform;
+  filter: saturate(1.08) contrast(1.03);
+  pointer-events: none;
+}
+@keyframes heroNetworkPhotoDrift {
+  0% {
+    transform: translate3d(-50%, -50%, 0) scale(1.04) translate3d(-2.2%, 0.35%, 0);
+  }
+  50% {
+    transform: translate3d(-50%, -50%, 0) scale(1.09) translate3d(2.4%, -0.45%, 0);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1.055) translate3d(-1.4%, 0.2%, 0);
+  }
+}
+body[data-page="index"] .hero-hologram__canvas {
+  display: none !important;
 }
 .hero-hologram__canvas {
   position: absolute;
@@ -968,8 +1017,12 @@ body[data-page="index"] .hero--prestige .hero-hologram {
   mix-blend-mode: screen;
   filter: saturate(1.12);
 }
+body[data-page="index"] .hero-hologram__rift {
+  display: none;
+}
 .hero-hologram__rift {
   position: absolute;
+  z-index: 1;
   inset: -50%;
   background: conic-gradient(
     from 120deg at 50% 50%,
@@ -988,6 +1041,7 @@ body[data-page="index"] .hero--prestige .hero-hologram {
 }
 .hero-hologram__sheen {
   position: absolute;
+  z-index: 2;
   inset: 0;
   background:
     radial-gradient(ellipse 120% 80% at 85% 20%, rgba(120, 210, 255, 0.12), transparent 50%),
@@ -1640,6 +1694,10 @@ footer.footer:not(.bg-dark) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-hologram__photo {
+    animation: none !important;
+    transform: translate3d(-50%, -50%, 0) scale(1.06) !important;
+  }
   .hero-hologram__rift {
     animation: none !important;
     opacity: 0.28;

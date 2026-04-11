@@ -8,6 +8,8 @@
   var holoRoot = document.getElementById('hero-hologram-root');
   var canvas = document.getElementById('hero-hologram-canvas');
   if (!hero || !holoRoot || !canvas) return;
+  /* Domovský hero: statická / CSS animovaná fotografia namiesto canvasu. */
+  if (holoRoot.querySelector('.hero-hologram__photo')) return;
 
   var ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
