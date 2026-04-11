@@ -1350,3 +1350,92 @@ footer.footer:not(.bg-dark) {
   .animate-scale,
   .section-reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
+
+/* PWA: ponuka „Pridať na obrazovku“ + upozornenie na novú verziu (service worker) */
+.app-toast-host {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 220;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.pwa-strip {
+  pointer-events: auto;
+  max-width: 40rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  padding: 0.72rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  box-shadow: 0 -10px 36px rgba(12, 18, 34, 0.14);
+  color: var(--ink);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: pwaStripIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes pwaStripIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pwa-strip__text { flex: 1 1 12rem; margin: 0; max-width: 100%; }
+.pwa-strip__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+.pwa-strip__btn {
+  font: inherit;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.85rem;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(12, 18, 34, 0.18);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.pwa-strip__btn--primary {
+  background: var(--brand);
+  border-color: rgba(201, 169, 98, 0.35);
+  color: #faf6ef;
+}
+.pwa-strip__btn--primary:hover { background: #141c32; transform: translateY(-1px); }
+.pwa-strip__btn--ghost {
+  background: transparent;
+  color: var(--muted);
+  border-color: rgba(26, 23, 20, 0.15);
+}
+.pwa-strip__btn--ghost:hover { color: var(--ink); border-color: rgba(26, 23, 20, 0.28); }
+.pwa-strip__btn:focus-visible {
+  outline: 2px solid var(--brand-2);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pwa-strip {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .pwa-strip__btn--primary:hover { transform: none; }
+}
