@@ -1,69 +1,36 @@
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   /**
-   * Príbeh = procedurálna animácia (časticový „AI prach“ + kapitoly).
-   * Externé AI video (Runway, Pika, Kling, …): export WebM/MP4, vlož <video> do #hero-hologram-root
-   * pod canvas a v draw() preskoč častice alebo ich zmiešaj ako overlay.
+   * Procedurálny hologram (časticový prach, tri režimy fyziky).
+   * Externé AI video: export WebM/MP4 do #hero-hologram-root pod canvas.
    */
   var hero = document.querySelector('.hero.hero--prestige');
   var holoRoot = document.getElementById('hero-hologram-root');
   var canvas = document.getElementById('hero-hologram-canvas');
-  var chapterEl = document.getElementById('hero-cinema-chapter');
-  var storyEl = document.getElementById('hero-cinema-story');
-  if (!hero || !holoRoot || !canvas || !storyEl) return;
+  if (!hero || !holoRoot || !canvas) return;
 
-  var STORY_CHAPTERS = ['I — Sieť', 'II — Pozornosť', 'III — Rovnováha'];
-  var STORY_BEATS = [
-    'Kdesi medzi servermi sa rodí poriadok: nie náhodný šum, ale vzorec — dáta hľadajú cestu tak, ako neskôr hľadajú právo.',
-    'Technológia vidí ďalej než človek v jednej chvíli. Rozhodnutie, čo z toho smie zostať, však patrí stále pravidlám, zmluvám a regulácii.',
-    'Váhy nepatria minulosti. Ležia medzi inováciou a dôverou klienta — a na STRINGS držíme obe misy rovnako vážne.'
-  ];
-
-  var idx = 0;
-  var timer = null;
   var ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
 
-  function updateStory(i) {
-    if (chapterEl) chapterEl.textContent = STORY_CHAPTERS[i] || '';
-    storyEl.textContent = STORY_BEATS[i] || '';
-  }
-
-  function setChapter(i) {
-    idx = i % STORY_BEATS.length;
-    storyEl.style.opacity = '0.25';
-    window.setTimeout(function () {
-      updateStory(idx);
-      storyEl.style.opacity = '1';
-    }, 200);
-  }
+  var idx = 0;
+  var timer = null;
 
   function next() {
-    setChapter(idx + 1);
+    idx = (idx + 1) % 3;
   }
 
-  if (reduceMotion) {
-    if (chapterEl) chapterEl.textContent = 'Tri kapitoly';
-    storyEl.classList.add('hero-hologram-story__body--full');
-    storyEl.innerHTML = '';
-    for (var k = 0; k < STORY_BEATS.length; k += 1) {
-      var p = document.createElement('p');
-      p.className = 'hero-hologram-story__part';
-      p.textContent = STORY_CHAPTERS[k] + '. ' + STORY_BEATS[k];
-      storyEl.appendChild(p);
-    }
-    return;
+  if (!reduceMotion) {
+    timer = window.setInterval(next, 8200);
+    hero.addEventListener('mouseenter', function () {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    });
+    hero.addEventListener('mouseleave', function () {
+      if (!timer) timer = window.setInterval(next, 8200);
+    });
   }
-
-  updateStory(0);
-  timer = window.setInterval(next, 8200);
-  hero.addEventListener('mouseenter', function () {
-    if (timer) window.clearInterval(timer);
-    timer = null;
-  });
-  hero.addEventListener('mouseleave', function () {
-    if (!timer) timer = window.setInterval(next, 8200);
-  });
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var w = 0;
@@ -102,7 +69,8 @@
 
   function buildParticles() {
     var cap = w < 640 ? 1300 : 2400;
-    var n = Math.min(cap, Math.max(520, Math.floor((w * h) / 380)));
+    if (reduceMotion) cap = Math.min(380, Math.floor(cap * 0.28));
+    var n = Math.min(cap, Math.max(reduceMotion ? 120 : 520, Math.floor((w * h) / 380)));
     parts = [];
     for (var i = 0; i < n; i += 1) {
       parts.push({
@@ -178,13 +146,12 @@
       return;
     }
     var t = now * 0.001;
-    var ch = idx;
+    var ch = reduceMotion ? 0 : idx;
     var nodes = networkNodes(t);
-    var cx = 0.75 + Math.sin(t * 0.18) * 0.03;
-    var cy = 0.41 + Math.sin(t * 0.22) * 0.035;
+    var cx = 0.72 + Math.sin(t * 0.16) * 0.08;
+    var cy = 0.4 + Math.sin(t * 0.2) * 0.12;
 
     ctx.globalCompositeOperation = 'source-over';
-    /* Kratší „chvost“ na #060910 — vyššia hustota, lepšia čitateľnosť prachu. */
     ctx.fillStyle = 'rgba(6, 9, 16, 0.5)';
     ctx.fillRect(0, 0, w, h);
 
@@ -192,7 +159,7 @@
       stepParticle(parts[i], t, ch, nodes, cx, cy);
     }
 
-    if (ch === 0 || ch === 2) {
+    if (!reduceMotion && (ch === 0 || ch === 2)) {
       ctx.globalCompositeOperation = 'lighter';
       var lim = Math.min(parts.length, 300);
       var thr = ch === 0 ? 148 : 122;
@@ -227,6 +194,7 @@
             ? 'rgba(255, 230, 200,'
             : 'rgba(185, 215, 255,';
       var alpha = ch === 1 ? 0.12 + p.s * 0.055 : 0.085 + p.s * 0.048;
+      if (reduceMotion) alpha *= 0.65;
       ctx.beginPath();
       ctx.fillStyle = col + alpha + ')';
       ctx.arc(p.x * w, p.y * h, p.s, 0, Math.PI * 2);
