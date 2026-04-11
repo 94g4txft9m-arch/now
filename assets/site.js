@@ -47,10 +47,13 @@
     else unlockScroll();
     if (open && isMobileNavLayout()) {
       window.setTimeout(function () {
-        var panel = nav.querySelector('.links a[href]');
+        var panel = nav.querySelector('.nav-link.is-active') || nav.querySelector('.links a[href]');
         if (panel) panel.focus();
       }, 0);
-    } else if (!open) toggle.focus();
+    } else if (!open) {
+      toggle.focus();
+      if (isMobileNavLayout()) window.setTimeout(renderMarketStripFromActive, 0);
+    }
   }
 
   function setupMobileNav() {
@@ -102,15 +105,238 @@
     });
   }
 
+  var INDEX_GATE_SESSION_KEY = 'strings_index_gate_v1';
+
+  function finishIndexGate(gate) {
+    if (!gate || gate.getAttribute('data-strings-gate-done') === '1') return;
+    gate.setAttribute('data-strings-gate-done', '1');
+    try {
+      sessionStorage.setItem(INDEX_GATE_SESSION_KEY, '1');
+    } catch (e) {}
+    document.body.classList.remove('index-entry-gate-on');
+    unlockScroll();
+    gate.classList.add('is-leaving');
+    window.setTimeout(function () {
+      if (gate.parentNode) gate.parentNode.removeChild(gate);
+      var m = document.getElementById('main-content');
+      if (m) {
+        m.setAttribute('tabindex', '-1');
+        try {
+          m.focus({ preventScroll: true });
+        } catch (err) {
+          m.focus();
+        }
+      }
+    }, 660);
+  }
+
+  function initIndexEntryGate() {
+    if (page !== 'index') return;
+    if (reduceMotion) return;
+    try {
+      if (sessionStorage.getItem(INDEX_GATE_SESSION_KEY) === '1') return;
+    } catch (e) {
+      return;
+    }
+
+    lockScroll();
+    document.body.classList.add('index-entry-gate-on');
+
+    var gate = document.createElement('div');
+    gate.id = 'index-entry-gate';
+    gate.className = 'index-entry-gate';
+    gate.setAttribute('role', 'dialog');
+    gate.setAttribute('aria-modal', 'true');
+    gate.setAttribute('aria-labelledby', 'index-gate-brand');
+    gate.innerHTML =
+      '<button type="button" class="index-entry-gate__skip" id="index-gate-skip">Preskočiť</button>' +
+      '<div class="index-entry-gate__panel">' +
+      '<div class="index-entry-gate__step" data-step="1">' +
+      '<p class="index-entry-gate__eyebrow">Vitajte</p>' +
+      '<button type="button" class="index-entry-gate__brand-btn" id="index-gate-brand">STRINGS</button>' +
+      '<p class="index-entry-gate__hint">Pokračujte stlačením znaku.</p>' +
+      '</div>' +
+      '<div class="index-entry-gate__step" data-step="2" hidden>' +
+      '<p class="index-entry-gate__story">Zadajte svoj obľúbený kód</p>' +
+      '<p class="index-entry-gate__sub">Štyri číslice — ako pri zakódovaných dverách.</p>' +
+      '<div class="index-entry-gate__display" id="index-gate-display" aria-live="polite">— — — —</div>' +
+      '<div class="index-entry-gate__pad" id="index-gate-pad"></div>' +
+      '</div>' +
+      '<div class="index-entry-gate__step" data-step="3" hidden>' +
+      '<div class="index-entry-gate__burst">' +
+      '<div class="index-entry-gate__burst-mark" aria-hidden="true">✓</div>' +
+      '<p class="index-entry-gate__burst-text">Prístup udelený. Vitajte v STRINGS.</p>' +
+      '</div></div></div>';
+
+    var insertBefore = document.querySelector('header.navbar');
+    if (insertBefore && insertBefore.parentNode === document.body) {
+      document.body.insertBefore(gate, insertBefore);
+    } else {
+      document.body.insertBefore(gate, document.body.firstChild);
+    }
+
+    var step1 = gate.querySelector('[data-step="1"]');
+    var step2 = gate.querySelector('[data-step="2"]');
+    var step3 = gate.querySelector('[data-step="3"]');
+    var brandBtn = gate.querySelector('#index-gate-brand');
+    var skipBtn = gate.querySelector('#index-gate-skip');
+    var display = gate.querySelector('#index-gate-display');
+    var pad = gate.querySelector('#index-gate-pad');
+    var digits = [];
+    var submitted = false;
+    var padBuilt = false;
+
+    function showStep(n) {
+      step1.hidden = n !== 1;
+      step2.hidden = n !== 2;
+      step3.hidden = n !== 3;
+      if (n === 2) {
+        window.setTimeout(function () {
+          var k = pad.querySelector('.index-entry-gate__key');
+          if (k) k.focus();
+        }, 60);
+      }
+    }
+
+    function buildPad() {
+      if (padBuilt) return;
+      padBuilt = true;
+      var keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', 'OK'];
+      keys.forEach(function (sym) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'index-entry-gate__key';
+        if (sym === 'OK') {
+          b.textContent = 'Vstúpiť';
+          b.setAttribute('aria-label', 'Potvrdiť kód a vstúpiť');
+        } else {
+          b.textContent = sym;
+          if (sym === '⌫') b.setAttribute('aria-label', 'Zmazať poslednú číslicu');
+        }
+        b.addEventListener('click', function () {
+          onPadInput(sym);
+        });
+        pad.appendChild(b);
+      });
+    }
+
+    function updateDisplay() {
+      var parts = [];
+      for (var i = 0; i < 4; i += 1) parts.push(digits[i] != null ? digits[i] : '—');
+      display.textContent = parts.join(' ');
+    }
+
+    function shakeDisplay() {
+      display.style.animation = 'none';
+      void display.offsetWidth;
+      display.style.animation = 'indexGateShake 0.38s ease';
+    }
+
+    function tryUnlock() {
+      if (submitted) return;
+      if (digits.length !== 4) {
+        shakeDisplay();
+        return;
+      }
+      submitted = true;
+      showStep(3);
+      window.setTimeout(function () {
+        finishIndexGate(gate);
+      }, 1050);
+    }
+
+    function onPadInput(sym) {
+      if (submitted) return;
+      if (sym === '⌫') {
+        digits.pop();
+        updateDisplay();
+        return;
+      }
+      if (sym === 'OK') {
+        tryUnlock();
+        return;
+      }
+      if (/^\d$/.test(sym) && digits.length < 4) {
+        digits.push(sym);
+        updateDisplay();
+        if (digits.length === 4) window.setTimeout(tryUnlock, 200);
+      }
+    }
+
+    brandBtn.addEventListener('click', function () {
+      buildPad();
+      showStep(2);
+      updateDisplay();
+    });
+    skipBtn.addEventListener('click', function () {
+      finishIndexGate(gate);
+    });
+    gate.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') finishIndexGate(gate);
+    });
+
+    window.setTimeout(function () {
+      if (brandBtn) brandBtn.focus();
+    }, 0);
+  }
+
   function addMarketStrip() {
     if (!nav || nav.querySelector('.market-strip')) return;
     var strip = document.createElement('div');
     strip.className = 'market-strip';
     strip.innerHTML =
-      '<div class="wrap market-strip-inner">' +
-      '<span>Bratislava · <strong>obchodné</strong> a <strong>technologické</strong> právo</span>' +
-      '</div>';
+      '<div class="wrap market-strip-inner" id="market-strip-inner"></div>';
     nav.insertBefore(strip, nav.firstChild);
+  }
+
+  function navLinkLabel(a) {
+    if (!a) return '';
+    var c = a.cloneNode(true);
+    var ic = c.querySelector('.nav-ic');
+    if (ic) ic.remove();
+    return (c.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function renderMarketStripFromLink(active) {
+    var strip = document.getElementById('market-strip-inner');
+    if (!strip || !active) return;
+    var ic = active.querySelector('.nav-ic');
+    strip.classList.add('market-strip-inner--route');
+    strip.innerHTML = '';
+    if (ic) {
+      var wrap = document.createElement('span');
+      wrap.className = 'market-strip-ic-wrap';
+      wrap.appendChild(ic.cloneNode(true));
+      strip.appendChild(wrap);
+    }
+    var sp = document.createElement('span');
+    sp.className = 'market-strip-label';
+    sp.textContent = navLinkLabel(active);
+    strip.appendChild(sp);
+  }
+
+  function renderMarketStripFromActive() {
+    var active = document.querySelector('.nav-link.is-active');
+    if (active) {
+      renderMarketStripFromLink(active);
+      return;
+    }
+    var strip = document.getElementById('market-strip-inner');
+    if (!strip) return;
+    strip.classList.remove('market-strip-inner--route');
+    strip.innerHTML =
+      '<span>Bratislava · <strong>obchodné</strong> a <strong>technologické</strong> právo</span>';
+  }
+
+  function setupStripRovingFocus() {
+    if (!nav) return;
+    var linksPanel = nav.querySelector('.links');
+    if (!linksPanel) return;
+    linksPanel.addEventListener('focusin', function (e) {
+      if (!nav.classList.contains('open')) return;
+      var a = e.target.closest && e.target.closest('.nav-link');
+      if (a) renderMarketStripFromLink(a);
+    });
   }
 
   var NAV_ICONS = {
@@ -535,11 +761,14 @@
     });
   }
 
+  initIndexEntryGate();
   addMarketStrip();
   setupMobileNav();
   setActiveNav();
-  setupNavScrollState();
   addNavIcons();
+  renderMarketStripFromActive();
+  setupStripRovingFocus();
+  setupNavScrollState();
   addFootMotif();
   activateScrollAnimations();
   enhanceHeroHome();
