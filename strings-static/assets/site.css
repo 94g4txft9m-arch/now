@@ -20,15 +20,16 @@
   --ok: #3d5a4a;
   --nav-h: 84px;
 
-  /* Voliteľný jemný posun loga / menu (predvolené 0 = vycentrovaný harmonický navbar v .wrap). */
-  --strings-logo-offset-x: calc(-2px - 2cm);
+  /* Posun STRINGS len na PC — pozri @media (min-width: 981px). Na mobile vždy 0. */
+  --strings-logo-offset-x: 0px;
   --strings-logo-offset-y: 0px;
   --nav-links-offset-x: 0px;
   --nav-links-offset-y: 0px;
   --nav-links-pc-gap: clamp(0.65rem, 1.6vw, 1.15rem);
   /* Medzera medzi STRINGS a blokom menu (PC grid). */
   --nav-logo-menu-gap: clamp(2rem, 5.5vw, 4rem);
-  --partner-logo-h: clamp(56px, 10vw, 92px);
+  /* Partneri: do šírky 980px (mobile/tablet); PC zväčšenie v @media (min-width: 981px). */
+  --partner-logo-h: clamp(176px, 58vw, 280px);
 }
 
 *,
@@ -801,7 +802,7 @@ body[data-page="index"] .site-foot-motif {
 /* Domov: vyvážená mriežka log (7 položiek), väčšie klikacie plochy */
 .partner-grid--home {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  max-width: 1040px;
+  max-width: min(1040px, 100%);
   margin-inline: auto;
 }
 @media (min-width: 600px) {
@@ -812,6 +813,19 @@ body[data-page="index"] .site-foot-motif {
 @media (min-width: 900px) {
   .partner-grid--home {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+/* PC: posun loga STRINGS + veľké logá partnerov (~5× pôvodná škála). */
+@media (min-width: 981px) {
+  :root {
+    --strings-logo-offset-x: calc(-2px - 2cm);
+    --partner-logo-h: clamp(280px, 50vw, 460px);
+  }
+  .partner-grid--home {
+    max-width: min(1600px, 100%);
+  }
+  .partner {
+    min-height: clamp(480px, 48vw, 600px);
   }
 }
 .partner {
@@ -1012,6 +1026,8 @@ footer.footer:not(.bg-dark) {
     position: relative;
     left: auto;
     top: auto;
+    /* Istý reset: premenná + starý cache nemôžu posunúť logo mimo .wrap. */
+    transform: translateX(0) translateY(0) scaleX(1.08);
   }
   .logo--prestige {
     max-width: min(72vw, calc(100% - 60px));
@@ -1086,8 +1102,8 @@ footer.footer:not(.bg-dark) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(0.85rem, 3vw, 1.15rem);
   }
-  :root {
-    --partner-logo-h: clamp(52px, 20vw, 76px);
+  .partner {
+    min-height: clamp(200px, 52vw, 320px);
   }
   .hero-content {
     /* Navbar: riadok loga + úzky strip pod ním */
