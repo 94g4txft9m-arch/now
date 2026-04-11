@@ -871,8 +871,21 @@ a.partner:not(.partner-logo):focus-visible {
   -webkit-tap-highlight-color: rgba(232, 236, 242, 0.45);
   user-select: none;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   background: transparent;
   /* Žiadny translateZ / isolation — inak sa mix-blend-mode na img nezlúči s podkladom sekcie (biely „karton“). */
+}
+/* Výber myšou: žiadny biely „highlight“ ako pri PNG — rovnaký tón ako pás (pri Rajec WebP takmer nevidno). */
+.section--partners a.partner.partner-logo::selection,
+.section--partners a.partner.partner-logo img::selection {
+  background-color: rgba(232, 236, 242, 0.55);
+  color: inherit;
+}
+.section--partners a.partner.partner-logo::-moz-selection,
+.section--partners a.partner.partner-logo img::-moz-selection {
+  background: rgba(232, 236, 242, 0.55);
+  color: inherit;
 }
 /* Myš: žiadny predvolený čierny obrys pri :focus (orezával sa pri overflow-x: clip na body). */
 a.partner.partner-logo:focus:not(:focus-visible) {
@@ -920,8 +933,10 @@ a.partner.partner-logo:active {
   object-fit: contain;
   object-position: center;
   user-select: none;
-  -webkit-user-drag: none;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
   -webkit-touch-callout: none;
   pointer-events: none;
   border: 0;
