@@ -69,6 +69,7 @@ cmd_sync_gh_pages() {
   _GH_SYNC_TMP="$(mktemp -d)"
   trap 'rm -rf "$_GH_SYNC_TMP"' EXIT
   echo "Export strings-static z vetvy $prev (git archive) → dočasný priečinok"
+  echo "(Len commitnuté súbory — necommitnuté zmeny v strings-static sa na Pages nedostanú.)"
   git archive "$prev" strings-static | tar -x -C "$_GH_SYNC_TMP"
   echo "Synchronizácia → vetva gh-pages (potom návrat na: $prev)"
   git fetch origin gh-pages 2>/dev/null || true

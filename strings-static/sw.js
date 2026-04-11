@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260410-logo2cm';
+var CACHE = 'strings-20260411-typo-deploy';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
