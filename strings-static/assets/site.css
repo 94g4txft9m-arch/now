@@ -874,7 +874,7 @@ a.partner:not(.partner-logo):focus-visible {
   -moz-user-select: none;
   -ms-user-select: none;
   background: transparent;
-  /* Žiadny translateZ / isolation — inak sa mix-blend-mode na img nezlúči s podkladom sekcie (biely „karton“). */
+  /* Žiadny translateZ / isolation — stabilnejšie vykresľovanie pri hover/active. */
 }
 /* Výber myšou: žiadny biely „highlight“ ako pri PNG — rovnaký tón ako pás (pri Rajec WebP takmer nevidno). */
 .section--partners a.partner.partner-logo::selection,
@@ -915,15 +915,8 @@ a.partner.partner-logo:active {
   opacity: 0.92;
   transform: scale(0.98);
 }
-.section--partners a.partner.partner-logo:active img {
-  mix-blend-mode: multiply;
-}
-/*
- * Biele pozadie v PNG/JPG → multiply voči podkladu sekcie (priehľadný WebP ako Rajec ostanú prirodzene).
- * Neobkladať odkazom vlastný stacking context (žiadny translateZ/isolation na <a>).
- */
+/* WebP export s alfou — bez multiply (prirodzené farby). */
 .section--partners .partner-logo img {
-  mix-blend-mode: multiply;
   display: block;
   max-width: 90%;
   max-height: 90%;
