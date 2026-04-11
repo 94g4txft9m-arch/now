@@ -1335,19 +1335,22 @@ a.partner.partner-logo:active {
   margin-inline: auto;
   margin-bottom: clamp(1.85rem, 4.5vw, 2.85rem);
 }
-/* Nadpis partnerov: rovnaký serif a váha ako ostatné h2 — bez ::first-letter (písmeno N vyzeralo oddelene). */
+/* Nadpis partnerov: jednotná ťažba/opsz pre celý riadok (inak „N“ od Source Serif 4 VF vyzeralo inak ako „aši…“). */
 .section.section--partners .partners-head h2,
 .section.section--partners h2.partners-heading-ak {
   font-family: var(--font-serif);
-  font-optical-sizing: auto;
+  font-optical-sizing: none;
   font-feature-settings: "kern" 1, "liga" 1, "lnum" 1, "pnum" 1;
   font-weight: 600;
+  font-variation-settings: "opsz" 18, "wght" 600;
   font-size: clamp(1.12rem, 2.25vw, 1.42rem);
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+  font-kerning: normal;
   color: #111;
   margin: 0;
   line-height: 1.35;
   text-wrap: balance;
+  text-rendering: optimizeLegibility;
 }
 /* Krátka zlata čiara — o stupienok širšia ako 3.75rem. */
 .section--partners .partners-head::after {
