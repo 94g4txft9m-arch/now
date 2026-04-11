@@ -205,7 +205,8 @@ table { font-variant-numeric: tabular-nums; }
   align-items: center;
   justify-content: center;
   min-height: 2.85rem;
-  background: #0a0a0a;
+  /* Rovnaká modrá ako hero na úvodnej stránke (.hero--prestige .hero-bg). */
+  background: linear-gradient(168deg, #0a0f1c 0%, #101a2e 52%, #0c1222 100%);
   border-bottom: 2px solid #c9a962;
   box-shadow: 0 1px 0 rgba(201, 169, 98, 0.35);
 }
@@ -1363,7 +1364,7 @@ footer.footer:not(.bg-dark) {
   }
   .navbar .market-strip {
     order: 2;
-    background: #0a0a0a;
+    background: linear-gradient(168deg, #0a0f1c 0%, #101a2e 52%, #0c1222 100%);
     border-top: none;
     border-bottom: 2px solid #c9a962;
     box-shadow: 0 1px 0 rgba(201, 169, 98, 0.35);
