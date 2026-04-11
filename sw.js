@@ -1,5 +1,5 @@
 /* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260411-hero-no-story-gold';
+var CACHE = 'strings-20260411-nav-gold-softdust';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();

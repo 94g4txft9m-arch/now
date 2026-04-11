@@ -67,18 +67,23 @@
     return best;
   }
 
+  function hash01(a, b) {
+    return ((Math.sin(a * 12.9898 + b * 78.233) * 43758.5453) % 1 + 1) % 1;
+  }
+
   function buildParticles() {
-    var cap = w < 640 ? 1300 : 2400;
+    var cap = w < 640 ? 1500 : 2600;
     if (reduceMotion) cap = Math.min(380, Math.floor(cap * 0.28));
-    var n = Math.min(cap, Math.max(reduceMotion ? 120 : 520, Math.floor((w * h) / 380)));
+    var n = Math.min(cap, Math.max(reduceMotion ? 120 : 560, Math.floor((w * h) / 340)));
     parts = [];
     for (var i = 0; i < n; i += 1) {
+      var y = Math.random() < 0.42 ? 0.58 + Math.random() * 0.42 : Math.random();
       parts.push({
         x: Math.random(),
-        y: Math.random(),
+        y: y,
         vx: (Math.random() - 0.5) * 0.00075,
         vy: (Math.random() - 0.5) * 0.00075,
-        s: 0.52 + Math.random() * 2.05,
+        s: 0.48 + Math.random() * 2.15,
         tw: Math.random() * Math.PI * 2
       });
     }
@@ -152,29 +157,41 @@
     var cy = 0.4 + Math.sin(t * 0.2) * 0.12;
 
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(6, 9, 16, 0.5)';
+    /* Mäkší „chvost“: dole slabšie mazanie = viac viditeľného prachu, menej ostrej čiary. */
+    var fade = ctx.createLinearGradient(0, 0, 0, h);
+    fade.addColorStop(0, 'rgba(6, 9, 16, 0.52)');
+    fade.addColorStop(0.62, 'rgba(6, 9, 16, 0.46)');
+    fade.addColorStop(0.82, 'rgba(6, 9, 16, 0.3)');
+    fade.addColorStop(1, 'rgba(6, 9, 16, 0.16)');
+    ctx.fillStyle = fade;
     ctx.fillRect(0, 0, w, h);
 
     for (var i = 0; i < parts.length; i += 1) {
       stepParticle(parts[i], t, ch, nodes, cx, cy);
     }
 
-    if (!reduceMotion && (ch === 0 || ch === 2)) {
+    if (!reduceMotion) {
       ctx.globalCompositeOperation = 'lighter';
-      var lim = Math.min(parts.length, 300);
-      var thr = ch === 0 ? 148 : 122;
+      var lim = Math.min(parts.length, 320);
+      var thr = ch === 0 ? 152 : ch === 1 ? 96 : 124;
       thr *= thr;
-      for (var a = 0; a < lim; a += 2) {
-        for (var b = a + 4; b < lim; b += 5) {
+      var stepB = ch === 1 ? 6 : 5;
+      for (var a = 0; a < lim; a += ch === 1 ? 3 : 2) {
+        for (var b = a + 4; b < lim; b += stepB) {
           var pa = parts[a];
           var pb = parts[b];
           var ddx = (pa.x - pb.x) * w;
           var ddy = (pa.y - pb.y) * h;
           if (ddx * ddx + ddy * ddy < thr) {
-            var alp = ch === 0 ? 0.062 : 0.05;
+            var alp =
+              ch === 0 ? 0.068 : ch === 1 ? 0.032 : 0.054;
             ctx.strokeStyle =
-              ch === 0 ? 'rgba(110, 225, 255,' + alp + ')' : 'rgba(200, 210, 255,' + alp + ')';
-            ctx.lineWidth = 0.72;
+              ch === 0
+                ? 'rgba(110, 235, 255,' + alp + ')'
+                : ch === 1
+                  ? 'rgba(255, 220, 185,' + alp + ')'
+                  : 'rgba(200, 210, 255,' + alp + ')';
+            ctx.lineWidth = ch === 1 ? 0.5 : 0.72;
             ctx.beginPath();
             ctx.moveTo(pa.x * w, pa.y * h);
             ctx.lineTo(pb.x * w, pb.y * h);
@@ -193,12 +210,36 @@
           : ch === 1
             ? 'rgba(255, 230, 200,'
             : 'rgba(185, 215, 255,';
-      var alpha = ch === 1 ? 0.12 + p.s * 0.055 : 0.085 + p.s * 0.048;
+      var alpha = ch === 1 ? 0.12 + p.s * 0.058 : 0.088 + p.s * 0.052;
+      if (p.y > 0.68) alpha *= 1.15 + (p.y - 0.68) * 0.85;
+      if (alpha > 0.34) alpha = 0.34;
       if (reduceMotion) alpha *= 0.65;
       ctx.beginPath();
       ctx.fillStyle = col + alpha + ')';
       ctx.arc(p.x * w, p.y * h, p.s, 0, Math.PI * 2);
       ctx.fill();
+    }
+
+    /* Ďalšia vrstva „AI vírusov“ v spodnej tretine — bez uloženia stavu, mäkký šum. */
+    if (!reduceMotion) {
+      ctx.globalCompositeOperation = 'lighter';
+      var sparks = w < 640 ? 110 : 160;
+      for (var s = 0; s < sparks; s += 1) {
+        var sx = hash01(s * 0.37, t * 0.15) * w;
+        var sy = (0.68 + hash01(s * 0.91, t * 0.22) * 0.32) * h;
+        var sr = 0.25 + hash01(s, t * 0.4) * 1.35;
+        var sa = 0.04 + hash01(s * 1.7, t) * 0.09;
+        var sc =
+          ch === 0
+            ? 'rgba(140, 245, 255,'
+            : ch === 1
+              ? 'rgba(255, 235, 210,'
+              : 'rgba(195, 225, 255,';
+        ctx.beginPath();
+        ctx.fillStyle = sc + sa + ')';
+        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     requestAnimationFrame(draw);
