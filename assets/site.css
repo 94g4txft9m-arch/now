@@ -829,53 +829,44 @@ body[data-page="index"] .site-foot-motif {
     gap: clamp(1.75rem, 3.5vw, 2.75rem);
   }
 }
+/* Partner: predvolene žiadna karta (logá priamo na podklade sekcie). */
 .partner {
-  border: 1px solid var(--line);
-  background: #fff;
-  min-height: clamp(92px, 18vw, 120px);
   display: grid;
   place-items: center;
-  padding: clamp(0.75rem, 2vw, 1.15rem);
-  border-radius: 10px;
+  padding: clamp(0.35rem, 1.4vw, 0.75rem);
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  min-height: 0;
+  box-shadow: none;
 }
 a.partner {
   text-decoration: none;
   color: inherit;
-  transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+  transition: opacity 0.28s ease, transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
   -webkit-tap-highlight-color: transparent;
 }
-a.partner:hover,
-a.partner:focus-visible {
+a.partner:not(.partner-logo):hover,
+a.partner:not(.partner-logo):focus-visible {
   border-color: rgba(154, 123, 79, 0.45);
   box-shadow: 0 8px 28px rgba(26, 23, 20, 0.08);
   transform: translateY(-2px);
   outline: none;
 }
-/* Odkazy s logom: žiadna „dlaždica“, len logo na podklade sekcie */
-.partner.partner-logo {
-  border: none;
-  background: transparent;
-  border-radius: 0;
-  min-height: 0;
-  padding: clamp(0.4rem, 1.5vw, 0.85rem);
-  box-shadow: none;
-}
 a.partner.partner-logo:hover {
-  border: none;
-  box-shadow: none;
   transform: translateY(-1px);
   opacity: 0.9;
   outline: none;
 }
 a.partner.partner-logo:focus-visible {
-  border: none;
-  box-shadow: none;
   transform: translateY(-1px);
   opacity: 1;
   outline: 2px solid var(--brand-2);
   outline-offset: 4px;
 }
-.partner-logo img {
+/* PNG partnerov majú často bielu plochu v súbore — multiply ju zlúči so svetlým bg-alt. */
+.section--partners .partner-logo img {
+  mix-blend-mode: multiply;
   max-width: 100%;
   max-height: var(--partner-logo-h);
   width: auto;
@@ -915,6 +906,7 @@ a.partner.partner--text {
   text-decoration: none;
   border: 1px solid var(--line);
   background: var(--panel);
+  border-radius: 10px;
   min-height: 72px;
 }
 a.partner.partner--text:hover,
