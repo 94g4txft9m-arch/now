@@ -156,6 +156,18 @@
     var cx = 0.72 + Math.sin(t * 0.16) * 0.08;
     var cy = 0.4 + Math.sin(t * 0.2) * 0.12;
 
+    /* Neustále otáčanie celej „siete“ okolo stredu (vizuál vírusov). */
+    var rcx = w * 0.5;
+    var rcy = h * 0.43;
+    var rotAngle = reduceMotion ? 0 : t * 0.2;
+    var cR = Math.cos(rotAngle);
+    var sR = Math.sin(rotAngle);
+    function R(px, py) {
+      var dx = px - rcx;
+      var dy = py - rcy;
+      return { x: rcx + dx * cR - dy * sR, y: rcy + dx * sR + dy * cR };
+    }
+
     ctx.globalCompositeOperation = 'source-over';
     /* Mäkší „chvost“: dole slabšie mazanie = viac viditeľného prachu, menej ostrej čiary. */
     var fade = ctx.createLinearGradient(0, 0, 0, h);
@@ -192,9 +204,11 @@
                   ? 'rgba(255, 220, 185,' + alp + ')'
                   : 'rgba(200, 210, 255,' + alp + ')';
             ctx.lineWidth = ch === 1 ? 0.5 : 0.72;
+            var A = R(pa.x * w, pa.y * h);
+            var B = R(pb.x * w, pb.y * h);
             ctx.beginPath();
-            ctx.moveTo(pa.x * w, pa.y * h);
-            ctx.lineTo(pb.x * w, pb.y * h);
+            ctx.moveTo(A.x, A.y);
+            ctx.lineTo(B.x, B.y);
             ctx.stroke();
           }
         }
@@ -214,9 +228,10 @@
       if (p.y > 0.68) alpha *= 1.15 + (p.y - 0.68) * 0.85;
       if (alpha > 0.34) alpha = 0.34;
       if (reduceMotion) alpha *= 0.65;
+      var P = R(p.x * w, p.y * h);
       ctx.beginPath();
       ctx.fillStyle = col + alpha + ')';
-      ctx.arc(p.x * w, p.y * h, p.s, 0, Math.PI * 2);
+      ctx.arc(P.x, P.y, p.s, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -235,9 +250,10 @@
             : ch === 1
               ? 'rgba(255, 235, 210,'
               : 'rgba(195, 225, 255,';
+        var S = R(sx, sy);
         ctx.beginPath();
         ctx.fillStyle = sc + sa + ')';
-        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+        ctx.arc(S.x, S.y, sr, 0, Math.PI * 2);
         ctx.fill();
       }
     }
