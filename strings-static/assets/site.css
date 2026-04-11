@@ -954,18 +954,23 @@ a.partner.partner-logo:active {
 .section--partners .partners-heading-ak {
   font-family: 'DM Sans', system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(1.05rem, 2.1vw, 1.35rem);
-  letter-spacing: 0.12em;
-  text-transform: lowercase;
+  font-size: clamp(1.12rem, 2.25vw, 1.42rem);
+  letter-spacing: 0.1em;
   color: #111;
   margin: 0;
   line-height: 1.35;
 }
-/* Pôvodne 3rem × 3px — teraz o kúsok dlhšia a jemnejšia hrúbka. Nadpis „Naši klienti“ bezo zmeny. */
+.section--partners .partners-heading-ak::first-letter,
+.section--partners .partners-head h2::first-letter {
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+/* Krátka zlata čiara — o stupienok širšia ako 3.75rem. */
 .section--partners .partners-head::after {
   content: "";
   display: block;
-  width: 3.75rem;
+  width: 4.5rem;
   height: 3px;
   margin: 1rem auto 0;
   border-radius: 2px;
