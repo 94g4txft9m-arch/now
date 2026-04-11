@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" />
-  <link rel="stylesheet" href="assets/site.css?v=20260411-logo-dual-gold" />
+  <link rel="stylesheet" href="assets/site.css?v=20260411-hero-network-photo" />
 </head>
 <body data-page="index">
   <a class="skip-link" href="#main-content">Preskočiť na obsah</a>
@@ -47,7 +47,18 @@
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-grid"></div>
     <div class="hero-hologram" id="hero-hologram-root" aria-hidden="true">
-      <canvas class="hero-hologram__canvas" id="hero-hologram-canvas" width="300" height="150"></canvas>
+      <div class="hero-hologram__media-wrap">
+        <img
+          class="hero-hologram__photo"
+          src="images/hero/hero-network-flow.png?v=20260411-hero-network-photo"
+          alt=""
+          width="1024"
+          height="1024"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+      <canvas class="hero-hologram__canvas" id="hero-hologram-canvas" width="300" height="150" hidden></canvas>
       <div class="hero-hologram__rift" aria-hidden="true"></div>
       <div class="hero-hologram__sheen" aria-hidden="true"></div>
     </div>
@@ -81,7 +92,7 @@
   </section>
   </main>
   <footer class="section bg-dark footer"><div class="wrap"><nav class="footer-contact" aria-label="Rýchly kontakt"><ul class="footer-contact__list"><li><a class="footer-contact__link" href="tel:+421902203238">0902 203 238</a></li><li><a class="footer-contact__link" href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a></li><li><a class="footer-contact__link" href="kontakt.html">Kontakt</a></li></ul></nav></div></footer>
-  <script src="assets/site.js?v=20260411-logo-dual-gold"></script>
-  <script src="assets/hero-cinema.js?v=20260411-logo-dual-gold" defer></script>
+  <script src="assets/site.js?v=20260411-hero-network-photo"></script>
+  <script src="assets/hero-cinema.js?v=20260411-hero-network-photo" defer></script>
 </body>
 </html>
