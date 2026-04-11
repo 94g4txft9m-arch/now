@@ -124,63 +124,12 @@
     return t;
   }
 
-  function navLinkLabel(a) {
-    if (!a) return '';
-    var c = a.cloneNode(true);
-    var ic = c.querySelector('.nav-ic');
-    if (ic) ic.remove();
-    return (c.textContent || '').replace(/\s+/g, ' ').trim();
-  }
-
-  function renderMarketStripFromLink(active) {
-    var strip = document.getElementById('market-strip-inner');
-    if (!strip || !active) return;
-    var ic = active.querySelector('.nav-ic');
-    strip.classList.add('market-strip-inner--route');
-    strip.innerHTML = '';
-    strip.appendChild(createMarketStripTaglineEl());
-    var sep = document.createElement('span');
-    sep.className = 'market-strip-sep';
-    sep.setAttribute('aria-hidden', 'true');
-    sep.textContent = '·';
-    strip.appendChild(sep);
-    var route = document.createElement('span');
-    route.className = 'market-strip-route';
-    if (ic) {
-      var wrap = document.createElement('span');
-      wrap.className = 'market-strip-ic-wrap';
-      wrap.appendChild(ic.cloneNode(true));
-      route.appendChild(wrap);
-    }
-    var sp = document.createElement('span');
-    sp.className = 'market-strip-label';
-    sp.textContent = navLinkLabel(active);
-    route.appendChild(sp);
-    strip.appendChild(route);
-  }
-
   function renderMarketStripFromActive() {
-    var active = document.querySelector('.nav-link.is-active');
-    if (active) {
-      renderMarketStripFromLink(active);
-      return;
-    }
     var strip = document.getElementById('market-strip-inner');
     if (!strip) return;
     strip.classList.remove('market-strip-inner--route');
     strip.innerHTML = '';
     strip.appendChild(createMarketStripTaglineEl());
-  }
-
-  function setupStripRovingFocus() {
-    if (!nav) return;
-    var linksPanel = nav.querySelector('.links');
-    if (!linksPanel) return;
-    linksPanel.addEventListener('focusin', function (e) {
-      if (!nav.classList.contains('open')) return;
-      var a = e.target.closest && e.target.closest('.nav-link');
-      if (a) renderMarketStripFromLink(a);
-    });
   }
 
   var NAV_ICONS = {
@@ -596,7 +545,7 @@
     if (loc.protocol !== 'https:' && loc.hostname !== 'localhost' && loc.hostname !== '127.0.0.1') return;
     window.addEventListener('load', function () {
       navigator.serviceWorker
-        .register('sw.js?v=20260411-no-gate', { scope: './' })
+        .register('sw.js?v=20260411-strip-black-gold', { scope: './' })
         .then(function (reg) {
           setupServiceWorkerLifecycle(reg);
           return reg.update();
@@ -610,7 +559,6 @@
   setActiveNav();
   addNavIcons();
   renderMarketStripFromActive();
-  setupStripRovingFocus();
   setupNavScrollState();
   addFootMotif();
   activateScrollAnimations();
