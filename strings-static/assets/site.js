@@ -373,12 +373,165 @@
     });
   }
 
+  var INSTALL_DISMISS_KEY = 'strings-pwa-install-dismiss';
+  var INSTALL_DISMISS_MS = 45 * 24 * 60 * 60 * 1000;
+  var deferredInstallPrompt = null;
+  var updateStripShown = false;
+
+  function ensureToastHost() {
+    var h = document.getElementById('app-toast-host');
+    if (!h) {
+      h = document.createElement('div');
+      h.id = 'app-toast-host';
+      h.className = 'app-toast-host';
+      h.setAttribute('aria-live', 'polite');
+      document.body.appendChild(h);
+    }
+    return h;
+  }
+
+  function removeStrip(id) {
+    var el = document.getElementById(id);
+    if (el) el.remove();
+  }
+
+  function installDismissed() {
+    var raw = localStorage.getItem(INSTALL_DISMISS_KEY);
+    if (!raw) return false;
+    var t = parseInt(raw, 10);
+    if (!t || Date.now() - t > INSTALL_DISMISS_MS) {
+      localStorage.removeItem(INSTALL_DISMISS_KEY);
+      return false;
+    }
+    return true;
+  }
+
+  function dismissInstallOffer() {
+    localStorage.setItem(INSTALL_DISMISS_KEY, String(Date.now()));
+    removeStrip('strings-pwa-install');
+    deferredInstallPrompt = null;
+  }
+
+  function renderInstallStrip() {
+    if (document.getElementById('strings-pwa-install')) return;
+    var host = ensureToastHost();
+    var strip = document.createElement('aside');
+    strip.id = 'strings-pwa-install';
+    strip.className = 'pwa-strip pwa-strip--install';
+    strip.setAttribute('role', 'region');
+    strip.setAttribute('aria-label', 'Inštalácia STRINGS ako aplikácie');
+    var p = document.createElement('p');
+    p.className = 'pwa-strip__text';
+    p.textContent =
+      'Pridajte STRINGS na domovskú obrazovku — rýchlejší prístup, čisté okno bez panela prehliadača.';
+    var actions = document.createElement('div');
+    actions.className = 'pwa-strip__actions';
+    var btnAdd = document.createElement('button');
+    btnAdd.type = 'button';
+    btnAdd.className = 'pwa-strip__btn pwa-strip__btn--primary';
+    btnAdd.textContent = 'Pridať';
+    btnAdd.addEventListener('click', function () {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function () {
+        deferredInstallPrompt = null;
+        removeStrip('strings-pwa-install');
+      });
+    });
+    var btnLater = document.createElement('button');
+    btnLater.type = 'button';
+    btnLater.className = 'pwa-strip__btn pwa-strip__btn--ghost';
+    btnLater.textContent = 'Nie teraz';
+    btnLater.addEventListener('click', dismissInstallOffer);
+    actions.appendChild(btnAdd);
+    actions.appendChild(btnLater);
+    strip.appendChild(p);
+    strip.appendChild(actions);
+    host.appendChild(strip);
+  }
+
+  function renderUpdateStrip() {
+    if (updateStripShown || document.getElementById('strings-pwa-update')) return;
+    updateStripShown = true;
+    var host = ensureToastHost();
+    var strip = document.createElement('aside');
+    strip.id = 'strings-pwa-update';
+    strip.className = 'pwa-strip pwa-strip--update';
+    strip.setAttribute('role', 'status');
+    strip.setAttribute('aria-label', 'Nová verzia stránky');
+    var p = document.createElement('p');
+    p.className = 'pwa-strip__text';
+    p.textContent = 'Je k dispozícii nová verzia stránky. Obnovením načítate najnovší obsah a štýly.';
+    var actions = document.createElement('div');
+    actions.className = 'pwa-strip__actions';
+    var btnReload = document.createElement('button');
+    btnReload.type = 'button';
+    btnReload.className = 'pwa-strip__btn pwa-strip__btn--primary';
+    btnReload.textContent = 'Obnoviť';
+    btnReload.addEventListener('click', function () {
+      window.location.reload();
+    });
+    var btnClose = document.createElement('button');
+    btnClose.type = 'button';
+    btnClose.className = 'pwa-strip__btn pwa-strip__btn--ghost';
+    btnClose.textContent = 'Zavrieť';
+    btnClose.addEventListener('click', function () {
+      updateStripShown = false;
+      removeStrip('strings-pwa-update');
+    });
+    actions.appendChild(btnReload);
+    actions.appendChild(btnClose);
+    strip.appendChild(p);
+    strip.appendChild(actions);
+    host.appendChild(strip);
+  }
+
+  function setupPwaInstall() {
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault();
+      if (installDismissed()) return;
+      deferredInstallPrompt = e;
+      renderInstallStrip();
+    });
+    window.addEventListener('appinstalled', function () {
+      deferredInstallPrompt = null;
+      removeStrip('strings-pwa-install');
+    });
+  }
+
+  function attachWaitingWorker(reg) {
+    if (!reg.waiting || !navigator.serviceWorker.controller) return;
+    renderUpdateStrip();
+  }
+
+  function watchInstallingWorker(reg, worker) {
+    if (!worker) return;
+    worker.addEventListener('statechange', function () {
+      if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+        renderUpdateStrip();
+      }
+    });
+  }
+
+  function setupServiceWorkerLifecycle(reg) {
+    attachWaitingWorker(reg);
+    reg.addEventListener('updatefound', function () {
+      watchInstallingWorker(reg, reg.installing);
+    });
+  }
+
   function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
     var loc = window.location;
     if (loc.protocol !== 'https:' && loc.hostname !== 'localhost' && loc.hostname !== '127.0.0.1') return;
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js?v=20260411-typo-deploy', { scope: './' }).catch(function () {});
+      navigator.serviceWorker
+        .register('sw.js?v=20260411-pwa', { scope: './' })
+        .then(function (reg) {
+          setupServiceWorkerLifecycle(reg);
+          return reg.update();
+        })
+        .catch(function () {});
     });
   }
 
@@ -393,5 +546,6 @@
   setupGlobalCinematic();
   setupTransitions();
   subtleCardTilt();
+  setupPwaInstall();
   registerServiceWorker();
 })();
