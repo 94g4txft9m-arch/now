@@ -999,21 +999,26 @@ a.partner.partner-logo:active {
   margin-inline: auto;
   margin-bottom: clamp(1.85rem, 4.5vw, 2.85rem);
 }
-.section--partners .partners-head h2,
-.section--partners .partners-heading-ak {
-  font-family: var(--font-sans);
+/* Rovnaký serif stack ako ostatné h2 (Source Serif 4); ::first-letter explicitne kvôli WebKitu. */
+.section.section--partners .partners-head h2,
+.section.section--partners h2.partners-heading-ak {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-feature-settings: "kern" 1, "liga" 1, "lnum" 1, "pnum" 1;
   font-weight: 600;
   font-size: clamp(1.12rem, 2.25vw, 1.42rem);
-  letter-spacing: 0.1em;
+  letter-spacing: -0.02em;
   color: #111;
   margin: 0;
   line-height: 1.35;
+  text-wrap: balance;
 }
-.section--partners .partners-heading-ak::first-letter,
-.section--partners .partners-head h2::first-letter {
+.section.section--partners .partners-heading-ak::first-letter,
+.section.section--partners .partners-head h2::first-letter {
+  font-family: var(--font-serif);
   font-size: 1.3em;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: -0.02em;
 }
 /* Krátka zlata čiara — o stupienok širšia ako 3.75rem. */
 .section--partners .partners-head::after {
@@ -1026,17 +1031,19 @@ a.partner.partner-logo:active {
   background: linear-gradient(90deg, transparent, var(--brand-2), transparent);
   opacity: 0.85;
 }
-.section--partners .partners-lede {
+.section.section--partners .partners-lede {
   margin: 0;
+  font-family: var(--font-sans);
   font-size: clamp(0.94rem, 1.45vw, 1.05rem);
   line-height: 1.55;
 }
-a.partner.partner--text {
+.section.section--partners a.partner.partner--text {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 1rem 0.75rem;
+  font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.06em;
