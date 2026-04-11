@@ -1,5 +1,5 @@
-/* STRINGS static — light cache for assets; HTML always from network */
-var CACHE = 'strings-20260411-hero-network-photo';
+/* STRINGS static — HTML z siete; assety network-first (nie zastaralý SW cache). */
+var CACHE = 'strings-20260412-nav-gold-sw';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
@@ -34,9 +34,8 @@ self.addEventListener('fetch', function (e) {
   }
 
   e.respondWith(
-    caches.match(e.request).then(function (hit) {
-      if (hit) return hit;
-      return fetch(e.request).then(function (res) {
+    fetch(e.request)
+      .then(function (res) {
         if (!res || res.status !== 200) return res;
         var path = url.pathname;
         if (/\.(css|js|png|svg|webp|jpg|jpeg|gif|woff2?|webmanifest)$/i.test(path)) {
@@ -46,7 +45,9 @@ self.addEventListener('fetch', function (e) {
           });
         }
         return res;
-      });
-    })
+      })
+      .catch(function () {
+        return caches.match(e.request);
+      })
   );
 });
