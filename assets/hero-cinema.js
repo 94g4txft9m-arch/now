@@ -74,12 +74,12 @@
 
   function networkNodes(t) {
     var nodes = [];
-    var baseX = 0.54;
-    for (var i = 0; i < 7; i += 1) {
-      var ang = (i / 7) * Math.PI * 2 + t * 0.12;
+    var baseX = 0.5;
+    for (var i = 0; i < 9; i += 1) {
+      var ang = (i / 9) * Math.PI * 2 + t * 0.11;
       nodes.push({
-        x: baseX + Math.cos(ang) * 0.36,
-        y: 0.36 + Math.sin(ang * 1.25) * 0.3
+        x: baseX + Math.cos(ang) * 0.5,
+        y: 0.3 + Math.sin(ang * 1.22) * 0.4
       });
     }
     return nodes;
@@ -101,15 +101,16 @@
   }
 
   function buildParticles() {
-    var n = Math.min(1050, Math.max(260, Math.floor((w * h) / 920)));
+    var cap = w < 640 ? 1300 : 2400;
+    var n = Math.min(cap, Math.max(520, Math.floor((w * h) / 380)));
     parts = [];
     for (var i = 0; i < n; i += 1) {
       parts.push({
         x: Math.random(),
         y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.0006,
-        vy: (Math.random() - 0.5) * 0.0006,
-        s: 0.35 + Math.random() * 1.35,
+        vx: (Math.random() - 0.5) * 0.00075,
+        vy: (Math.random() - 0.5) * 0.00075,
+        s: 0.52 + Math.random() * 2.05,
         tw: Math.random() * Math.PI * 2
       });
     }
@@ -134,9 +135,9 @@
       ay += (-dx / dist) * 0.00044;
       ax += Math.sin(t * 0.55 + p.y * 9) * 0.00006;
     } else {
-      var left = { x: 0.33, y: 0.49 };
-      var right = { x: 0.79, y: 0.49 };
-      var pick = p.x < 0.56 ? left : right;
+      var left = { x: 0.22, y: 0.5 };
+      var right = { x: 0.88, y: 0.5 };
+      var pick = p.x < 0.55 ? left : right;
       ax = (pick.x - p.x) * 0.00036;
       ay = (pick.y - p.y) * 0.00036;
       ay += (0.5 - p.y) * 0.00014;
@@ -144,8 +145,8 @@
     }
     p.vx = (p.vx + ax) * 0.966;
     p.vy = (p.vy + ay) * 0.966;
-    p.x += p.vx * 16;
-    p.y += p.vy * 16;
+    p.x += p.vx * 18;
+    p.y += p.vy * 18;
     if (p.x < 0) p.x += 1;
     if (p.x > 1) p.x -= 1;
     if (p.y < 0) p.y += 1;
@@ -183,7 +184,8 @@
     var cy = 0.41 + Math.sin(t * 0.22) * 0.035;
 
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(5, 9, 16, 0.38)';
+    /* Kratší „chvost“ na #060910 — vyššia hustota, lepšia čitateľnosť prachu. */
+    ctx.fillStyle = 'rgba(6, 9, 16, 0.5)';
     ctx.fillRect(0, 0, w, h);
 
     for (var i = 0; i < parts.length; i += 1) {
@@ -192,20 +194,20 @@
 
     if (ch === 0 || ch === 2) {
       ctx.globalCompositeOperation = 'lighter';
-      var lim = Math.min(parts.length, 200);
-      var thr = ch === 0 ? 115 : 88;
+      var lim = Math.min(parts.length, 300);
+      var thr = ch === 0 ? 148 : 122;
       thr *= thr;
       for (var a = 0; a < lim; a += 2) {
-        for (var b = a + 3; b < lim; b += 6) {
+        for (var b = a + 4; b < lim; b += 5) {
           var pa = parts[a];
           var pb = parts[b];
           var ddx = (pa.x - pb.x) * w;
           var ddy = (pa.y - pb.y) * h;
           if (ddx * ddx + ddy * ddy < thr) {
-            var alp = ch === 0 ? 0.038 : 0.03;
+            var alp = ch === 0 ? 0.062 : 0.05;
             ctx.strokeStyle =
               ch === 0 ? 'rgba(110, 225, 255,' + alp + ')' : 'rgba(200, 210, 255,' + alp + ')';
-            ctx.lineWidth = 0.55;
+            ctx.lineWidth = 0.72;
             ctx.beginPath();
             ctx.moveTo(pa.x * w, pa.y * h);
             ctx.lineTo(pb.x * w, pb.y * h);
@@ -224,7 +226,7 @@
           : ch === 1
             ? 'rgba(255, 230, 200,'
             : 'rgba(185, 215, 255,';
-      var alpha = ch === 1 ? 0.085 + p.s * 0.045 : 0.05 + p.s * 0.038;
+      var alpha = ch === 1 ? 0.12 + p.s * 0.055 : 0.085 + p.s * 0.048;
       ctx.beginPath();
       ctx.fillStyle = col + alpha + ')';
       ctx.arc(p.x * w, p.y * h, p.s, 0, Math.PI * 2);
