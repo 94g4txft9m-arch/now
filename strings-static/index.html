@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" />
-  <link rel="stylesheet" href="assets/site.css?v=20260411-strip-black-gold" />
+  <link rel="stylesheet" href="assets/site.css?v=20260411-hologram-hero" />
 </head>
 <body data-page="index">
   <a class="skip-link" href="#main-content">Preskočiť na obsah</a>
@@ -46,6 +46,11 @@
     <div class="hero-vignette" aria-hidden="true"></div>
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-grid"></div>
+    <div class="hero-hologram" id="hero-hologram-root" aria-hidden="true">
+      <canvas class="hero-hologram__canvas" id="hero-hologram-canvas" width="300" height="150"></canvas>
+      <div class="hero-hologram__rift" aria-hidden="true"></div>
+      <div class="hero-hologram__sheen" aria-hidden="true"></div>
+    </div>
     <div class="wrap hero-content">
       <div class="hero-layout hero-layout--prestige">
         <div class="hero-copy">
@@ -54,33 +59,12 @@
           <p class="subline" id="hero-subline">Sme advokáti digitálnej doby. Prinášame exaktné právne riešenia v technológiách, podnikaní, ochrane údajov a sporovej agende.</p>
           <div class="cta"><a class="btn" href="kontakt.html">Kontaktujte nás</a></div>
         </div>
-        <aside class="hero-visual-slot hero-visual-slot--cinema" aria-label="Príbeh v obraze: právo, technológie a AI">
-          <div class="hero-visual-slot__frame">
-            <div class="hero-cinema">
-              <div class="hero-cinema__layers" aria-hidden="true">
-                <div class="hero-cinema__slide is-active" data-hero-slide="0">
-                  <img src="images/hero/hero-neural.png" alt="" width="800" height="800" decoding="async" fetchpriority="high" />
-                </div>
-                <div class="hero-cinema__slide" data-hero-slide="1">
-                  <img src="images/hero/hero-eye.png" alt="" width="800" height="800" decoding="async" loading="lazy" />
-                </div>
-                <div class="hero-cinema__slide" data-hero-slide="2">
-                  <img src="images/hero/hero-scales.png" alt="" width="800" height="800" decoding="async" loading="lazy" />
-                </div>
-              </div>
-              <div class="hero-cinema__veil" aria-hidden="true"></div>
-              <div class="hero-cinema__cyan-grid" aria-hidden="true"></div>
-              <div class="hero-cinema__gold-bloom" aria-hidden="true"></div>
-              <canvas class="hero-cinema__dust" aria-hidden="true"></canvas>
-              <div class="hero-cinema__caption">
-                <p class="hero-cinema__story-kicker" id="hero-cinema-chapter">I — Sieť</p>
-                <p class="hero-cinema__story" id="hero-cinema-story" aria-live="polite">
-                  Kdesi medzi servermi sa rodí poriadok: nie náhodný šum, ale vzorec — dáta hľadajú cestu tak, ako neskôr hľadajú právo.
-                </p>
-                <p class="hero-cinema__sub">STRINGS — jeden príbeh v troch obrazoch</p>
-              </div>
-            </div>
-          </div>
+        <aside class="hero-hologram-story" aria-label="Príbeh: právo, technológie a dôvera">
+          <p class="hero-hologram-story__kicker" id="hero-cinema-chapter">I — Sieť</p>
+          <p class="hero-hologram-story__body" id="hero-cinema-story" aria-live="polite">
+            Kdesi medzi servermi sa rodí poriadok: nie náhodný šum, ale vzorec — dáta hľadajú cestu tak, ako neskôr hľadajú právo.
+          </p>
+          <p class="hero-hologram-story__sub">STRINGS — jeden príbeh v troch dejstvách</p>
         </aside>
       </div>
     </div>
@@ -104,7 +88,7 @@
   </section>
   </main>
   <footer class="section bg-dark footer"><div class="wrap"><nav class="footer-contact" aria-label="Rýchly kontakt"><ul class="footer-contact__list"><li><a class="footer-contact__link" href="tel:+421902203238">0902 203 238</a></li><li><a class="footer-contact__link" href="mailto:motuzova@akmotuzova.sk">motuzova@akmotuzova.sk</a></li><li><a class="footer-contact__link" href="kontakt.html">Kontakt</a></li></ul></nav></div></footer>
-  <script src="assets/site.js?v=20260411-strip-black-gold"></script>
-  <script src="assets/hero-cinema.js?v=20260411-strip-black-gold" defer></script>
+  <script src="assets/site.js?v=20260411-hologram-hero"></script>
+  <script src="assets/hero-cinema.js?v=20260411-hologram-hero" defer></script>
 </body>
 </html>
