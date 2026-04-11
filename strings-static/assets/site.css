@@ -251,6 +251,7 @@ table { font-variant-numeric: tabular-nums; }
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow: visible;
   transition: background .45s ease, border-color .45s ease, box-shadow .45s ease;
   /* Bez backdrop-filter: na mobiloch by inak „fixed“ panel menu orezal predok s filterom. */
   background: rgba(255, 252, 247, 0.94);
@@ -294,6 +295,7 @@ body[data-page="index"] .navbar::after {
   gap: 1rem;
   padding: 16px 0;
   position: relative;
+  overflow: visible;
 }
 /* PC: grid oddelí logo a menu — posun STRINGS (margin/transform na .logo) neťahá odkazy. */
 @media (min-width: 981px) {
@@ -335,9 +337,33 @@ body[data-page="index"] .navbar::after {
   transform: scaleX(1.08);
   transform-origin: left center;
   position: relative;
+  padding-top: 6px;
   padding-bottom: 4px;
   z-index: 2;
   flex-shrink: 0;
+  overflow: visible;
+}
+/* Zlatý pás nad STRINGS (rovnaký charakter ako delenie hero / navbar). */
+.logo--prestige::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #8f7348 6%,
+    #c9a962 22%,
+    #f2e6c8 50%,
+    #c9a962 78%,
+    #8f7348 94%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
+  pointer-events: none;
 }
 /* Navbar: STRINGS — posun cez :root premenné (--strings-logo-offset-*). */
 .navbar .logo.logo--prestige {
@@ -913,7 +939,7 @@ body[data-page="index"] .hero--prestige .hero-hologram {
   );
   mix-blend-mode: screen;
   opacity: 0.68;
-  animation: heroHologramRift 28s linear infinite;
+  animation: heroHologramRift 16s linear infinite;
   pointer-events: none;
 }
 .hero-hologram__sheen {
