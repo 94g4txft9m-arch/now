@@ -5,19 +5,57 @@
 
   var slides = root.querySelectorAll('.hero-cinema__slide');
   var canvas = root.querySelector('.hero-cinema__dust');
+  var chapterEl = document.getElementById('hero-cinema-chapter');
+  var storyEl = document.getElementById('hero-cinema-story');
   var idx = 0;
   var timer;
 
-  function setActive(i) {
+  var STORY_CHAPTERS = ['I — Sieť', 'II — Pozornosť', 'III — Rovnováha'];
+  var STORY_BEATS = [
+    'Kdesi medzi servermi sa rodí poriadok: nie náhodný šum, ale vzorec — dáta hľadajú cestu tak, ako neskôr hľadajú právo.',
+    'Technológia vidí ďalej než človek v jednej chvíli. Rozhodnutie, čo z toho smie zostať, však patrí stále pravidlám, zmluvám a regulácii.',
+    'Váhy nepatria minulosti. Ležia medzi inováciou a dôverou klienta — a na STRINGS držíme obe misy rovnako vážne.'
+  ];
+
+  function setSlidesOnly(i) {
     slides.forEach(function (s, j) {
       s.classList.toggle('is-active', j === i);
     });
+  }
+
+  function updateStory(i) {
+    if (!storyEl) return;
+    if (chapterEl) chapterEl.textContent = STORY_CHAPTERS[i] || '';
+    storyEl.textContent = STORY_BEATS[i] || '';
+  }
+
+  function setActive(i) {
+    setSlidesOnly(i);
+    updateStory(i);
   }
 
   function next() {
     idx = (idx + 1) % slides.length;
     setActive(idx);
   }
+
+  if (reduceMotion && slides.length && storyEl) {
+    setSlidesOnly(2);
+    idx = 2;
+    if (chapterEl) chapterEl.textContent = 'Tri kapitoly';
+    storyEl.classList.add('hero-cinema__story--full');
+    storyEl.innerHTML = '';
+    for (var k = 0; k < STORY_BEATS.length; k += 1) {
+      var p = document.createElement('p');
+      p.className = 'hero-cinema__story-part';
+      p.textContent = STORY_CHAPTERS[k] + '. ' + STORY_BEATS[k];
+      storyEl.appendChild(p);
+    }
+    dustLoop();
+    return;
+  }
+
+  updateStory(0);
 
   if (!reduceMotion && slides.length > 1) {
     timer = window.setInterval(next, 7800);

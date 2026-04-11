@@ -953,28 +953,51 @@ body[data-page="index"] .hero--singularity .btn:hover {
   right: 0;
   bottom: 0;
   z-index: 5;
-  padding: clamp(0.75rem, 2.2vw, 1.1rem) clamp(0.85rem, 2.2vw, 1.2rem);
+  padding: clamp(0.65rem, 2vw, 1rem) clamp(0.85rem, 2.2vw, 1.2rem);
   text-align: left;
-  background: linear-gradient(0deg, rgba(4, 6, 12, 0.88) 0%, rgba(4, 6, 12, 0.2) 72%, transparent 100%);
+  background: linear-gradient(0deg, rgba(4, 6, 12, 0.92) 0%, rgba(4, 6, 12, 0.45) 58%, transparent 100%);
   border-radius: 0 0 16px 16px;
 }
-.hero-cinema__title {
-  margin: 0 0 0.2rem;
+.hero-cinema__story-kicker {
+  margin: 0 0 0.28rem;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201, 169, 98, 0.95);
+  line-height: 1.2;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+.hero-cinema__story {
+  margin: 0 0 0.35rem;
   font-family: var(--font-serif);
-  font-size: clamp(0.82rem, 1.15vw, 0.95rem);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: #f5f0e8;
-  line-height: 1.25;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+  font-size: clamp(0.74rem, 1.05vw, 0.88rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(250, 246, 239, 0.94);
+  line-height: 1.42;
+  max-height: min(28vh, 9.5rem);
+  overflow-y: auto;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
+  -webkit-overflow-scrolling: touch;
+}
+.hero-cinema__story.hero-cinema__story--full .hero-cinema__story-part {
+  margin: 0 0 0.5rem;
+}
+.hero-cinema__story.hero-cinema__story--full .hero-cinema__story-part:last-child {
+  margin-bottom: 0;
+}
+.hero-cinema__story.hero-cinema__story--full {
+  max-height: min(42vh, 15rem);
 }
 .hero-cinema__sub {
   margin: 0;
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(201, 169, 98, 0.92);
+  color: rgba(232, 213, 168, 0.72);
   line-height: 1.35;
 }
 
