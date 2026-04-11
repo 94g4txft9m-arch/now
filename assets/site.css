@@ -28,8 +28,8 @@
   --nav-links-pc-gap: clamp(0.65rem, 1.6vw, 1.15rem);
   /* Medzera medzi STRINGS a blokom menu (PC grid). */
   --nav-logo-menu-gap: clamp(2rem, 5.5vw, 4rem);
-  /* Partneri: do šírky 980px (mobile/tablet); PC zväčšenie v @media (min-width: 981px). */
-  --partner-logo-h: clamp(176px, 58vw, 280px);
+  /* Partneri: do šírky 980px; logá priamo na podklade (.partner-logo). */
+  --partner-logo-h: clamp(140px, 44vw, 200px);
 }
 
 *,
@@ -799,11 +799,14 @@ body[data-page="index"] .site-foot-motif {
   gap: clamp(1rem, 2.5vw, 1.5rem);
   align-items: stretch;
 }
-/* Domov: vyvážená mriežka log (7 položiek), väčšie klikacie plochy */
+/* Domov: logá bez kariet, rovnomerný rytmus */
 .partner-grid--home {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   max-width: min(1040px, 100%);
   margin-inline: auto;
+  align-items: center;
+  justify-items: center;
+  gap: clamp(1.35rem, 4vw, 2.25rem);
 }
 @media (min-width: 600px) {
   .partner-grid--home {
@@ -815,17 +818,15 @@ body[data-page="index"] .site-foot-motif {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
-/* PC: posun loga STRINGS + veľké logá partnerov (~5× pôvodná škála). */
+/* PC: posun loga STRINGS + väčšie logá partnerov (stále bez bieleho podkladu u .partner-logo). */
 @media (min-width: 981px) {
   :root {
     --strings-logo-offset-x: calc(-2px - 2cm);
-    --partner-logo-h: clamp(280px, 50vw, 460px);
+    --partner-logo-h: clamp(200px, 28vw, 280px);
   }
   .partner-grid--home {
-    max-width: min(1600px, 100%);
-  }
-  .partner {
-    min-height: clamp(480px, 48vw, 600px);
+    max-width: min(1120px, 100%);
+    gap: clamp(1.75rem, 3.5vw, 2.75rem);
   }
 }
 .partner {
@@ -849,6 +850,30 @@ a.partner:focus-visible {
   box-shadow: 0 8px 28px rgba(26, 23, 20, 0.08);
   transform: translateY(-2px);
   outline: none;
+}
+/* Odkazy s logom: žiadna „dlaždica“, len logo na podklade sekcie */
+.partner.partner-logo {
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  min-height: 0;
+  padding: clamp(0.4rem, 1.5vw, 0.85rem);
+  box-shadow: none;
+}
+a.partner.partner-logo:hover {
+  border: none;
+  box-shadow: none;
+  transform: translateY(-1px);
+  opacity: 0.9;
+  outline: none;
+}
+a.partner.partner-logo:focus-visible {
+  border: none;
+  box-shadow: none;
+  transform: translateY(-1px);
+  opacity: 1;
+  outline: 2px solid var(--brand-2);
+  outline-offset: 4px;
 }
 .partner-logo img {
   max-width: 100%;
@@ -1100,10 +1125,7 @@ footer.footer:not(.bg-dark) {
   }
   .partner-grid--home {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.85rem, 3vw, 1.15rem);
-  }
-  .partner {
-    min-height: clamp(200px, 52vw, 320px);
+    gap: clamp(1.1rem, 4vw, 1.75rem);
   }
   .hero-content {
     /* Navbar: riadok loga + úzky strip pod ním */
