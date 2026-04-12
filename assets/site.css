@@ -544,7 +544,8 @@ table { font-variant-numeric: tabular-nums; }
   cursor: pointer;
   touch-action: manipulation;
   position: relative;
-  z-index: 3;
+  /* Nad dekorom v .nav-inner (zlatá čiara má z-index 5). */
+  z-index: 8;
   border-radius: 8px;
   flex-shrink: 0;
 }
@@ -1524,7 +1525,8 @@ footer.footer:not(.bg-dark) {
     margin-left: -50vw;
     bottom: 0;
     height: 4px;
-    z-index: 5;
+    /* Pod logom a toggle (tie majú vyšší z-index), aby čiara neprekrývala strieborné pásy. */
+    z-index: 0;
     pointer-events: none;
     background: var(--gold-divider);
     box-shadow: 0 1px 0 rgba(74, 58, 38, 0.35);
@@ -1649,6 +1651,40 @@ footer.footer:not(.bg-dark) {
   .hero--prestige .hero-copy {
     max-width: 100%;
   }
+  /* Domov / mobile: silnejší scrim na úzkej šírke (text nesmie „plávať“ na grafike). */
+  body[data-page="index"] .hero--prestige .hero-copy {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: clamp(1rem, 4.5vw, 1.45rem) clamp(0.85rem, 4vw, 1.15rem);
+    border-radius: 12px;
+  }
+  body[data-page="index"] .hero--prestige .hero-copy::before {
+    inset: -4px -4px -4px -4px;
+    border-radius: 14px;
+    background: linear-gradient(
+      180deg,
+      rgba(4, 7, 14, 0.92) 0%,
+      rgba(4, 7, 14, 0.86) 38%,
+      rgba(4, 7, 14, 0.72) 72%,
+      rgba(4, 7, 14, 0.52) 100%
+    );
+  }
+  body[data-page="index"] .hero--prestige .hero-eyebrow {
+    font-size: 0.74rem;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+  }
+  body[data-page="index"] .hero-hologram__sheen {
+    opacity: 0.34;
+  }
+  body[data-page="index"] .hero-hologram__photo {
+    filter: saturate(1.02) contrast(1.02) brightness(0.93);
+  }
+  body[data-page="index"] .hero-layout--prestige-home {
+    width: 100%;
+    max-width: 100%;
+  }
   .hero-layout--prestige {
     grid-template-columns: 1fr;
   }
@@ -1704,7 +1740,7 @@ footer.footer:not(.bg-dark) {
 @media (prefers-reduced-motion: reduce) {
   .hero-hologram__photo {
     animation: none !important;
-    transform: translate3d(-50%, -50%, 0) scale(1.06) !important;
+    transform: translate3d(-50%, -50%, 0) scale(1.04) !important;
   }
   .hero-hologram__rift {
     animation: none !important;
