@@ -27,6 +27,9 @@
   --gold: #b8975e;
   /* Zlaté deliace čiary (navbar, logo, strip, hero): jednotná farba, bez jasnejšieho stredu. */
   --gold-divider: var(--gold);
+  /* Logo STRINGS — strieborná na svetlom paneli. */
+  --strings-silver: #7a8491;
+  --strings-silver-hover: #8f99a8;
   --gold-bright: #e8d5a8;
   --gold-deep: #7a6239;
   --gold-metallic: linear-gradient(118deg, #f4ead4 0%, #d4bc7a 22%, #b8975e 48%, #8f7348 72%, #e8d5a8 100%);
@@ -349,22 +352,26 @@ table { font-variant-numeric: tabular-nums; }
   z-index: 2;
   flex-shrink: 0;
   overflow: visible;
+  color: var(--strings-silver);
 }
-/* Zlatý pás nad STRINGS — jednotná farba (deliaca čiara). */
+.logo.logo--prestige:hover {
+  color: var(--strings-silver-hover);
+}
+/* Horný zlatý pás: kratší, vodorovne v strede textu (bez animácie). */
 .logo--prestige::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  right: auto;
   top: 0;
+  width: 52%;
+  max-width: 9.5em;
   height: 3px;
   border-radius: 1px;
   background: var(--gold-divider);
   box-shadow: 0 1px 0 rgba(74, 58, 38, 0.28);
   pointer-events: none;
-  transform-origin: left center;
-  animation: logoGoldLine 8s ease-in-out infinite;
-  animation-delay: -4s;
+  transform: translateX(-50%);
 }
 /* Navbar: STRINGS — posun cez :root premenné (--strings-logo-offset-*). */
 .navbar .logo.logo--prestige {
@@ -372,25 +379,18 @@ table { font-variant-numeric: tabular-nums; }
     scaleX(1.08);
   transform-origin: left center;
 }
+/* Dolný zlatý pás: po celej šírke nápisu STRINGS (bez animácie). */
 .logo--prestige::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
   height: 3px;
   border-radius: 1px;
   background: var(--gold-divider);
   box-shadow: 0 1px 0 rgba(74, 58, 38, 0.28);
   pointer-events: none;
-  transform-origin: left center;
-  animation: logoGoldLine 8s ease-in-out infinite;
-  animation-delay: -1.35s;
-}
-@keyframes logoGoldLine {
-  0%, 100% { transform: scaleX(0.52); opacity: 0.8; }
-  50% { transform: scaleX(1); opacity: 1; }
 }
 .logo--singularity {
   letter-spacing: 0.12em;
@@ -1650,8 +1650,6 @@ footer.footer:not(.bg-dark) {
     transition-duration: .01ms !important;
   }
   .logo--singularity .logo-ch { animation: none !important; text-shadow: none !important; }
-  .logo--prestige::before,
-  .logo--prestige::after { animation: none !important; }
   .hero--prestige .hero-vignette { animation: none !important; opacity: 1 !important; }
   .site-foot-motif { animation: none !important; }
   .hero-command-canvas,
