@@ -1,5 +1,5 @@
 /* STRINGS static — HTML z siete; assety network-first (nie zastaralý SW cache). */
-var CACHE = 'strings-20260415-navbar-order-mobile';
+var CACHE = 'strings-20260416-logo-symmetric-pad';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();

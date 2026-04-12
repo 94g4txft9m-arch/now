@@ -368,8 +368,10 @@ table { font-variant-numeric: tabular-nums; }
   transform: scaleX(1.08);
   transform-origin: left center;
   position: relative;
-  padding-top: 6px;
-  padding-bottom: 4px;
+  /* Rovnaký odstup textu od hornej a dolnej striebornej čiary (PC aj mobile). */
+  --strings-logo-pad-y: 6px;
+  padding-top: var(--strings-logo-pad-y);
+  padding-bottom: var(--strings-logo-pad-y);
   z-index: 2;
   flex-shrink: 0;
   overflow: visible;
