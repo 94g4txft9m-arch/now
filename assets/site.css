@@ -283,7 +283,7 @@ table { font-variant-numeric: tabular-nums; }
   padding-left: env(safe-area-inset-left, 0px);
   padding-right: env(safe-area-inset-right, 0px);
 }
-/* Zlaté zvislé okraje po celej výške fixného headera (paleta ako ostatné zlaté deliace). */
+/* Zlaté zvislé okraje po celej výške fixného headera — jednotná farba (bez „osvetleného“ stredu). */
 .navbar::before,
 .navbar::after {
   content: "";
@@ -293,17 +293,7 @@ table { font-variant-numeric: tabular-nums; }
   width: 3px;
   z-index: 71;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    #5c4a32 0%,
-    #8f7348 14%,
-    #c9a962 42%,
-    #f2e6c8 50%,
-    #c9a962 58%,
-    #8f7348 86%,
-    #5c4a32 100%
-  );
-  box-shadow: 0 0 6px rgba(201, 169, 98, 0.2);
+  background: #b8975e;
 }
 .navbar::before {
   left: 0;
