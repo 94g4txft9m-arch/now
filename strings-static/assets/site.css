@@ -30,6 +30,27 @@
   /* Logo STRINGS — strieborná na svetlom paneli. */
   --strings-silver: #7a8491;
   --strings-silver-hover: #8f99a8;
+  /* Horná / dolná čiara STRINGS: kovový lesk (nie zlato), statický. */
+  --strings-rule-sheen:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.58) 0%,
+      rgba(255, 255, 255, 0.12) 42%,
+      transparent 52%,
+      rgba(15, 20, 28, 0.14) 100%
+    ),
+    linear-gradient(
+      90deg,
+      #4a5159 0%,
+      #6f7784 12%,
+      #9ea8b5 26%,
+      #d2dae3 40%,
+      #f0f3f7 50%,
+      #cfd6df 60%,
+      #939ca8 78%,
+      #5c636d 92%,
+      #454b52 100%
+    );
   --gold-bright: #e8d5a8;
   --gold-deep: #7a6239;
   --gold-metallic: linear-gradient(118deg, #f4ead4 0%, #d4bc7a 22%, #b8975e 48%, #8f7348 72%, #e8d5a8 100%);
@@ -357,21 +378,21 @@ table { font-variant-numeric: tabular-nums; }
 .logo.logo--prestige:hover {
   color: var(--strings-silver-hover);
 }
-/* Horný zlatý pás: kratší, vodorovne v strede textu (bez animácie). */
+/* Horná čiara STRINGS: cez celé písmo, strieborný kovový lesk. */
 .logo--prestige::before {
   content: "";
   position: absolute;
-  left: 50%;
-  right: auto;
+  left: 0;
+  right: 0;
   top: 0;
-  width: 52%;
-  max-width: 9.5em;
   height: 3px;
-  border-radius: 1px;
-  background: var(--gold-divider);
-  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.28);
+  border-radius: 2px;
+  background: var(--strings-rule-sheen);
+  background-color: #7a828d;
+  box-shadow:
+    0 1px 1px rgba(12, 16, 24, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   pointer-events: none;
-  transform: translateX(-50%);
 }
 /* Navbar: STRINGS — posun cez :root premenné (--strings-logo-offset-*). */
 .navbar .logo.logo--prestige {
@@ -379,7 +400,7 @@ table { font-variant-numeric: tabular-nums; }
     scaleX(1.08);
   transform-origin: left center;
 }
-/* Dolný zlatý pás: po celej šírke nápisu STRINGS (bez animácie). */
+/* Dolná čiara STRINGS: cez celé písmo, rovnaký strieborný lesk. */
 .logo--prestige::after {
   content: "";
   position: absolute;
@@ -387,9 +408,12 @@ table { font-variant-numeric: tabular-nums; }
   right: 0;
   bottom: 0;
   height: 3px;
-  border-radius: 1px;
-  background: var(--gold-divider);
-  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.28);
+  border-radius: 2px;
+  background: var(--strings-rule-sheen);
+  background-color: #7a828d;
+  box-shadow:
+    0 1px 1px rgba(12, 16, 24, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   pointer-events: none;
 }
 .logo--singularity {
