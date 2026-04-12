@@ -1,5 +1,5 @@
 /* STRINGS static — HTML z siete; assety network-first (nie zastaralý SW cache). */
-var CACHE = 'strings-20260412-navbar-strip-flat';
+var CACHE = 'strings-20260412-navbar-bottom-gold';
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();

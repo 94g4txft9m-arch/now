@@ -283,23 +283,27 @@ table { font-variant-numeric: tabular-nums; }
   padding-left: env(safe-area-inset-left, 0px);
   padding-right: env(safe-area-inset-right, 0px);
 }
-/* Zlaté zvislé okraje po celej výške fixného headera — jednotná farba (bez „osvetleného“ stredu). */
-.navbar::before,
-.navbar::after {
+/* Zlatý pás po celej šírke pod bielym riadkom menu (PC: strip je nad ním → pás je pod bielou časťou). */
+.navbar::before {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  z-index: 71;
-  pointer-events: none;
-  background: #b8975e;
-}
-.navbar::before {
   left: 0;
-}
-.navbar::after {
   right: 0;
+  bottom: 0;
+  height: 4px;
+  z-index: 72;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #5c4a32 0%,
+    #8f7348 8%,
+    #c9a962 26%,
+    #f2e6c8 50%,
+    #c9a962 74%,
+    #8f7348 92%,
+    #5c4a32 100%
+  );
+  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
 }
 .navbar.scrolled {
   background: rgba(255, 252, 247, 0.98);
@@ -903,29 +907,6 @@ body[data-page="index"] .hero--singularity .btn:hover {
   }
 }
 
-/* Domov: zlatý predel medzi bielym riadkom menu a hero (stred plný, nie „vyprázdňovaný“ do transparentu). */
-body[data-page="index"] .hero.hero--prestige::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  z-index: 11;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #5c4a32 0%,
-    #8f7348 8%,
-    #c9a962 26%,
-    #f2e6c8 50%,
-    #c9a962 74%,
-    #8f7348 92%,
-    #5c4a32 100%
-  );
-  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
-}
-
 /* Domov: zlatý pás medzi tmavou hero a svetlou sekciou pod ňou (druhý predel). */
 body[data-page="index"] .hero.hero--prestige::after {
   content: "";
@@ -1510,6 +1491,32 @@ footer.footer:not(.bg-dark) {
     order: 1;
     width: 100%;
     flex-shrink: 0;
+  }
+  /* Na mobile je biely riadok prvý — zlatý pás pod ním (navbar::before je až pod stripom). */
+  .navbar::before {
+    display: none;
+  }
+  .navbar .nav-inner::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    bottom: 0;
+    height: 4px;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      #5c4a32 0%,
+      #8f7348 8%,
+      #c9a962 26%,
+      #f2e6c8 50%,
+      #c9a962 74%,
+      #8f7348 92%,
+      #5c4a32 100%
+    );
+    box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
   }
   .navbar .market-strip {
     order: 2;
