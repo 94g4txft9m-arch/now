@@ -25,6 +25,8 @@
   --brand: var(--figma-navy);
   --brand-2: var(--figma-gold);
   --gold: #b8975e;
+  /* Zlaté deliace čiary (navbar, logo, strip, hero): jednotná farba, bez jasnejšieho stredu. */
+  --gold-divider: var(--gold);
   --gold-bright: #e8d5a8;
   --gold-deep: #7a6239;
   --gold-metallic: linear-gradient(118deg, #f4ead4 0%, #d4bc7a 22%, #b8975e 48%, #8f7348 72%, #e8d5a8 100%);
@@ -211,7 +213,7 @@ table { font-variant-numeric: tabular-nums; }
   border-bottom: none;
   box-shadow: none;
 }
-/* Zlatý predel pri „Obchodné a technologické…“ — gradient ako pod hero, nie plochý okraj. */
+/* Zlatý predel pri „Obchodné a technologické…“ — jednotná farba po celej šírke. */
 .market-strip::after {
   content: "";
   position: absolute;
@@ -221,17 +223,8 @@ table { font-variant-numeric: tabular-nums; }
   height: 4px;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    #8f7348 5%,
-    #c9a962 18%,
-    #f2e6c8 50%,
-    #c9a962 82%,
-    #8f7348 95%,
-    transparent 100%
-  );
-  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.14);
+  background: var(--gold-divider);
+  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.35);
 }
 .market-strip-inner {
   display: flex;
@@ -293,17 +286,8 @@ table { font-variant-numeric: tabular-nums; }
   height: 4px;
   z-index: 72;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #5c4a32 0%,
-    #8f7348 8%,
-    #c9a962 26%,
-    #f2e6c8 50%,
-    #c9a962 74%,
-    #8f7348 92%,
-    #5c4a32 100%
-  );
-  box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
+  background: var(--gold-divider);
+  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.35);
 }
 .navbar.scrolled {
   background: rgba(255, 252, 247, 0.98);
@@ -366,7 +350,7 @@ table { font-variant-numeric: tabular-nums; }
   flex-shrink: 0;
   overflow: visible;
 }
-/* Zlatý pás nad STRINGS (rovnaký charakter ako delenie hero / navbar). */
+/* Zlatý pás nad STRINGS — jednotná farba (deliaca čiara). */
 .logo--prestige::before {
   content: "";
   position: absolute;
@@ -375,17 +359,8 @@ table { font-variant-numeric: tabular-nums; }
   top: 0;
   height: 3px;
   border-radius: 1px;
-  background: linear-gradient(
-    90deg,
-    #5c4a32 0%,
-    #8f7348 10%,
-    #c9a962 28%,
-    #f2e6c8 50%,
-    #c9a962 72%,
-    #8f7348 90%,
-    #5c4a32 100%
-  );
-  box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
+  background: var(--gold-divider);
+  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.28);
   pointer-events: none;
   transform-origin: left center;
   animation: logoGoldLine 8s ease-in-out infinite;
@@ -406,18 +381,8 @@ table { font-variant-numeric: tabular-nums; }
   width: 100%;
   height: 3px;
   border-radius: 1px;
-  /* Rovnaký gradient a pohyb ako pás nad STRINGS (::before), posunutá fáza. */
-  background: linear-gradient(
-    90deg,
-    #5c4a32 0%,
-    #8f7348 10%,
-    #c9a962 28%,
-    #f2e6c8 50%,
-    #c9a962 72%,
-    #8f7348 90%,
-    #5c4a32 100%
-  );
-  box-shadow: 0 1px 8px rgba(201, 169, 98, 0.35);
+  background: var(--gold-divider);
+  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.28);
   pointer-events: none;
   transform-origin: left center;
   animation: logoGoldLine 8s ease-in-out infinite;
@@ -917,20 +882,8 @@ body[data-page="index"] .hero.hero--prestige::after {
   height: 5px;
   z-index: 12;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #5c4a32 0%,
-    #8f7348 8%,
-    #c9a962 26%,
-    #f2e6c8 50%,
-    #c9a962 74%,
-    #8f7348 92%,
-    #5c4a32 100%
-  );
-  box-shadow:
-    0 1px 0 rgba(201, 169, 98, 0.5),
-    0 10px 28px rgba(201, 169, 98, 0.12),
-    0 6px 20px rgba(0, 0, 0, 0.2);
+  background: var(--gold-divider);
+  box-shadow: 0 1px 0 rgba(74, 58, 38, 0.4), 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
 /* Domov: hologram — celá hero; fotografia siete + jemný rift (canvas vypnutý keď je fotka). */
@@ -1506,17 +1459,8 @@ footer.footer:not(.bg-dark) {
     height: 4px;
     z-index: 5;
     pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      #5c4a32 0%,
-      #8f7348 8%,
-      #c9a962 26%,
-      #f2e6c8 50%,
-      #c9a962 74%,
-      #8f7348 92%,
-      #5c4a32 100%
-    );
-    box-shadow: 0 1px 0 rgba(201, 169, 98, 0.45), 0 6px 18px rgba(201, 169, 98, 0.12);
+    background: var(--gold-divider);
+    box-shadow: 0 1px 0 rgba(74, 58, 38, 0.35);
   }
   .navbar .market-strip {
     order: 2;

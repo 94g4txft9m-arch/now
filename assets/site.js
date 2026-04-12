@@ -545,7 +545,7 @@
     if (loc.protocol !== 'https:' && loc.hostname !== 'localhost' && loc.hostname !== '127.0.0.1') return;
     window.addEventListener('load', function () {
       navigator.serviceWorker
-        .register('sw.js?v=20260412-navbar-bottom-gold', { scope: './' })
+        .register('sw.js?v=20260413-gold-divider-flat', { scope: './' })
         .then(function (reg) {
           setupServiceWorkerLifecycle(reg);
           return reg.update();
