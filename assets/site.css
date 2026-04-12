@@ -1507,32 +1507,12 @@ footer.footer:not(.bg-dark) {
   .wrap { padding: 0 16px; }
   .section { padding: 74px 0; }
   .section::before { left: 16px; right: 16px; }
-  /* Horný riadok: logo + menu; strip až pod ním — žiadne prekrývanie s „technologické“ atď. */
+  /* Rovnaké poradie ako na PC: strip → biely riadok → zlatý pás (.navbar::before) → hero. */
   .navbar .nav-inner {
-    order: 1;
     width: 100%;
     flex-shrink: 0;
   }
-  /* Na mobile je biely riadok prvý — zlatý pás pod ním (navbar::before je až pod stripom). */
-  .navbar::before {
-    display: none;
-  }
-  .navbar .nav-inner::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    width: 100vw;
-    margin-left: -50vw;
-    bottom: 0;
-    height: 4px;
-    /* Pod logom a toggle (tie majú vyšší z-index), aby čiara neprekrývala strieborné pásy. */
-    z-index: 0;
-    pointer-events: none;
-    background: var(--gold-divider);
-    box-shadow: 0 1px 0 rgba(74, 58, 38, 0.35);
-  }
   .navbar .market-strip {
-    order: 2;
     background: linear-gradient(168deg, #0a0f1c 0%, #101a2e 52%, #0c1222 100%);
     border-top: none;
     border-bottom: none;
